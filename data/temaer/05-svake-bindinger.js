@@ -179,7 +179,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
         'Polare stoffer løses i polare løsemidler, og upolare i upolare',
         'Et stoff løses bare i seg selv',
         'Alle salter løses i alle væsker',
-        'Stoffer med lik molar masse løses i hverandre',
+        'Stoffer med lik masse løses i hverandre',
       ],
       svar: 0,
     },

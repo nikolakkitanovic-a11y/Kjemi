@@ -2,12 +2,12 @@
 
 Øvingsside i Kjemi 1 (VG2 studiespesialisering). Innholdet bygger på notatene mine og er tilpasset kompetansemålene i læreplanen (LK20).
 
-- 8 temaer med oppsummering, nøkkelbegreper, eksempler med løsning og vanlige feil
-- 235 oppgaver i tre nivåer: grunnleggende, middels og høy måloppnåelse
+- 7 temaer med oppsummering, nøkkelbegreper, eksempler med løsning og vanlige feil
+- 208 oppgaver i tre nivåer: grunnleggende, middels og høy måloppnåelse
 - 11 oppgavetyper: flervalg, fyll inn, regneoppgaver med tall og enhet, balansering, navnsetting, formler, kobling, rangering, sortering, elektronkonfigurasjon og forklaringsoppgaver med modellsvar
 - Hint før fasit, og løsningsforslag steg for steg på regneoppgavene
 - Flashcards, prøvemodus med tidtaker og poeng, feilbank og fremdrift per tema
-- Verktøy: interaktivt periodesystem, formelark, molar masse-kalkulator, mol-omregner og balanseringssjekk
+- Verktøy: interaktivt periodesystem, formelark, molar masse-kalkulator og balanseringssjekk
 - Lyst og mørkt tema, og fungerer på mobil og PC
 
 ## Åpne siden
@@ -43,8 +43,8 @@ tests/                  automatiske tester
 | `{{SO4^2-}}`, `{{Na+}}` | SO₄²⁻, Na⁺ |
 | `{{2H2 + O2 -> 2H2O}}` | reaksjonslikning med pil |
 | `{{CuSO4*5H2O}}` | CuSO₄·5H₂O |
-| `$n = \\frac{m}{M}$` | formel (husk dobbel backslash) |
-| `$58,44\\enhet{g/mol}$` | tall med enhet og desimalkomma |
+| `$N = A - Z$`, `$\\Delta EN$` | formel (husk dobbel backslash) |
+| `$35,45\\enhet{u}$` | tall med enhet og desimalkomma |
 | `**fet**` | **fet** |
 
 ### Eksempler på hver oppgavetype
@@ -64,12 +64,16 @@ tests/                  automatiske tester
 { id: 'at-32', niva: 1, type: 'fyllinn', sporsmal: 'Fyll inn.',
   tekst: 'Et negativt ion kalles et ___.', svar: [['anion']] },
 
-// Regneoppgave (toleranse 0.01 = 1 % avvik godtas; gs = gjeldende siffer)
-{ id: 'mo-30', niva: 2, type: 'tall',
-  sporsmal: 'Hvor mange mol er 9,01 g vann?',
-  svar: 0.5, enhet: 'mol', gs: 3, toleranse: 0.01,
-  verify: (C) => 9.01 / C.M('H2O'),          // brukes av testen for å sjekke fasiten
-  steg: ['$n = \\dfrac{m}{M} = \\dfrac{9,01}{18,02} = 0,500\\enhet{mol}$'] },
+// Regneoppgave (toleranse 0.003 = 0,3 % avvik godtas; gs = gjeldende siffer)
+{ id: 'at-33', niva: 2, type: 'tall',
+  sporsmal: 'Klor er 75,76 % Cl-35 (34,969 u) og 24,24 % Cl-37 (36,966 u). Regn ut gjennomsnittlig atommasse.',
+  svar: 35.45, enhet: 'u', gs: 4, toleranse: 0.003,
+  verify: () => 34.969 * 0.7576 + 36.966 * 0.2424,   // brukes av testen for å sjekke fasiten
+  steg: ['$\\bar{m} = 34,969 \\cdot 0,7576 + 36,966 \\cdot 0,2424 = 35,45\\enhet{u}$'] },
+
+// Tallsvar uten enhet (heltall: true krever nøyaktig svar)
+{ id: 'at-34', niva: 1, type: 'tall', sporsmal: 'Hvor mange nøytroner har C-14?',
+  svar: 8, heltall: true, enhet: null, steg: ['$N = A - Z = 14 - 6 = 8$'] },
 
 // Balansering (svar = koeffisientene i rekkefølge)
 { id: 'rl-40', niva: 2, type: 'balanser',
@@ -102,7 +106,7 @@ Flashcards legges i listen `flashcards` i samme fil: `{ f: 'Forside', b: 'Baksid
 Kopier en av filene i `data/temaer/`, gi den ny `id`, `nr`, `tittel`, `farge` og `bolge` (bølgelengde i nm, bestemmer plassen i spekteret på forsiden), og legg til en linje i `index.html` under «Data: legg til nye temaer her»:
 
 ```html
-<script src="data/temaer/09-redoks.js"></script>
+<script src="data/temaer/08-redoks.js"></script>
 ```
 
 ## Testene
@@ -122,5 +126,4 @@ Den andre testen trenger Playwright med Chromium.
 ## Faglige merknader
 
 - Elektronegativitet følger Paulings skala med én desimal, slik læreboken bruker (H 2,1, C 2,5, O 3,5, Cl 3,0).
-- Tema 8 (stoffmengde og mol) står ikke i notatene, men hører til Kjemi 1 og trengs for regneoppgavene.
 - Disse feilene i notatene er rettet på siden: IF₄ heter jodtetrafluorid (jodheptafluorid er IF₇), «fluorid» skrives med uo, CO₂ (ikke «Co²»), s-orbitaler er kuleformede, metaller har krystallstruktur, London-krefter blir sterkere (ikke «mer permanente») med større elektronsky, hydrogenbindingen er tiltrekningen mellom molekylene, og CuSO₄·5H₂O heter kobber(II)sulfatpentahydrat.

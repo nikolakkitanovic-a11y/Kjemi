@@ -72,7 +72,18 @@
   /* ---------- Oppsett ---------- */
   function oppsett(main, settRydd) {
     const innst = { tema: KJ.temaer.map((t) => t.id), antall: 20, niva: 'blandet', tid: 'auto', forklaring: true };
-    const aktiv = S.aktivProve();
+    let aktiv = S.aktivProve();
+    if (aktiv) {
+      // Oppgaver som er fjernet fra datafilene, tas ut av en påbegynt prøve.
+      aktiv.ids = aktiv.ids.filter((id) => KJ.oppgave(id));
+      Object.keys(aktiv.svar).forEach((id) => {
+        if (!KJ.oppgave(id)) delete aktiv.svar[id];
+      });
+      if (!aktiv.ids.length) {
+        S.settAktivProve(null);
+        aktiv = null;
+      }
+    }
     const hist = S.prover();
 
     main.innerHTML =

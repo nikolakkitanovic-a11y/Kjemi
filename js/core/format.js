@@ -4,9 +4,9 @@
  * Skrivemåte i datafilene:
  *   {{H2SO4}}            -> kjemisk formel med mhchem (\ce{H2SO4})
  *   {{2H2 + O2 -> 2H2O}} -> reaksjonslikning
- *   $n = \\frac{m}{M}$   -> matematikk (husk dobbel backslash i JavaScript-strenger)
+ *   $N = A - Z$          -> matematikk (husk dobbel backslash i JavaScript-strenger)
  *   **fet** og *kursiv*
- * Desimalkomma inne i $...$ blir automatisk riktig (5,00 -> 5{,}00).
+ * Desimalkomma inne i $...$ blir automatisk riktig (35,45 -> 35{,}45).
  */
 (function (KJ) {
   'use strict';

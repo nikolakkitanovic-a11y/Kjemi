@@ -4,6 +4,7 @@
 (function (KJ) {
   'use strict';
   const esc = KJ.esc;
+  const TALLORD = ['Null', 'Ett', 'To', 'Tre', 'Fire', 'Fem', 'Seks', 'Sju', 'Åtte', 'Ni', 'Ti', 'Elleve', 'Tolv'];
 
   KJ.views.home = function (main) {
     KJ.settTittel('');
@@ -39,7 +40,7 @@
       '<section class="hero"><div class="container">' +
       '<p class="eyebrow">Kjemi 1 · VG2 studiespesialisering</p>' +
       '<h1>Kjemi, <em>linje for linje</em>.</h1>' +
-      '<p class="lead">Åtte temaer bygd på notatene dine, med teori, ' + totalt + ' oppgaver i tre nivåer, flashcards, prøvemodus og feilbank. Hver linje i spekteret er et tema, og den lyser sterkere jo mer du mestrer.</p>' +
+      '<p class="lead">' + TALLORD[temaer.length] + ' temaer bygd på notatene dine, med teori, ' + totalt + ' oppgaver i tre nivåer, flashcards, prøvemodus og feilbank. Hver linje i spekteret er et tema, og den lyser sterkere jo mer du mestrer.</p>' +
       '<div class="spectrum" aria-hidden="true">' + linjer + '</div>' +
       '<div class="spectrum-cap" aria-hidden="true"><span>400 nm</span><span>Emisjonsspekteret ditt</span><span>700 nm</span></div>' +
       '<div class="stats">' +
@@ -83,7 +84,7 @@
       '</div>' +
 
       '<div class="foot">' +
-      '<p>Innholdet bygger på notatene dine og er tilpasset kompetansemålene i Kjemi 1 (LK20). Tema 8 (mol) er et tillegg som ikke står i notatene, men som du trenger til regneoppgavene.</p>' +
+      '<p>Innholdet bygger på notatene dine og er tilpasset kompetansemålene i Kjemi 1 (LK20).</p>' +
       '<p>Fremdriften lagres bare i denne nettleseren. Eksporter den hvis du vil flytte den til en annen enhet.</p>' +
       '<div class="btn-row">' +
       '<button type="button" class="btn btn-ghost btn-small" data-a="eksport">' + KJ.icon('download', 16) + 'Eksporter fremdrift</button>' +

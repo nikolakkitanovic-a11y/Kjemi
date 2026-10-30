@@ -189,30 +189,18 @@
       '<div class="calc-quick">' + eksempler.map((f) => '<button type="button" class="btn btn-ghost btn-small" data-ex="' + f + '">' + KJ.ce(f) + '</button>').join('') + '</div>' +
       '<div class="calc-res" data-res aria-live="polite"></div></div>' +
 
-      '<div style="display:grid;gap:18px">' +
-      '<div class="panel"><h2 style="font-size:1.3rem;margin-bottom:6px">Mol-omregner</h2><p class="muted" style="font-size:.92rem" data-mm>Bruker molar masse fra formelen til venstre.</p>' +
-      '<div class="conv">' +
-      '<label class="fld"><span class="fld-l">Masse, m (g)</span><input class="inp" inputmode="decimal" data-m></label>' +
-      '<label class="fld"><span class="fld-l">Stoffmengde, n (mol)</span><input class="inp" inputmode="decimal" data-n></label>' +
-      '<label class="fld"><span class="fld-l">Antall partikler, N</span><input class="inp" data-partikler inputmode="text" placeholder="f.eks. 6,02e23"></label>' +
-      '<label class="fld"><span class="fld-l">Volum, V (L), for konsentrasjon</span><input class="inp" inputmode="decimal" data-V></label>' +
-      '</div><p data-c style="margin-top:12px"></p></div>' +
-
       '<div class="panel"><h2 style="font-size:1.3rem;margin-bottom:6px">Sjekk balansering</h2><p class="muted" style="font-size:.92rem">Skriv likningen med pil (->). Bruk mellomrom rundt +.</p>' +
       '<label class="fld fld-wide"><span class="fld-l">Likning</span><input class="inp mono" data-likn autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="2H2 + O2 -> 2H2O"></label>' +
       '<div data-bal aria-live="polite" style="margin-top:12px"></div></div>' +
-      '</div></div>';
+      '</div>';
 
     const fIn = el.querySelector('[data-f]');
     const res = el.querySelector('[data-res]');
-    let M = null;
 
     function regn() {
       const f = fIn.value.trim();
-      M = null;
       if (!f) {
         res.innerHTML = '';
-        oppdaterMM();
         return;
       }
       let p;
@@ -220,10 +208,9 @@
         p = C.parse(f);
       } catch (e) {
         res.innerHTML = '<p class="muted">' + esc(e.kjemi ? e.message : 'Ugyldig formel') + '</p>';
-        oppdaterMM();
         return;
       }
-      M = C.M(p);
+      const M = C.M(p);
       const rader = Object.keys(p.antall).map((sym) => {
         const e = KJ.grunnstoffMap[sym];
         const bidrag = e.M * p.antall[sym];
@@ -235,51 +222,7 @@
         '<div class="tbl-wrap"><table class="tbl"><thead><tr><th scope="col">Grunnstoff</th><th scope="col">Antall</th><th scope="col">Atommasse</th><th scope="col">Bidrag (g/mol)</th><th scope="col">Masse-%</th></tr></thead><tbody>' + rader.join('') + '</tbody></table></div>' +
         '<p class="muted" style="font-size:.86rem">Utregning: ' + KJ.tex(Object.keys(p.antall).map((s) => (p.antall[s] > 1 ? p.antall[s] + '\\cdot ' : '') + massetekst(KJ.grunnstoffMap[s]).replace(',', '{,}')).join(' + ') + ' = ' + KJ.tall(M, 2).replace(',', '{,}')) + '</p>';
       KJ.settUrl('/verktoy/kalkulator?f=' + encodeURIComponent(f));
-      oppdaterMM();
     }
-
-    const mIn = el.querySelector('[data-m]');
-    const nIn = el.querySelector('[data-n]');
-    const NIn = el.querySelector('[data-partikler]');
-    const VIn = el.querySelector('[data-V]');
-    const cOut = el.querySelector('[data-c]');
-    const NA = 6.022e23;
-    const fmtN = (x) => {
-      if (!isFinite(x)) return '';
-      if (Math.abs(x) >= 1e5 || (Math.abs(x) < 1e-3 && x !== 0)) return x.toExponential(3).replace('.', ',').replace('e+', 'e');
-      return String(+x.toPrecision(4)).replace('.', ',');
-    };
-    function oppdaterMM() {
-      el.querySelector('[data-mm]').innerHTML = M ? 'Molar masse: <strong>' + KJ.tall(M, 2) + ' g/mol</strong> (' + KJ.ce(C.parse(fIn.value).ce) + ')' : 'Skriv en formel i molar masse-feltet først for å regne mellom masse og mol.';
-      mIn.disabled = !M;
-      if (M && nIn.value) fraN();
-    }
-    function fraN(kilde) {
-      const n = KJ.parseTall(nIn.value);
-      if (isNaN(n)) return;
-      if (kilde !== 'm' && M) mIn.value = fmtN(n * M);
-      if (kilde !== 'N') NIn.value = fmtN(n * NA);
-      kons();
-    }
-    function kons() {
-      const n = KJ.parseTall(nIn.value);
-      const V = KJ.parseTall(VIn.value);
-      cOut.innerHTML = !isNaN(n) && !isNaN(V) && V > 0 ? KJ.tex('c = \\dfrac{n}{V} = ' + fmtN(n / V).replace(',', '{,}') + '\\enhet{mol/L}') : '';
-    }
-    mIn.addEventListener('input', () => {
-      const m = KJ.parseTall(mIn.value);
-      if (isNaN(m) || !M) return;
-      nIn.value = fmtN(m / M);
-      fraN('m');
-    });
-    nIn.addEventListener('input', () => fraN());
-    NIn.addEventListener('input', () => {
-      const N = KJ.parseTall(NIn.value);
-      if (isNaN(N)) return;
-      nIn.value = fmtN(N / NA);
-      fraN('N');
-    });
-    VIn.addEventListener('input', kons);
 
     fIn.addEventListener('input', regn);
     el.querySelector('.calc-quick').addEventListener('click', (e) => {
@@ -314,7 +257,7 @@
     if (start) {
       fIn.value = start;
       regn();
-    } else oppdaterMM();
+    }
     return null;
   }
 })(window.KJ);

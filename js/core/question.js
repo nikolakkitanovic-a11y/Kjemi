@@ -68,6 +68,7 @@
       this.id = KJ.uid('q');
       this.el = document.createElement('article');
       this.el.className = 'qcard q-' + q.type + ' modus-' + this.o.modus;
+      this.el.dataset.id = q.id;
       this.el.setAttribute('aria-labelledby', this.id + '-p');
       this.forbered();
       this.render();

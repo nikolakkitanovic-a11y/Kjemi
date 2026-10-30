@@ -121,7 +121,7 @@ const logg = (ok, msg) => {
   };
 
   async function fyllRiktig(q) {
-    const kort = page.locator('.qcard').first();
+    const kort = page.locator('.qcard[data-id="' + q.id + '"]');
     switch (q.type) {
       case 'flervalg':
         for (const i of [].concat(q.svar)) await kort.locator('.opt[data-i="' + i + '"]').click();
@@ -170,7 +170,8 @@ const logg = (ok, msg) => {
         }
         break;
       case 'sortering':
-        for (let i = 0; i < q.elementer.length; i++) await kort.locator('.sort-row[data-i="' + i + '"] input[value="' + q.elementer[i][1] + '"]').check({ force: true });
+        // Klikk direkte på radioknappen: et vanlig museklikk kan treffe den faste toppmenyen når raden ligger under den.
+        for (let i = 0; i < q.elementer.length; i++) await kort.locator('.sort-row[data-i="' + i + '"] input[value="' + q.elementer[i][1] + '"]').evaluate((el) => el.click());
         break;
       case 'forklaring':
         await kort.locator('.area').fill('Mitt svar på oppgaven.');
@@ -181,7 +182,7 @@ const logg = (ok, msg) => {
   let riktige = 0;
   for (const q of oppgaver) {
     await ga('#/tema/' + q.tema + '/oppgaver?niva=0&q=' + q.id);
-    await page.waitForSelector('.qcard');
+    await page.waitForSelector('.qcard[data-id="' + q.id + '"]');
     const vist = await page.evaluate(() => document.querySelector('.qcard .q-prompt') && location.hash);
     if (!vist || !vist.includes(q.id)) {
       logg(false, q.id + ': ble ikke vist');
@@ -211,6 +212,7 @@ const logg = (ok, msg) => {
     }
   }
   logg(riktige === oppgaver.length, riktige + ' av ' + oppgaver.length + ' oppgaver rettet som riktige via grensesnittet');
+  logg(!temaer.includes('mol') && !oppgaver.some((q) => /^mo-/.test(q.id)), 'temaet om stoffmengde og mol er fjernet');
   const mestret = await page.evaluate(() => KJ.temaer.reduce((a, t) => a + KJ.store.temaFremdrift(t.id).ok, 0));
   logg(mestret === oppgaver.length, 'fremdrift lagret for alle (' + mestret + ')');
   await ga('#/tema/sterke-bindinger/oppgaver?niva=0&q=sb-12');
@@ -237,18 +239,20 @@ const logg = (ok, msg) => {
   logg((await page.locator('.qcard .atomtab tr.bad').count()) > 0, 'atomtelling viser ubalanse');
   await page.locator('.qcard [data-a="sjekk"]').click();
   logg((await page.locator('.qcard .q-fb.fb-bad').count()) === 1, 'ubalansert likning rettes som feil');
-  await ga('#/tema/mol/oppgaver?niva=0&q=mo-12');
+  await ga('#/tema/atomet/oppgaver?niva=0&q=at-13');
   await page.waitForSelector('.qcard .num');
-  await page.locator('.qcard .num').fill('1,00');
+  await page.locator('.qcard .num').fill('10,81');
   await page.locator('.qcard [data-a="sjekk"]').click();
   logg((await page.locator('.qcard .q-fb').innerText()).toLowerCase().includes('enhet'), 'manglende enhet gir melding om enhet');
-  await page.locator('.qcard .unit').fill('g');
+  await page.locator('.qcard .unit').fill('u');
   await page.locator('.qcard [data-a="sjekk"]').click();
   logg((await page.locator('.qcard .q-fb.fb-ok').count()) === 1, 'riktig etter å ha lagt til enhet');
-  await page.locator('.qcard .num').fill('1000');
-  await page.locator('.qcard .unit').fill('mg');
+  await page.locator('.qcard .num').fill('10,8');
   await page.locator('.qcard [data-a="sjekk"]').click();
-  logg((await page.locator('.qcard .q-fb.fb-ok').count()) === 1, '1000 mg godtas for 1,00 g');
+  logg((await page.locator('.qcard .q-fb.fb-ok').count()) === 1, 'rimelig avrunding (10,8) godtas');
+  await page.locator('.qcard .num').fill('10,51');
+  await page.locator('.qcard [data-a="sjekk"]').click();
+  logg((await page.locator('.qcard .q-fb.fb-bad').count()) === 1, 'vanlig gjennomsnitt uten vekting (10,51) avvises');
 
   await ga('#/feilbank');
   await page.waitForSelector('.err-item');
@@ -335,8 +339,6 @@ const logg = (ok, msg) => {
   await ga('#/verktoy/kalkulator?f=Al2(SO4)3');
   await page.waitForSelector('.calc-big');
   logg((await page.locator('.calc-big').innerText()).includes('342,14'), 'molar masse Al2(SO4)3 = 342,14');
-  await page.locator('[data-m]').fill('34,214');
-  logg((await page.locator('[data-n]').inputValue()) === '0,1', 'mol-omregner: 34,214 g = 0,1 mol');
   await page.locator('[data-likn]').fill('C3H8 + 5O2 -> 3CO2 + 4H2O');
   logg((await page.locator('[data-bal]').innerText()).includes('balansert'), 'balanseringssjekk');
   await skjerm('10-kalkulator');
@@ -351,7 +353,7 @@ const logg = (ok, msg) => {
   await page.locator('[data-theme-btn]').click();
   logg((await page.evaluate(() => document.documentElement.getAttribute('data-theme'))) === 'dark', 'mørkt tema');
   await skjerm('11-forside-mork');
-  await ga('#/tema/mol/oppgaver?niva=0&q=mo-20');
+  await ga('#/tema/atomet/oppgaver?niva=0&q=at-20');
   await skjerm('12-oppgave-mork');
   await page.locator('[data-theme-btn]').click();
 

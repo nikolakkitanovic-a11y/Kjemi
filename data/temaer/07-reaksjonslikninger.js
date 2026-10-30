@@ -22,7 +22,7 @@ KJ.tema({
 
 $$\\ce{2H2(g) + O2(g) -> 2H2O(l)}$$
 
-- **Koeffisientene** (de store tallene foran) viser forholdet mellom antall partikler (og antall mol).
+- **Koeffisientene** (de store tallene foran) viser forholdet mellom antall partikler.
 - **Indeksene** (de små tallene) er en del av formelen. De sier hvor mange atomer av hvert slag som er i stoffet, og kan **aldri** endres når du balanserer. {{H2O}} og {{H2O2}} er to helt forskjellige stoffer.
 - **Tilstandssymboler:** (s) fast stoff, (l) væske, (g) gass, (aq) løst i vann.`,
     },
@@ -77,7 +77,7 @@ Ionelikningen må være balansert både for atomer og ladning.`,
   begreper: [
     { term: 'Reaktant', def: 'Stoff som reagerer (står til venstre for pilen).' },
     { term: 'Produkt', def: 'Stoff som dannes (står til høyre for pilen).' },
-    { term: 'Koeffisient', def: 'Tallet foran en formel. Viser forholdet mellom antall partikler/mol. Kan endres.' },
+    { term: 'Koeffisient', def: 'Tallet foran en formel. Viser forholdet mellom antall partikler. Kan endres.' },
     { term: 'Indeks', def: 'Det lille tallet i formelen. Kan aldri endres ved balansering.' },
     { term: 'Massebevaring', def: 'Atomer verken oppstår eller forsvinner i en kjemisk reaksjon.' },
     { term: 'Tilstandssymboler', def: '(s) fast, (l) væske, (g) gass, (aq) løst i vann.' },
@@ -229,8 +229,8 @@ Ionelikningen må være balansert både for atomer og ladning.`,
     {
       id: 'rl-31', niva: 3, type: 'forklaring',
       sporsmal: 'Forklar hvorfor en reaksjonslikning må være balansert, og hva koeffisientene forteller.',
-      modellsvar: `I en kjemisk reaksjon brytes og dannes bindinger, men atomene forsvinner ikke og oppstår ikke. De bare omgrupperes. Dette er loven om massebevaring. Derfor må det være like mange atomer av hvert grunnstoff på begge sider av pilen, og ved ioner også samme totale ladning. Koeffisientene viser forholdet mellom antall partikler (eller mol) som reagerer og dannes. I {{2H2 + O2 -> 2H2O}} reagerer to molekyler hydrogen med ett molekyl oksygen og gir to molekyler vann.`,
-      punkter: ['Loven om massebevaring', 'Atomer verken oppstår eller forsvinner, de omgrupperes', 'Like mange av hvert atom (og samme ladning) på begge sider', 'Koeffisientene viser forholdet mellom antall partikler/mol'],
+      modellsvar: `I en kjemisk reaksjon brytes og dannes bindinger, men atomene forsvinner ikke og oppstår ikke. De bare omgrupperes. Dette er loven om massebevaring. Derfor må det være like mange atomer av hvert grunnstoff på begge sider av pilen, og ved ioner også samme totale ladning. Koeffisientene viser forholdet mellom antall partikler som reagerer og dannes. I {{2H2 + O2 -> 2H2O}} reagerer to molekyler hydrogen med ett molekyl oksygen og gir to molekyler vann.`,
+      punkter: ['Loven om massebevaring', 'Atomer verken oppstår eller forsvinner, de omgrupperes', 'Like mange av hvert atom (og samme ladning) på begge sider', 'Koeffisientene viser forholdet mellom antall partikler'],
     },
     { id: 'rl-32', niva: 3, type: 'balanser', reaktanter: ['P4', 'O2'], produkter: ['P4O10'], svar: [1, 5, 1] },
     { id: 'rl-33', niva: 3, type: 'balanser', reaktanter: ['Al', 'CuSO4'], produkter: ['Al2(SO4)3', 'Cu'], svar: [2, 3, 1, 3] },
@@ -243,7 +243,7 @@ Ionelikningen må være balansert både for atomer og ladning.`,
 
   flashcards: [
     { f: 'Reaktanter og produkter', b: 'Reaktanter står til venstre for pilen, produkter til høyre.' },
-    { f: 'Koeffisient', b: 'Tallet foran formelen. Viser forholdet mellom antall partikler/mol. Det er dette du endrer når du balanserer.' },
+    { f: 'Koeffisient', b: 'Tallet foran formelen. Viser forholdet mellom antall partikler. Det er dette du endrer når du balanserer.' },
     { f: 'Indeks', b: 'Det lille tallet i formelen. Skal aldri endres, for da blir det et annet stoff.' },
     { f: 'Loven om massebevaring', b: 'Atomer verken oppstår eller forsvinner i en reaksjon.' },
     { f: 'Tilstandssymboler', b: '(s) fast stoff · (l) væske · (g) gass · (aq) løst i vann' },

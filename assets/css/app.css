@@ -829,9 +829,6 @@ ol.order { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
 .calc-big { font-family: var(--font-display); font-size: 2rem; font-weight: 560; letter-spacing: -0.02em; margin: 6px 0 12px; }
 .calc-quick { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
 .calc-quick button { font-family: var(--font-mono); font-size: .82rem; min-height: 34px; }
-.conv { display: grid; gap: 12px; grid-template-columns: 1fr; }
-@media (min-width: 520px) { .conv { grid-template-columns: 1fr 1fr; } }
-.conv .inp { width: 100%; }
 
 /* ---------- Dialog og toast ---------- */
 .dlg { border: 1px solid var(--line); border-radius: 18px; padding: 0; background: var(--surface); color: var(--ink); box-shadow: var(--shadow-3); width: min(440px, calc(100vw - 32px)); }

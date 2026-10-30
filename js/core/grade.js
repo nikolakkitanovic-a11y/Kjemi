@@ -238,7 +238,7 @@
     const ratio = v / q.svar;
     if (isFinite(ratio) && ratio > 0) {
       const l = Math.log10(ratio);
-      if (Math.abs(l - Math.round(l)) < 0.005 && Math.round(l) !== 0) mld += ' Tallet ser ut til å være feil med en faktor 10' + (Math.abs(Math.round(l)) > 1 ? '^' + Math.round(l) : '') + '. Sjekk enhetene (g/kg, mL/L).';
+      if (Math.abs(l - Math.round(l)) < 0.005 && Math.round(l) !== 0) mld += ' Tallet ser ut til å være feil med en faktor 10' + (Math.abs(Math.round(l)) > 1 ? '^' + Math.round(l) : '') + '. Sjekk enhetene.';
     }
     return { riktig: false, andel: 0, melding: mld };
   };

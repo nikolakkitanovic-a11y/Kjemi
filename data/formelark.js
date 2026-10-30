@@ -9,6 +9,7 @@ KJ.formelark = [
       { tex: 'N = A - Z', tekst: 'Antall nøytroner = nukleontall − atomnummer' },
       { tex: '\\text{elektroner} = Z - \\text{ladning}', tekst: 'Antall elektroner i et ion' },
       { tex: '\\bar{m} = \\sum m_i \\cdot \\text{andel}_i', tekst: 'Gjennomsnittlig atommasse (vektet gjennomsnitt av isotopene)' },
+      { tex: '1\\ \\mathrm{u} = 1{,}661 \\cdot 10^{-27}\\ \\mathrm{kg}', tekst: 'Atommasseenheten: 1/12 av massen til et C-12-atom' },
     ],
   },
   {
@@ -41,28 +42,6 @@ KJ.formelark = [
         ['4 + 0', 'Tetraedrisk, 109,5°', '{{CH4}}'],
         ['3 + 1', 'Trigonal pyramide, ca. 107°', '{{NH3}}'],
         ['2 + 2', 'Vinklet, ca. 104,5°', '{{H2O}}'],
-      ],
-    },
-  },
-  {
-    tittel: 'Mol og konsentrasjon',
-    formler: [
-      { tex: 'n = \\dfrac{m}{M}', tekst: 'Stoffmengde (mol) = masse (g) / molar masse (g/mol)' },
-      { tex: 'N = n \\cdot N_A', tekst: 'Antall partikler' },
-      { tex: 'c = \\dfrac{n}{V}', tekst: 'Konsentrasjon (mol/L), V i liter' },
-      { tex: 'c_1 V_1 = c_2 V_2', tekst: 'Fortynning' },
-      { tex: '\\text{utbytte} = \\dfrac{m_\\text{faktisk}}{m_\\text{teoretisk}} \\cdot 100\\,\\%', tekst: 'Prosentvis utbytte' },
-      { tex: '\\%\\,X = \\dfrac{\\text{masse av } X \\text{ i formelen}}{M} \\cdot 100\\,\\%', tekst: 'Masseprosent' },
-    ],
-  },
-  {
-    tittel: 'Konstanter',
-    tabell: {
-      hode: ['Størrelse', 'Verdi'],
-      rader: [
-        ['Avogadros tall, $N_A$', '$6,022 \\cdot 10^{23}\\ \\mathrm{mol^{-1}}$'],
-        ['Atommasseenheten, u', '$1,661 \\cdot 10^{-27}$ kg'],
-        ['Molvolum for gass (0 °C, 1 atm)', '22,4 L/mol'],
       ],
     },
   },
