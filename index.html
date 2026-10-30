@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="nb">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Spektrum · Kjemi 1</title>
+  <meta name="description" content="Øvingsside i Kjemi 1 (VG2): teori, oppgaver i tre nivåer, flashcards, prøvemodus, feilbank og verktøy.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#F4F1EA" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0E0F12" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230E0F12'/%3E%3Crect x='7' y='7' width='2.4' height='18' rx='1.2' fill='%23E5484D'/%3E%3Crect x='12' y='7' width='2.4' height='18' rx='1.2' fill='%23E8A400'/%3E%3Crect x='17' y='7' width='2.4' height='18' rx='1.2' fill='%2312A4C4'/%3E%3Crect x='22.4' y='7' width='2.4' height='18' rx='1.2' fill='%238B3CF0'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <script>
+    // Sett fargetema før siden tegnes, så den ikke blinker.
+    (function () {
+      try {
+        var s = JSON.parse(localStorage.getItem('kjemi1-spektrum-v1') || '{}');
+        if (s.tema === 'lys' || s.tema === 'mork') document.documentElement.setAttribute('data-theme', s.tema === 'lys' ? 'light' : 'dark');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Hopp til innholdet</a>
+
+  <header class="topbar">
+    <div class="topbar-in">
+      <a class="brand" href="#/" aria-label="Spektrum – til forsiden">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="brand-name">Spektrum</span>
+        <span class="brand-tag">Kjemi 1</span>
+      </a>
+      <nav class="nav-top" aria-label="Hovedmeny" data-nav></nav>
+      <button type="button" class="ibtn theme-btn" data-theme-btn aria-label="Bytt fargetema"></button>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1"></main>
+
+  <nav class="nav-bottom" aria-label="Hovedmeny" data-nav></nav>
+
+  <div id="toast" class="toast-host" aria-live="polite" aria-atomic="true"></div>
+
+  <datalist id="enheter">
+    <option value="g"></option>
+    <option value="mol"></option>
+    <option value="g/mol"></option>
+    <option value="mol/L"></option>
+    <option value="L"></option>
+    <option value="mL"></option>
+    <option value="%"></option>
+    <option value="u"></option>
+    <option value="kg"></option>
+    <option value="mg"></option>
+  </datalist>
+
+  <noscript><p class="container">Denne siden trenger JavaScript.</p></noscript>
+
+  <!-- Bibliotek: KaTeX + mhchem (lagret lokalt, fungerer uten nett) -->
+  <script src="assets/vendor/katex/katex.min.js"></script>
+  <script src="assets/vendor/katex/contrib/mhchem.min.js"></script>
+
+  <!-- Kjerne -->
+  <script src="js/core/kj.js"></script>
+
+  <!-- Data: legg til nye temaer her -->
+  <script src="data/grunnstoffer.js"></script>
+  <script src="data/temaer/01-atomet.js"></script>
+  <script src="data/temaer/02-elektroner.js"></script>
+  <script src="data/temaer/03-periodesystemet.js"></script>
+  <script src="data/temaer/04-sterke-bindinger.js"></script>
+  <script src="data/temaer/05-svake-bindinger.js"></script>
+  <script src="data/temaer/06-navnsetting.js"></script>
+  <script src="data/temaer/07-reaksjonslikninger.js"></script>
+  <script src="data/temaer/08-mol.js"></script>
+  <script src="data/formelark.js"></script>
+
+  <!-- Moduler -->
+  <script src="js/core/format.js"></script>
+  <script src="js/core/chem.js"></script>
+  <script src="js/core/viz.js"></script>
+  <script src="js/core/store.js"></script>
+  <script src="js/core/grade.js"></script>
+  <script src="js/core/question.js"></script>
+  <script src="js/views/home.js"></script>
+  <script src="js/views/topic.js"></script>
+  <script src="js/views/flashcards.js"></script>
+  <script src="js/views/exam.js"></script>
+  <script src="js/views/errors.js"></script>
+  <script src="js/views/tools.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
