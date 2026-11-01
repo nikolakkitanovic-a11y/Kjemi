@@ -11,6 +11,7 @@
 - **Smart øving** (`#/ov`): én oppgave om gangen, oftest fra de røde målene og fra oppgaver du har svart feil på. `#/ov?mal=3,7` øver bare på mål 3 og 7.
 - **Øvingsplan** på forsiden frem til prøven, bygd på selvvurderingen: røde mål først, så de som ikke er vurdert, så de gule. Siste dag er satt av til repetisjon og prøvesimulering.
 - **Prøvesimulering** med tidtaker og poeng. Med 20 oppgaver får hvert av de 20 målene minst én oppgave. Resultatsiden viser poeng per læringsmål og hvilke mål du bør øve mer på.
+- **Oppfølging etter prøven** (`#/ov?prove=<id>`): nye oppgaver fra målene du fikk under 60 % på, uten oppgavene som var med på prøven. 2–3 oppgaver per mål fra grunnleggende til høyt nivå, høyst 8 mål per runde, fasit etter hvert svar og oppsummering per mål til slutt. Den kan også startes fra «Tidligere prøver».
 - **«Kvelden før»** (`#/kvelden-for`): regler, unntak og vanlige feil for alle målene på ett ark, laget for utskrift. Reglene står i `huskeliste` i hver modulfil.
 - **Feilbank:** en oppgave forsvinner først når du har svart riktig 2 ganger på rad.
 - **Verktøy:** periodesystem (elektronegativitet og elektronfordeling), formelark og balanseringssjekk.

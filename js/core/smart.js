@@ -118,3 +118,59 @@
     return { status: 'plan', dager, okter, ikkeVurdert: alle.filter((m) => !m.verdi).length };
   };
 })(window.KJ);
+
+/* ---------- Oppfølging etter en prøve ---------- */
+(function (KJ) {
+  'use strict';
+  const S = KJ.store;
+
+  /**
+   * Velger nye oppgaver fra målene som gikk dårlig på prøven h (fra historikken).
+   * Mål under 60 % tas med, de svakeste først. Er ingen under 60 %, brukes de tre svakeste under 100 %.
+   * Oppgaver som var med på prøven, tas ikke med. Per mål: lett → vanskelig, helst oppgaver du ikke har mestret.
+   * Høyst 8 mål per runde. fra = hvor mange av de svake målene som allerede er øvd på (neste runde).
+   */
+  KJ.OPPFOLGING_MAKS_MAL = 8;
+  KJ.oppfolgingOppgaver = function (h, fra) {
+    fra = fra || 0;
+    const res = (h && h.mal) || {};
+    const brukt = new Set((h && h.ids) || []);
+    const sorter = (a, b) => res[a] - res[b] || a - b;
+    const alle = Object.keys(res).map(Number).filter((nr) => KJ.malInfo(nr));
+    let svake = alle.filter((nr) => res[nr] < 60).sort(sorter);
+    let lavest = false;
+    if (!svake.length) {
+      svake = alle.filter((nr) => res[nr] < 100).sort(sorter).slice(0, 3);
+      lavest = true;
+    }
+    const alleSvake = svake;
+    svake = svake.slice(fra, fra + KJ.OPPFOLGING_MAKS_MAL);
+    const per = svake.length > 5 ? 2 : 3;
+    const nivaer = per === 3 ? [1, 2, 3] : [1, 2];
+    const valgt = new Set();
+    const perMal = {};
+    const tilfeldig = (liste) => liste[Math.floor(Math.random() * liste.length)];
+    const ikkeMestret = (q) => {
+      const s = S.status(q.id);
+      return !s || !s.ok;
+    };
+    svake.forEach((nr) => {
+      const pool = () => KJ.malOppgaver(nr).filter((q) => !brukt.has(q.id) && !valgt.has(q.id));
+      const ut = [];
+      nivaer.forEach((n) => {
+        const p = pool();
+        if (!p.length) return;
+        const paaNiva = p.filter((q) => q.niva === n);
+        const kand = paaNiva.length ? paaNiva : p;
+        const best = kand.filter(ikkeMestret);
+        const q = tilfeldig(best.length ? best : kand);
+        valgt.add(q.id);
+        ut.push(q);
+      });
+      perMal[nr] = ut.sort((a, b) => a.niva - b.niva).map((q) => q.id);
+    });
+    const ids = [];
+    svake.forEach((nr) => perMal[nr].forEach((id) => ids.push(id)));
+    return { svake, lavest, ids, perMal, fra, totaltSvake: alleSvake.length, igjen: Math.max(0, alleSvake.length - fra - svake.length) };
+  };
+})(window.KJ);

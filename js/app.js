@@ -3,6 +3,7 @@
  * Ruter:
  *   #/                          oversikt
  *   #/ov[?mal=3,7]              smart øving fra de svakeste målene
+ *   #/ov?prove=<id>             nye oppgaver fra målene som gikk dårlig på en prøve
  *   #/kvelden-for               oppsummering av alle mål til utskrift
  *   #/modul/<id>[/oppgaver]     teori eller oppgaver for en modul (ett eller flere læringsmål)
  *   #/kort[/<id>]               flashcards
@@ -26,7 +27,7 @@
     [/^\/?$/, 'hjem', (m, p) => KJ.views.home(m, p)],
     [/^\/modul\/([\w-]+)(?:\/(teori|oppgaver))?\/?$/, 'hjem', (m, p, id, fane) => KJ.views.topic(m, p, id, fane || 'teori')],
     [/^\/tema\/.*$/, 'hjem', () => location.replace('#/')],
-    [/^\/ov\/?$/, 'ov', (m, p) => KJ.views.smart(m, p)],
+    [/^\/ov\/?$/, 'ov', (m, p) => (p.get('prove') ? KJ.views.oppfolging(m, p) : KJ.views.smart(m, p))],
     [/^\/kvelden-for\/?$/, 'hjem', (m, p) => KJ.views.evening(m, p)],
     [/^\/kort(?:\/([\w-]+))?\/?$/, 'kort', (m, p, id) => KJ.views.cards(m, p, id || 'alle')],
     [/^\/prove\/?$/, 'prove', (m, p) => KJ.views.exam(m, p)],
@@ -36,7 +37,7 @@
 
   function tegnNav(aktiv) {
     const ant = KJ.store.feilbank().length;
-    document.querySelectorAll('[data-nav]').forEach((nav) => {
+    document.querySelectorAll('.nav-top[data-nav], .nav-bottom[data-nav]').forEach((nav) => {
       const bunn = nav.classList.contains('nav-bottom');
       nav.innerHTML = NAV.map((n) => {
         const badge = n.id === 'feilbank' && ant ? '<span class="nav-badge" aria-label="' + ant + ' oppgaver">' + ant + '</span>' : '';

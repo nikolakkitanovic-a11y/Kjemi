@@ -378,6 +378,33 @@ console.log('  ' + antLikn + ' likninger i tekst kontrollert');
 }
 
 /* ---------- Kjemimotoren ---------- */
+console.log('\nOppfølging etter prøven');
+{
+  const ids = KJ.malOppgaver(1).slice(0, 5).map((q) => q.id).concat(KJ.malOppgaver(2).slice(0, 5).map((q) => q.id));
+  const res = {};
+  KJ.MAL.forEach((m) => (res[m.nr] = 100));
+  res[1] = 20;
+  res[2] = 50;
+  res[3] = 70;
+  for (let i = 0; i < 20; i++) {
+    const u = KJ.oppfolgingOppgaver({ mal: res, ids });
+    sjekk(u.svake.join() === '1,2' && !u.lavest, 'oppfølging: målene under 60 % velges, svakest først');
+    sjekk(u.ids.length === 6 && u.ids.every((id) => !ids.includes(id)), 'oppfølging: 3 nye oppgaver per mål, ingen fra prøven');
+    sjekk([1, 2].every((nr) => u.perMal[nr].every((id) => KJ.oppgave(id).mal.includes(nr))), 'oppfølging: oppgavene hører til målet');
+    sjekk([1, 2].every((nr) => u.perMal[nr].map((id) => KJ.oppgave(id).niva).join() === '1,2,3'), 'oppfølging: fra grunnleggende til høyt nivå');
+  }
+  const ingen = KJ.oppfolgingOppgaver({ mal: Object.assign({}, res, { 1: 90, 2: 80 }), ids: [] });
+  sjekk(ingen.lavest && ingen.svake.join() === '3,2,1', 'oppfølging: uten mål under 60 % brukes de tre svakeste');
+  const null0 = {};
+  KJ.MAL.forEach((m) => (null0[m.nr] = 0));
+  const r1 = KJ.oppfolgingOppgaver({ mal: null0, ids: [] });
+  const r2 = KJ.oppfolgingOppgaver({ mal: null0, ids: [] }, 8);
+  const r3 = KJ.oppfolgingOppgaver({ mal: null0, ids: [] }, 16);
+  sjekk(r1.svake.length === 8 && r1.igjen === 12 && r2.svake[0] === 9 && r2.igjen === 4 && r3.svake.length === 4 && r3.igjen === 0, 'oppfølging: høyst 8 mål per runde, resten i neste runde');
+  sjekk(r1.ids.length === 16, 'oppfølging: 2 oppgaver per mål når mange mål er svake');
+  console.log('  oppfølgingen kontrollert');
+}
+
 console.log('\nStrukturtegninger');
 Object.keys(KJ.STRUKTURER).forEach((id) => {
   const S = KJ.STRUKTURER[id];

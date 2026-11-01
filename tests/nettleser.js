@@ -547,6 +547,38 @@ const logg = (ok, msg) => {
   logg(malRes.rader >= 10 && Object.keys(malRes.lagret).length === malRes.rader, 'resultat per læringsmål vises og lagres (' + malRes.rader + ' mål)');
   logg(/Øv mer på|Ingen mål under/.test(malRes.ovmer) && /^#\/ov/.test(malRes.lenke), 'resultatsiden viser hvilke mål du bør øve mer på (' + malRes.lenke + ')');
 
+  // Oppfølging: nye oppgaver fra målene som gikk dårlig
+  {
+    const h = await page.evaluate(() => KJ.store.prover()[0]);
+    const href = await page.locator('[data-oppfolging] a').getAttribute('href');
+    logg(Array.isArray(h.ids) && h.ids.length === 10 && href === '#/ov?prove=' + h.id, 'resultatsiden tilbyr nye oppgaver fra de svake målene (' + href + ')');
+    await page.locator('[data-oppfolging] a').click();
+    await page.waitForSelector('[data-okt] .qcard');
+    const okt = await page.evaluate((id) => JSON.parse(sessionStorage.getItem('kjemi1-oppfolging-' + id)), h.id);
+    const svakeMal = Object.keys(h.mal).map(Number).filter((nr) => h.mal[nr] < 60);
+    logg(okt.ids.length > 0 && okt.ids.every((id) => !h.ids.includes(id)), 'oppfølgingen har ' + okt.ids.length + ' nye oppgaver, ingen fra prøven');
+    logg(okt.svake.every((nr) => svakeMal.includes(nr)) && okt.ids.every((id) => oppgaver.find((q) => q.id === id).mal.some((nr) => okt.svake.includes(nr))), 'alle oppgavene hører til mål under 60 % (mål ' + okt.svake.join(', ') + ')');
+    const forste = oppgaver.find((q) => q.id === okt.ids[0]);
+    await fyllRiktig(forste);
+    await page.locator('.qcard [data-a="sjekk"]').click();
+    if ((await page.locator('.qcard .checklist input').count()) > 0) {
+      const bokser = page.locator('.qcard .checklist input');
+      for (let i = 0; i < (await bokser.count()); i++) await bokser.nth(i).check();
+      await page.locator('.qcard [data-a="vurder"]').click();
+    }
+    logg((await page.locator('[data-okt] .qnav button.ok').count()) === 1, 'riktig svar markeres i oppgavelisten (' + forste.id + ')');
+    logg((await page.locator('.nav-top a').count()) === 6 && (await page.locator('[data-okt] .qnav a').count()) === 0, 'menyen tegnes ikke inn i oppgavelisten');
+    await page.locator('[data-a="oppsummer"]').click();
+    const sum = await page.evaluate(() => ({ rader: document.querySelectorAll('[data-sum] .malres-rad').length, skjult: getComputedStyle(document.querySelector('[data-okt]')).display === 'none' }));
+    logg(sum.rader === okt.svake.length && sum.skjult, 'oppsummeringen viser resultat per mål');
+    await skjerm('07b-oppfolging');
+    await page.locator('[data-sum] a[href^="#/prove?mal="]').click();
+    await page.waitForSelector('[data-tema]');
+    const valgt = await page.evaluate(() => [...document.querySelectorAll('[data-tema] button[aria-pressed="true"]')].map((b) => +b.dataset.id));
+    logg(valgt.join() === okt.svake.slice().sort((a, b) => a - b).join(), '«Ny prøve på disse målene» velger målene på forhånd');
+    logg((await page.locator('.hist a[href="#/ov?prove=' + h.id + '"]').count()) === 1, 'tidligere prøver har lenke til oppfølgingen');
+  }
+
   /* ---------- Smart øving, øvingsplan og «Kvelden før» ---------- */
   console.log('\nSmart øving, øvingsplan og «Kvelden før»');
   const vekt = await page.evaluate(() => {

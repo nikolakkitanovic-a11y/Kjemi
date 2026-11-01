@@ -112,20 +112,25 @@
     return { poeng: Math.round(poeng * 10) / 10, maks, prosent, karakter: karakter(prosent), rader, venter };
   }
 
-  KJ.views.exam = function (main) {
+  KJ.views.exam = function (main, params) {
     KJ.settTittel('Prøve');
     let rydd = null;
     const ferdig = () => {
       if (rydd) rydd();
       rydd = null;
     };
-    oppsett(main, (fn) => (rydd = fn));
+    oppsett(main, (fn) => (rydd = fn), params);
     return ferdig;
   };
 
   /* ---------- Oppsett ---------- */
-  function oppsett(main, settRydd) {
-    const innst = { mal: KJ.MAL.map((m) => m.nr), antall: 20, niva: 'blandet', tid: 'auto', forklaring: true };
+  function oppsett(main, settRydd, params) {
+    // #/prove?mal=6,9 velger bare disse målene (brukes fra oppfølgingen etter en prøve).
+    const forvalg = String((params && params.get('mal')) || '')
+      .split(',')
+      .map((x) => parseInt(x, 10))
+      .filter((nr) => KJ.malInfo(nr));
+    const innst = { mal: forvalg.length ? forvalg : KJ.MAL.map((m) => m.nr), antall: forvalg.length ? 10 : 20, niva: 'blandet', tid: 'auto', forklaring: true };
     let aktiv = S.aktivProve();
     if (aktiv) {
       // Oppgaver som er fjernet fra datafilene, tas ut av en påbegynt prøve.
@@ -154,11 +159,11 @@
       KJ.MAL.map((m) => {
         const modul = KJ.malModul(m.nr);
         const sv = S.selv(m.nr);
-        return '<button type="button" class="chip chip-mal' + (sv ? ' lys-' + sv.verdi : '') + '" aria-pressed="true" data-id="' + m.nr + '" title="' + esc(m.tekst) + '" style="--tc:' + (modul ? modul.farge : 'var(--ink-3)') + '"><span class="dot"></span>' + m.nr + ' ' + esc(m.kort) + '</button>';
+        return '<button type="button" class="chip chip-mal' + (sv ? ' lys-' + sv.verdi : '') + '" aria-pressed="' + innst.mal.includes(m.nr) + '" data-id="' + m.nr + '" title="' + esc(m.tekst) + '" style="--tc:' + (modul ? modul.farge : 'var(--ink-3)') + '"><span class="dot"></span>' + m.nr + ' ' + esc(m.kort) + '</button>';
       }).join('') +
       '</div><div class="btn-row"><button type="button" class="btn btn-quiet btn-small" data-a="alle">Alle mål</button><button type="button" class="btn btn-quiet btn-small" data-a="svake">Røde og gule</button><button type="button" class="btn btn-quiet btn-small" data-a="ingen">Fjern alle</button></div></div>' +
       '<div class="form-block"><h3>Antall oppgaver</h3><div class="seg" role="group" aria-label="Antall oppgaver" data-antall>' +
-      [10, 20, 30, 40].map((n) => '<button type="button" data-v="' + n + '" aria-pressed="' + (n === 20) + '">' + n + '</button>').join('') +
+      [10, 20, 30, 40].map((n) => '<button type="button" data-v="' + n + '" aria-pressed="' + (n === innst.antall) + '">' + n + '</button>').join('') +
       '</div></div>' +
       '<div class="form-block"><h3>Nivå</h3><div class="seg" role="group" aria-label="Nivå" data-niva>' +
       [['blandet', 'Blandet'], ['mh', 'Middels og høy'], ['h', 'Bare høy']].map(([v, n]) => '<button type="button" data-v="' + v + '" aria-pressed="' + (v === 'blandet') + '">' + n + '</button>').join('') +
@@ -172,7 +177,16 @@
       '<aside class="panel"><h3 style="margin-bottom:10px">Tidligere prøver</h3>' +
       (hist.length
         ? '<ul class="hist">' +
-          hist.map((h) => '<li><span>' + new Date(h.dato).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' }) + ' · ' + h.antall + ' oppg.</span><span><b>' + h.prosent + ' %</b> · karakter ' + h.karakter + '</span></li>').join('') +
+          hist
+            .map((h) => {
+              const svake = h.mal ? Object.keys(h.mal).filter((nr) => h.mal[nr] < 60).length : 0;
+              return (
+                '<li><span>' + new Date(h.dato).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' }) + ' · ' + h.antall + ' oppg.</span><span><b>' + h.prosent + ' %</b> · karakter ' + h.karakter + '</span>' +
+                (svake ? '<a class="hist-ov" href="#/ov?prove=' + h.id + '">' + KJ.icon('zap', 14) + 'Nye oppgaver i ' + svake + ' svake mål</a>' : '') +
+                '</li>'
+              );
+            })
+            .join('') +
           '</ul>'
         : '<p class="muted">Ingen prøver ennå. Resultatene dine dukker opp her.</p>') +
       '<p class="form-hint" style="margin-top:14px">Poeng: grunnleggende 1, middels 2, høy måloppnåelse 3. Delvis riktige svar gir delpoeng. Den veiledende karakteren bruker en vanlig skala (90 % = 6, 75 % = 5, 60 % = 4, 40 % = 3, 20 % = 2); skolen din kan ha en annen.</p>' +
@@ -423,14 +437,15 @@
       Object.keys(pm).forEach((nr) => (ut[nr] = Math.round((100 * pm[nr].p) / pm[nr].m)));
       return ut;
     };
-    S.lagreResultat({ id: P.id, dato: Date.now(), poeng: R.poeng, maks: R.maks, prosent: R.prosent, karakter: R.karakter, antall: P.ids.length, tid: brukt, mal: malProsent(perMal(R.rader)) });
+    S.lagreResultat({ id: P.id, dato: Date.now(), poeng: R.poeng, maks: R.maks, prosent: R.prosent, karakter: R.karakter, antall: P.ids.length, tid: brukt, mal: malProsent(perMal(R.rader)), ids: P.ids.slice() });
 
     main.innerHTML =
       '<div class="view"><section class="container">' +
       '<div class="result-hero"><div><p class="eyebrow" style="color:#9C998F">Resultat</p><div class="result-score" data-score></div><div class="result-grade" data-grade></div>' +
       '<p style="margin:10px 0 0;color:#B9B6AF;font-size:.9rem">' + P.ids.length + ' oppgaver · brukt ' + KJ.tid(brukt) + ' av ' + KJ.tid(P.varighet) + '</p><p data-venter style="margin:6px 0 0;color:#F2C14E;font-size:.9rem"></p></div>' +
       '<div class="ovmer" data-ovmer></div></div>' +
-      '<div class="btn-row" style="margin-top:16px"><a class="btn btn-primary" href="#/ov" data-a="ovsvake">' + KJ.icon('zap', 18) + 'Øv på de svake målene</a><a class="btn btn-ghost" href="#/prove" data-a="ny">' + KJ.icon('rotate', 18) + 'Ny prøve</a><a class="btn btn-ghost" href="#/feilbank">' + KJ.icon('target', 18) + 'Feilbanken</a></div>' +
+      '<div class="oppfolging" data-oppfolging></div>' +
+      '<div class="btn-row" style="margin-top:16px"><a class="btn btn-primary" href="#/ov?prove=' + P.id + '" data-a="ovsvake">' + KJ.icon('zap', 18) + 'Øv på nye oppgaver</a><a class="btn btn-ghost" href="#/prove" data-a="ny">' + KJ.icon('rotate', 18) + 'Ny prøve</a><a class="btn btn-ghost" href="#/feilbank">' + KJ.icon('target', 18) + 'Feilbanken</a></div>' +
       '<div class="section-head" style="margin-top:32px"><div><h2>Resultat per læringsmål</h2><p>Under 60 % betyr at du bør øve mer på målet. Selvvurderingen på oversikten er oppdatert.</p></div></div>' +
       '<div class="malres" data-malres></div>' +
       '<div class="section-head" style="margin-top:32px"><div><h2>Gjennomgang</h2><p>Åpne en oppgave for å se svaret ditt, fasit og løsningsforslag.</p></div></div>' +
@@ -466,11 +481,19 @@
       };
       main.querySelector('[data-malres]').innerHTML = nrs.map(rad).join('');
       main.querySelector('[data-ovmer]').innerHTML = svake.length
-        ? '<h3>Øv mer på</h3><ul>' + svake.slice(0, 6).map((nr) => '<li><a href="#/ov?mal=' + nr + '"><b>Mål ' + nr + '</b> ' + esc(KJ.malInfo(nr).kort) + '<span>' + Math.round(100 * andel(nr)) + ' %</span></a></li>').join('') + '</ul>' + (svake.length > 6 ? '<p>+ ' + (svake.length - 6) + ' mål til (se listen under)</p>' : '')
+        ? '<h3>Øv mer på</h3><ul>' + svake.slice(0, 6).map((nr) => '<li><a href="#/ov?prove=' + P.id + '"><b>Mål ' + nr + '</b> ' + esc(KJ.malInfo(nr).kort) + '<span>' + Math.round(100 * andel(nr)) + ' %</span></a></li>').join('') + '</ul>' + (svake.length > 6 ? '<p>+ ' + (svake.length - 6) + ' mål til (se listen under)</p>' : '')
         : '<h3>Ingen mål under 60 %</h3><p>Bra! Ta en ny prøve på middels og høyt nivå, eller les «Kvelden før»-arket.</p>';
+      const ikkeFullt = nrs.filter((nr) => andel(nr) < 1).length;
+      const u = KJ.oppfolgingOppgaver({ mal: Object.fromEntries(nrs.map((nr) => [nr, Math.round(100 * andel(nr))])), ids: P.ids });
       const lenke = main.querySelector('[data-a="ovsvake"]');
-      lenke.href = svake.length ? '#/ov?mal=' + svake.join(',') : '#/ov';
-      lenke.lastChild.textContent = svake.length ? 'Øv på de svake målene' : 'Smart øving';
+      lenke.hidden = !ikkeFullt;
+      lenke.lastChild.textContent = svake.length ? 'Øv på nye oppgaver i de svake målene' : 'Øv på nye oppgaver i de svakeste målene';
+      main.querySelector('[data-oppfolging]').innerHTML = ikkeFullt
+        ? '<div><h3>' + KJ.icon('zap', 18) + (svake.length ? 'Neste steg: nye oppgaver der det gikk dårlig' : 'Neste steg: nye oppgaver i de svakeste målene') + '</h3>' +
+          '<p>' + u.ids.length + ' nye oppgaver fra ' + (svake.length ? (u.igjen ? 'de ' + u.svake.length + ' svakeste av ' + svake.length + ' mål under 60 %' : svake.length + ' mål under 60 %') : 'de ' + u.svake.length + ' svakeste målene') + ' (mål ' + u.svake.join(', ') + ').' + (u.igjen ? ' Resten tar du i neste runde.' : '') + ' Ingen av dem var med på prøven. Du får fasit og forklaring etter hvert svar.</p></div>' +
+          '<a class="btn btn-primary" href="#/ov?prove=' + P.id + '">Start ' + KJ.icon('arrow', 18) + '</a>'
+        : '';
+      main.querySelector('[data-oppfolging]').hidden = !ikkeFullt;
     }
 
     oppdaterTopp();
