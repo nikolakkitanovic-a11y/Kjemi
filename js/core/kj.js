@@ -87,5 +87,8 @@
     sortering: 'Sortering',
     konfig: 'Elektronkonfigurasjon',
     forklaring: 'Forklaring',
+    salt: 'Saltbygger',
+    orbital: 'Orbitaldiagram',
+    gen: 'Tilfeldig',
   };
 })();

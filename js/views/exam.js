@@ -39,7 +39,7 @@
     let maks = 0;
     let venter = 0;
     const rader = P.ids.map((id) => {
-      const q = KJ.oppgave(id);
+      const q = (P.gen && P.gen[id]) || KJ.oppgave(id);
       const p = KJ.NIVA[q.niva].poeng;
       maks += p;
       let res;
@@ -219,8 +219,10 @@
     function hentKort(i) {
       const id = P.ids[i];
       if (!kort.has(id)) {
+        P.gen = P.gen || {};
         const k = new KJ.Oppgavekort(KJ.oppgave(id), {
           modus: 'prove',
+          instans: P.gen[id] || null,
           nummer: i + 1,
           totalt: N,
           visTema: true,
@@ -231,6 +233,10 @@
             tegnNav();
           },
         });
+        if (k.spec) {
+          P.gen[id] = k.q;
+          S.settAktivProve(P);
+        }
         if (P.svar[id] != null) k.settSvar(P.svar[id]);
         kort.set(id, k);
       }

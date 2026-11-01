@@ -123,6 +123,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
       alternativer: ['Ionebinding', 'Upolar kovalent binding', 'Metallbinding', 'Hydrogenbinding'],
       svar: 0,
       hint: 'Natrium er et metall, klor er et ikke-metall.',
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-03',
@@ -143,6 +144,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
         ['Messing (Cu + Zn)', 2],
       ],
       hint: 'Metall + ikke-metall → ionebinding. Ikke-metall + ikke-metall → kovalent. Metall + metall → metallbinding.',
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-06',
@@ -156,6 +158,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
         ['Polar kovalent binding', 'elektronparet er forskjøvet mot det mest elektronegative atomet'],
         ['Metallbinding', 'kationer i en sjø av delokaliserte elektroner'],
       ],
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sv-01',
@@ -171,6 +174,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
       ],
       svar: 0,
       hint: '«Inter» betyr «mellom».',
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-02',
@@ -186,6 +190,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
       ],
       svar: 0,
       hint: 'Vanndamp er fortsatt {{H2O}}.',
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-03',
@@ -199,6 +204,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
         ['Hydrogenbinding', 'H bundet til N, O eller F mot et ledig elektronpar'],
         ['Ion-dipol-binding', 'et ion og et polart molekyl'],
       ],
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-04',
@@ -208,6 +214,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
       sporsmal: 'Hvilken type kraft finnes mellom **alle** molekyler?',
       alternativer: ['London-krefter', 'Dipol-dipol-krefter', 'Hydrogenbindinger', 'Ion-dipol-krefter'],
       svar: 0,
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-05',
@@ -217,6 +224,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
       sporsmal: 'Fyll inn.',
       tekst: 'London-krefter og dipol-dipol-krefter kalles samlet for ___-krefter.',
       svar: [['van der Waals', 'van der waals', 'van der Waalske', 'vanderwaals', 'van-der-waals']],
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-06',
@@ -227,6 +235,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
       alternativer: ['{{NH3}}', '{{CH4}}', '{{H2S}}', '{{HCl}}'],
       svar: 0,
       hint: 'H må være bundet til N, O eller F.',
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-08',
@@ -241,6 +250,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
         'Atomene danner kovalente bindinger',
       ],
       svar: 0,
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-09',
@@ -250,6 +260,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
       sporsmal: 'Fyll inn.',
       tekst: 'Vannmolekyler som er bundet til ionene i en saltkrystall, kalles ___.',
       svar: [['krystallvann']],
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-10',
@@ -271,6 +282,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
         ['{{S8}}', 0],
       ],
       hint: 'Er molekylet en dipol? Er H bundet til N, O eller F?',
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-11',
@@ -283,6 +295,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
       elementer: ['{{F2}}', '{{Cl2}}', '{{Br2}}', '{{I2}}'],
       hint: 'Alle er upolare. Hva skiller dem?',
       forklaring: 'Flere elektroner nedover gir sterkere London-krefter: {{F2}} (−188 °C) < {{Cl2}} (−34 °C) < {{Br2}} (59 °C) < {{I2}} (184 °C).',
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-12',
@@ -297,6 +310,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
         'HCl er upolart',
       ],
       svar: 0,
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-14',
@@ -308,6 +322,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
       svar: 3,
       stokk: false,
       hint: 'Alle er upolare. Størst molekyl gir sterkest London-krefter.',
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-15',
@@ -317,6 +332,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
       sporsmal: 'Hvilken type binding dannes mellom {{Na+}} og vannmolekylene når NaCl løses i vann?',
       alternativer: ['Ion-dipol-binding', 'Hydrogenbinding', 'Kovalent binding', 'London-krefter'],
       svar: 0,
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-16',
@@ -332,6 +348,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
       ],
       svar: 0,
       hint: 'Molekylene har like mange elektroner. Hva er forskjellig?',
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-17',
@@ -346,6 +363,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
         'O–H-bindingene må brytes når vann koker',
       ],
       svar: 0,
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-20',
@@ -360,6 +378,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
         'H₂S har sterkere London-krefter, men det veier ikke opp for hydrogenbindingene',
         'Det kreves mer energi for å bryte hydrogenbindingene → høyere kokepunkt',
       ],
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-22',
@@ -374,6 +393,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
         'Flere elektroner / større elektronsky er lettere å polarisere',
         'Sterkere London-krefter gir høyere kokepunkt nedover i gruppen',
       ],
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-24',
@@ -388,6 +408,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
         'Is har ingen hydrogenbindinger',
       ],
       svar: 0,
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-26',
@@ -399,6 +420,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
       svar: 0,
       hint: 'Hvor mange hydrogenbindinger kan hvert molekyl være med i?',
       forklaring: 'Kokepunkter: {{H2O}} 100 °C, HF 20 °C, {{NH3}} −33 °C, {{CH4}} −161 °C. Hvert vannmolekyl har to H-atomer og to ledige elektronpar og kan derfor delta i opptil fire hydrogenbindinger.',
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-27',
@@ -420,6 +442,7 @@ Typisk styrke: London (små molekyler) < dipol-dipol < hydrogenbinding < ion-dip
       ],
       hint: 'Se etter H-atomer som er bundet direkte til N, O eller F.',
       forklaring: 'I {{CH3F}} og {{CH3OCH3}} er alle H-atomene bundet til C. Da kan ikke molekylene danne hydrogenbindinger seg imellom.',
+      modul: 'svake-bindinger',
     },
   ],
   flashcards: [

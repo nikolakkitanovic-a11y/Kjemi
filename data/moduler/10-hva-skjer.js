@@ -93,6 +93,7 @@ Vurder også hvor stor den upolare delen av molekylet er, og om molekylet blir s
       svar: [0, 1, 4],
       hint: 'Vann er polart. Ioner og molekyler med OH-grupper løses godt.',
       forklaring: 'NaCl (ion-dipol), etanol og glukose (hydrogenbindinger via OH-grupper) løses godt. Heksan, jod og olje er upolare.',
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-19',
@@ -110,6 +111,7 @@ Vurder også hvor stor den upolare delen av molekylet er, og om molekylet blir s
         ['{{C6H12O6}}', 0],
         ['{{CH4}}', 1],
       ],
+      modul: 'svake-bindinger',
     },
     {
       id: 'hs-03',
@@ -196,6 +198,7 @@ Vurder også hvor stor den upolare delen av molekylet er, og om molekylet blir s
         'Dimetyleter er et lineært molekyl',
       ],
       svar: 0,
+      modul: 'svake-bindinger',
     },
     {
       id: 'sv-25',
@@ -208,6 +211,7 @@ Vurder også hvor stor den upolare delen av molekylet er, og om molekylet blir s
       elementer: ['{{C6H13OH}}', '{{C5H11OH}}', '{{C4H9OH}}', '{{C2H5OH}}'],
       hint: 'OH-gruppen er hydrofil, karbonkjeden er hydrofob.',
       forklaring: 'Jo lengre den upolare karbonkjeden er, desto mindre del av molekylet kan danne hydrogenbindinger med vann. Etanol er blandbar med vann i alle forhold.',
+      modul: 'svake-bindinger',
     },
     {
       id: 'hs-07',

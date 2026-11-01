@@ -98,6 +98,7 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
         'De består av molekyler',
       ],
       svar: 0,
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sv-07',
@@ -112,6 +113,7 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
         'Stoffer med lik masse løses i hverandre',
       ],
       svar: 0,
+      modul: 'svake-bindinger',
     },
     {
       id: 'eg-01',
@@ -280,6 +282,7 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
         'Ionene i MgO er mindre, så avstanden er kortere',
         'Sterkere tiltrekning krever mer energi og gir høyere smeltepunkt',
       ],
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-22',
@@ -293,6 +296,7 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
         'I fast form sitter ionene fast i gitteret',
         'Smeltet eller løst kan ionene bevege seg fritt',
       ],
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-24',
@@ -307,6 +311,7 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
         'Metallbinding mellom karbonatomene',
       ],
       svar: 0,
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sv-21',
@@ -321,6 +326,7 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
         'Det dannes ion-dipol-bindinger',
         'Ionene rives ut av gitteret og omgis av vannmolekyler (hydratiseres)',
       ],
+      modul: 'svake-bindinger',
     },
     {
       id: 'eg-11',

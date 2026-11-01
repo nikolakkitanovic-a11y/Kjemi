@@ -70,6 +70,7 @@ Enslige, uparede elektroner gir **radikaler**, som er svært reaktive og lite st
         'En svak kraft mellom molekyler',
       ],
       svar: 0,
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-05',
@@ -81,6 +82,7 @@ Enslige, uparede elektroner gir **radikaler**, som er svært reaktive og lite st
       svar: 1,
       stokk: false,
       hint: 'En dobbeltbinding er to delte elektronpar.',
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-13',
@@ -97,6 +99,7 @@ Enslige, uparede elektroner gir **radikaler**, som er svært reaktive og lite st
         'Tre elektroner danner tre bindinger med H.',
         'De to siste utgjør **ett** ledig elektronpar.',
       ],
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-14',
@@ -109,6 +112,7 @@ Enslige, uparede elektroner gir **radikaler**, som er svært reaktive og lite st
       enhet: null,
       hint: 'O har 6 valenselektroner, og to av dem brukes i bindinger.',
       steg: ['O har 6 valenselektroner.', 'To brukes i bindingene til H.', 'De fire som er igjen gir **to** ledige par.'],
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-15',
@@ -119,6 +123,7 @@ Enslige, uparede elektroner gir **radikaler**, som er svært reaktive og lite st
       alternativer: ['Lineær', 'Vinklet', 'Trigonal pyramide', 'Tetraedrisk'],
       svar: 1,
       hint: 'O har to bindende og to ledige elektronpar.',
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-16',
@@ -134,6 +139,7 @@ Enslige, uparede elektroner gir **radikaler**, som er svært reaktive og lite st
         ['{{BF3}}', 'trigonal plan'],
       ],
       hint: 'Tell bindende og ledige elektronpar rundt sentralatomet.',
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-17',
@@ -145,6 +151,7 @@ Enslige, uparede elektroner gir **radikaler**, som er svært reaktive og lite st
       svar: 2,
       stokk: false,
       hint: 'Hvert N-atom har 5 valenselektroner og trenger 3 til for å få oktett.',
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-26',
@@ -161,6 +168,7 @@ Enslige, uparede elektroner gir **radikaler**, som er svært reaktive og lite st
         'Totalt: $4 + 2 \\cdot 6 = 16$',
         'De fordeles som to dobbeltbindinger (8 elektroner) og to ledige par på hvert O (8 elektroner).',
       ],
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-28',
@@ -177,6 +185,7 @@ Enslige, uparede elektroner gir **radikaler**, som er svært reaktive og lite st
         'Ladning +1: $9 - 1 = 8$ valenselektroner',
         'De danner fire N–H-bindinger (tetraedrisk ion).',
       ],
+      modul: 'sterke-bindinger',
     },
   ],
   flashcards: [

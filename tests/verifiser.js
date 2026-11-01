@@ -45,6 +45,7 @@ const sjekk = (betingelse, msg) => (betingelse ? ok++ : feilet(msg));
 
 console.log('Moduler: ' + KJ.temaer.length + ', læringsmål: ' + KJ.MAL.length);
 const ider = new Set();
+const saltFormler = [];
 const typer = {};
 let antKort = 0;
 for (const t of KJ.temaer) {
@@ -60,6 +61,8 @@ for (const t of KJ.temaer) {
     sjekk(Array.isArray(q.mal) && q.mal.length && q.mal.every((nr) => nr >= 1 && nr <= 20), hvor + ': mangler gyldig læringsmål');
     sjekk(!!KJ.TYPENAVN[q.type], hvor + ': ukjent type ' + q.type);
     typer[q.type] = (typer[q.type] || 0) + 1;
+    const instanser = q.type === 'gen' ? Array.from({ length: 60 }, () => KJ.generer(q)) : [q];
+    for (const q of instanser) {
     try {
       switch (q.type) {
         case 'flervalg': {
@@ -135,10 +138,59 @@ for (const t of KJ.temaer) {
           sjekk(KJ.rett(q, q.par.map((_, i) => i)).riktig, hvor + ': fasit godtas ikke');
           break;
         }
-        case 'rekkefolge':
-          sjekk(KJ.rett(q, q.elementer.map((_, i) => i)).riktig, hvor + ': fasit godtas ikke');
-          sjekk(!KJ.rett(q, q.elementer.map((_, i) => i).reverse()).riktig, hvor + ': omvendt godtas');
+        case 'rekkefolge': {
+          const orden = q.elementer.map((_, i) => i);
+          if (q.begrunnelse) {
+            sjekk(KJ.rett(q, { orden, begr: q.begrunnelse.svar }).riktig, hvor + ': fasit med begrunnelse godtas ikke');
+            sjekk(!KJ.rett(q, { orden, begr: (q.begrunnelse.svar + 1) % q.begrunnelse.alternativer.length }).riktig, hvor + ': feil begrunnelse godtas');
+            sjekk(!KJ.rett(q, { orden: orden.slice().reverse(), begr: q.begrunnelse.svar }).riktig, hvor + ': omvendt godtas');
+          } else {
+            sjekk(KJ.rett(q, orden).riktig, hvor + ': fasit godtas ikke');
+            sjekk(!KJ.rett(q, orden.slice().reverse()).riktig, hvor + ': omvendt godtas');
+          }
           break;
+        }
+        case 'salt': {
+          const b = KJ.byggSalt(q.kation, q.anion);
+          sjekk(b.nk * b.qk + b.na * b.qa === 0, hvor + ': saltet ' + b.formel + ' er ikke nøytralt');
+          sjekk(C.parse(q.kation).ladning > 0 && C.parse(q.anion).ladning < 0, hvor + ': kation/anion har feil fortegn');
+          const svar = { nk: b.nk, na: b.na, lk: q.visIoner ? null : String(b.qk) , la: q.visIoner ? null : String(b.qa), formel: b.formel };
+          sjekk(KJ.rett(q, svar).riktig, hvor + ': fasit for ' + q.navn + ' (' + b.formel + ') godtas ikke');
+          sjekk(!KJ.rett(q, Object.assign({}, svar, { nk: b.nk + 1 })).riktig, hvor + ': feil antall godtas');
+          saltFormler.push([hvor, b.formel]);
+          break;
+        }
+        case 'orbital': {
+          const L = KJ.orbitalOppsett(q);
+          const bokser = {};
+          L.rader.forEach((r) => (bokser[r.orb] = KJ.fyllOrbitalRad(r.bokser, r.forventet)));
+          const ascii = (t) => t.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, (m) => m.split('').map((c) => '⁰¹²³⁴⁵⁶⁷⁸⁹'.indexOf(c)).join(''));
+          const svar = { bokser, full: ascii(C.konfigTekst(L.k, false)), edel: ascii(C.konfigTekst(L.k, true)) };
+          sjekk(KJ.rett(q, svar).riktig, hvor + ': riktig orbitaldiagram godtas ikke');
+          sjekk(C.sumE(L.k) === L.n && L.rader.reduce((a, r) => a + r.forventet, 0) + L.kjerneE === L.n, hvor + ': feil antall elektroner i oppsettet');
+          // Hund-brudd: par i en orbital mens en annen er tom
+          const r = L.rader.find((x) => x.bokser > 1 && x.forventet >= 2 && x.forventet < x.bokser);
+          if (r) {
+            const feil = JSON.parse(JSON.stringify(bokser));
+            feil[r.orb] = KJ.fyllOrbitalRad(r.bokser, 0);
+            feil[r.orb][0] = 'ud';
+            for (let i = 2; i < r.forventet; i++) feil[r.orb][i - 1] = 'u';
+            const res = KJ.rett(q, Object.assign({}, svar, { bokser: feil }));
+            sjekk(!res.riktig && /Hund/.test(res.melding), hvor + ': brudd på Hunds regel oppdages ikke');
+          }
+          // Pauli-brudd
+          const rp = L.rader.find((x) => x.forventet >= 2);
+          if (rp) {
+            const feil = JSON.parse(JSON.stringify(bokser));
+            const j = feil[rp.orb].indexOf('ud');
+            if (j >= 0) {
+              feil[rp.orb][j] = 'uu';
+              const res = KJ.rett(q, Object.assign({}, svar, { bokser: feil }));
+              sjekk(!res.riktig && /Pauli/.test(res.melding), hvor + ': brudd på Paulis prinsipp oppdages ikke');
+            }
+          }
+          break;
+        }
         case 'sortering':
           sjekk(q.elementer.every((e) => e[1] >= 0 && e[1] < q.kategorier.length), hvor + ': kategori utenfor');
           sjekk(KJ.rett(q, q.elementer.map((e) => e[1])).riktig, hvor + ': fasit godtas ikke');
@@ -163,6 +215,7 @@ for (const t of KJ.temaer) {
       }
     } catch (e) {
       feilet(hvor + ': unntak ' + e.message);
+    }
     }
   }
 }
@@ -227,7 +280,11 @@ KJ.alleOppgaver().forEach((q) => {
     sjekk(treff && treff.every((t) => t.sum === 0), q.id + ': saltformel ' + f + ' kan ikke bekreftes som nøytral');
   });
 });
-console.log('  ' + antSalt + ' saltformler kontrollert');
+saltFormler.forEach(([hvor, f]) => {
+  antSalt++;
+  sjekk(SALT[C.parse(f).kanon] && SALT[C.parse(f).kanon].every((t) => t.sum === 0), hvor + ': saltbyggerformel ' + f + ' kan ikke bekreftes som nøytral');
+});
+console.log('  ' + antSalt + ' saltformler kontrollert (inkludert saltbyggeren)');
 
 /* ---------- Likninger i tekst ---------- */
 console.log('\nLikninger i tekst');
@@ -256,6 +313,18 @@ tekster.forEach((t) => {
   }
 });
 console.log('  ' + antLikn + ' likninger i tekst kontrollert');
+
+/* ---------- Orbitaldiagram: innskuddsmetaller ---------- */
+{
+  const q = { type: 'orbital', grunnstoff: 'Fe', ladning: 2 };
+  const L = KJ.orbitalOppsett(q);
+  const b = {};
+  L.rader.forEach((r) => (b[r.orb] = KJ.fyllOrbitalRad(r.bokser, 0)));
+  b['4s'] = ['ud'];
+  b['3d'] = KJ.fyllOrbitalRad(5, 4);
+  const res = KJ.rett(q, { bokser: b });
+  sjekk(!res.riktig && /4s-elektronene først/.test(res.melding), 'Fe²⁺ med 4s² 3d⁴ gir melding om at 4s avgis først');
+}
 
 /* ---------- Kjemimotoren ---------- */
 console.log('\nKjemimotor');

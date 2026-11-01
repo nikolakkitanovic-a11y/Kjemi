@@ -90,6 +90,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       produkter: ['H2O'],
       svar: [2, 1, 2],
       hint: 'Begynn med oksygen: det er 2 O til venstre.',
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-02',
@@ -100,6 +101,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       produkter: ['NH3'],
       svar: [1, 3, 2],
       hint: 'Det er 2 N til venstre. Hvor mange {{NH3}} trengs?',
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-03',
@@ -109,6 +111,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       reaktanter: ['Na', 'Cl2'],
       produkter: ['NaCl'],
       svar: [2, 1, 2],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-04',
@@ -118,6 +121,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       reaktanter: ['Mg', 'O2'],
       produkter: ['MgO'],
       svar: [2, 1, 2],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-05',
@@ -134,6 +138,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
         'O til høyre: $2 + 2 = 4$ → $2\\,\\ce{O2}$',
         '{{CH4 + 2O2 -> CO2 + 2H2O}}',
       ],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-06',
@@ -143,6 +148,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       sporsmal: 'Hva kalles tallet 2 i $2\\,\\ce{H2O}$ (tallet foran formelen)?',
       alternativer: ['Koeffisient', 'Indeks', 'Ladning', 'Tilstandssymbol'],
       svar: 0,
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-08',
@@ -157,6 +163,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
         'Fordi oksygen ikke kan ha indeks 2',
       ],
       svar: 0,
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-09',
@@ -170,6 +177,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
         'O: 2 til venstre og 3 til høyre. Minste felles multiplum er 6.',
         'Da trengs $2\\,\\ce{Al2O3}$ og $3\\,\\ce{O2}$.',
       ],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-10',
@@ -180,6 +188,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       produkter: ['Al(OH)3', 'NaCl'],
       svar: [1, 3, 1, 3],
       hint: 'Hold {{OH}} samlet som én enhet.',
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-11',
@@ -196,6 +205,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
         'O til høyre: $6 + 4 = 10$ → $5\\,\\ce{O2}$',
         '{{C3H8 + 5O2 -> 3CO2 + 4H2O}}',
       ],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-12',
@@ -212,6 +222,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
         'O til høyre: $4 + 3 = 7$ → $\\tfrac{7}{2}\\,\\ce{O2}$',
         'Gang med 2: {{2C2H6 + 7O2 -> 4CO2 + 6H2O}}',
       ],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-13',
@@ -228,6 +239,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
         'H til venstre: $6 + 6 = 12$ → $6\\,\\ce{H2O}$',
         '{{2Al(OH)3 + 3H2SO4 -> Al2(SO4)3 + 6H2O}}',
       ],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-14',
@@ -238,6 +250,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       produkter: ['Fe2O3'],
       svar: [4, 3, 2],
       hint: 'O: minste felles multiplum av 2 og 3 er 6.',
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-15',
@@ -248,6 +261,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       produkter: ['KCl', 'O2'],
       svar: [2, 2, 3],
       hint: 'O: 3 til venstre og 2 til høyre.',
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-16',
@@ -257,6 +271,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       reaktanter: ['Zn', 'HCl'],
       produkter: ['ZnCl2', 'H2'],
       svar: [1, 2, 1, 1],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-17',
@@ -267,6 +282,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       produkter: ['Ca(NO3)2', 'H2O'],
       svar: [1, 2, 1, 2],
       hint: 'Hold {{NO3}} samlet.',
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-18',
@@ -277,6 +293,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       produkter: ['Fe', 'CO2'],
       svar: [1, 3, 2, 3],
       hint: 'Hvert CO tar ett O-atom og blir {{CO2}}.',
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-21',
@@ -287,6 +304,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       produkter: ['CO2', 'H2O'],
       svar: [1, 6, 6, 6],
       hint: 'Husk at glukose selv inneholder 6 O-atomer.',
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-22',
@@ -296,6 +314,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       reaktanter: ['Na2CO3', 'HCl'],
       produkter: ['NaCl', 'H2O', 'CO2'],
       svar: [1, 2, 2, 1, 1],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-23',
@@ -308,6 +327,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       enhet: null,
       hint: 'Gang indeksene med koeffisienten, og husk parentesene.',
       steg: ['Venstre: $2 \\cdot 3 + 3 \\cdot 4 = 6 + 12 = 18$', 'Høyre: $3 \\cdot 4 + 6 \\cdot 1 = 12 + 6 = 18$'],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-24',
@@ -323,6 +343,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
         'O til høyre: $16 + 9 = 25$ → $\\tfrac{25}{2}\\,\\ce{O2}$',
         'Gang med 2: {{2C8H18 + 25O2 -> 16CO2 + 18H2O}}',
       ],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-25',
@@ -333,6 +354,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       produkter: ['K2SO4', 'Fe(OH)3'],
       svar: [1, 6, 3, 2],
       hint: 'Behandle {{SO4}} og {{OH}} som enheter.',
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-26',
@@ -348,6 +370,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
         'O til høyre: $2 + 3 = 5$ → $\\tfrac{5}{2}\\,\\ce{O2}$',
         'Gang med 2: {{4NH3 + 5O2 -> 4NO + 6H2O}}',
       ],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-27',
@@ -358,6 +381,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       produkter: ['CO2', 'H2O'],
       svar: [1, 3, 2, 3],
       hint: 'Etanol inneholder selv ett O-atom.',
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-28',
@@ -367,6 +391,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       reaktanter: ['Ca3(PO4)2', 'H2SO4'],
       produkter: ['CaSO4', 'H3PO4'],
       svar: [1, 3, 3, 2],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-29',
@@ -378,6 +403,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       svar: [1, 3, 1],
       hint: 'Både atomer og ladning må stemme.',
       steg: ['Fe: 1 = 1', 'OH: 3 til høyre → $3\\,\\ce{OH-}$', 'Ladning: $+3 + 3 \\cdot (-1) = 0$ til venstre, 0 til høyre.'],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-30',
@@ -394,6 +420,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
         'H: 8 → $4\\,\\ce{H2O}$',
         'O-kontroll: venstre $8 \\cdot 3 = 24$, høyre $18 + 2 + 4 = 24$.',
       ],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-31',
@@ -408,6 +435,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
         'Like mange av hvert atom (og samme ladning) på begge sider',
         'Koeffisientene viser forholdet mellom antall partikler',
       ],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-32',
@@ -417,6 +445,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       reaktanter: ['P4', 'O2'],
       produkter: ['P4O10'],
       svar: [1, 5, 1],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-33',
@@ -426,6 +455,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       reaktanter: ['Al', 'CuSO4'],
       produkter: ['Al2(SO4)3', 'Cu'],
       svar: [2, 3, 1, 3],
+      modul: 'reaksjonslikninger',
     },
     {
       id: 'rl-34',
@@ -441,6 +471,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
         'O til høyre: $8 + 5 = 13$ → $\\tfrac{13}{2}\\,\\ce{O2}$',
         'Gang med 2: {{2C4H10 + 13O2 -> 8CO2 + 10H2O}}',
       ],
+      modul: 'reaksjonslikninger',
     },
   ],
   flashcards: [

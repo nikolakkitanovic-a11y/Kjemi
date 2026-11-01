@@ -134,6 +134,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
         ['Anion', 'negativt ladd ion'],
       ],
       hint: 'Kationer er positive og trekkes derfor mot katoden, den negative polen.',
+      modul: 'atomet',
     },
     {
       id: 'at-05',
@@ -150,6 +151,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
       svar: 0,
       hint: 'Iso = lik, topos = sted. Isotoper står på samme plass i periodesystemet.',
       forklaring: 'Isotoper har samme antall protoner (samme grunnstoff), men ulikt antall nøytroner og dermed ulikt nukleontall.',
+      modul: 'atomet',
     },
     {
       id: 'ps-05',
@@ -161,6 +163,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
       svar: 2,
       hint: 'EN øker oppover og mot høyre (utenom edelgassene).',
       forklaring: 'Fluor har EN = 4,0, den høyeste av alle grunnstoffer.',
+      modul: 'periodesystemet',
     },
     {
       id: 'be-01',
@@ -273,6 +276,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
       svar: [0, 2],
       hint: 'Isotoper har samme tall nede (atomnummer), men ulikt tall oppe.',
       forklaring: 'C-14 og N-14 har samme nukleontall, men ulikt atomnummer, så de er ulike grunnstoffer. Det samme gjelder Ar-40 og Ca-40.',
+      modul: 'atomet',
     },
     {
       id: 'ps-11',
@@ -285,6 +289,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
       elementer: ['Cs', 'K', 'Mg', 'C', 'O'],
       hint: 'EN øker oppover og mot høyre. Bruk gjerne periodesystemet under Verktøy.',
       forklaring: 'Cs 0,7 < K 0,8 < Mg 1,2 < C 2,5 < O 3,5.',
+      modul: 'periodesystemet',
     },
     {
       id: 'ps-14',
@@ -300,6 +305,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
       ],
       svar: 0,
       hint: 'Tenk på avstand og skjerming.',
+      modul: 'periodesystemet',
     },
     {
       id: 'ps-15',
@@ -310,6 +316,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
       alternativer: ['Li', 'Na', 'Cs', 'F'],
       svar: 2,
       hint: 'Det er lettest å fjerne et elektron fra et stort atom med ett valenselektron.',
+      modul: 'periodesystemet',
     },
     {
       id: 'be-08',
@@ -406,6 +413,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
         'Kjemiske egenskaper bestemmes av elektronene',
         'Nøytronene påvirker bare massen (og stabiliteten)',
       ],
+      modul: 'atomet',
     },
     {
       id: 'at-22',
@@ -421,6 +429,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
         'Eksempel på molekyl som ikke er forbindelse (O₂, N₂, H₂ …)',
         'Eksempel på forbindelse som ikke er molekyl (NaCl/ioneforbindelse, formelenhet)',
       ],
+      modul: 'atomet',
     },
     {
       id: 'ps-20',
@@ -436,6 +445,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
         'Mer skjerming / svakere tiltrekning',
         'Lavere ioniseringsenergi, så elektronet avgis lettere',
       ],
+      modul: 'periodesystemet',
     },
     {
       id: 'ps-21',
@@ -448,6 +458,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
       stokk: false,
       hint: 'Se etter det store hoppet.',
       forklaring: 'Hoppet kommer etter det andre elektronet. Da begynner vi å fjerne elektroner fra et fullt indre skall. Grunnstoffet har 2 valenselektroner (det er magnesium).',
+      modul: 'periodesystemet',
     },
     {
       id: 'ps-26',
@@ -458,8 +469,18 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
       fra: 'Lavest',
       til: 'Høyest',
       elementer: ['K', 'Na', 'Mg', 'Cl', 'Ar'],
+      begrunnelse: {
+        alternativer: [
+          'Ioniseringsenergien øker bortover (større kjerneladning, mindre atom) og minker nedover (mer skjerming)',
+          'Atomer med flest elektroner har høyest ioniseringsenergi',
+          'Metaller har høyest ioniseringsenergi',
+          'Ioniseringsenergien øker nedover i en gruppe',
+        ],
+        svar: 0,
+      },
       hint: 'Ioniseringsenergien øker mot høyre og oppover.',
       forklaring: 'K (419) < Na (496) < Mg (738) < Cl (1251) < Ar (1521) kJ/mol.',
+      modul: 'periodesystemet',
     },
     {
       id: 'be-13',

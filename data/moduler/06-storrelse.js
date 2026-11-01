@@ -74,6 +74,7 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
       svar: 1,
       hint: 'Radius øker nedover i en gruppe.',
       forklaring: 'K står i periode 4 og har fire skall, ett mer enn de andre.',
+      modul: 'periodesystemet',
     },
     {
       id: 'ps-08',
@@ -85,6 +86,7 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
       svar: 0,
       stokk: false,
       hint: 'Antall protoner øker, men antall skall er det samme.',
+      modul: 'periodesystemet',
     },
     {
       id: 'st-01',
@@ -140,7 +142,17 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
       fra: 'Minst',
       til: 'Størst',
       elementer: ['F', 'O', 'N', 'C', 'Li'],
+      begrunnelse: {
+        alternativer: [
+          'Samme antall skall, men kjerneladningen øker bortover perioden',
+          'Li har flest elektronskall',
+          'F har færrest elektroner',
+          'Skjermingen øker bortover perioden',
+        ],
+        svar: 0,
+      },
       hint: 'Alle står i periode 2. Radius minker mot høyre.',
+      modul: 'periodesystemet',
     },
     {
       id: 'ps-12',
@@ -157,6 +169,7 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
       svar: 0,
       hint: 'Na: 2, 8, 1. Hva skjer når ett elektron fjernes?',
       forklaring: 'Na har skallfordelingen 2, 8, 1. {{Na+}} har 2, 8: ett skall mindre, og de gjenværende elektronene trekkes sterkere inn.',
+      modul: 'periodesystemet',
     },
     {
       id: 'ps-13',
@@ -167,8 +180,18 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
       fra: 'Minst',
       til: 'Størst',
       elementer: ['{{Al^3+}}', '{{Mg^2+}}', '{{Na+}}', '{{F-}}', '{{O^2-}}'],
+      begrunnelse: {
+        alternativer: [
+          'Like mange elektroner (10), men antall protoner øker fra O til Al',
+          '{{O^2-}} har flere elektronskall enn {{Al^3+}}',
+          '{{Al^3+}} har flere elektroner',
+          'Radius bestemmes av antall nøytroner',
+        ],
+        svar: 0,
+      },
       hint: 'Like mange elektroner, men hvor mange protoner trekker på dem?',
       forklaring: 'Al har 13 protoner og trekker hardest på de 10 elektronene, O har bare 8. Derfor er {{Al^3+}} minst og {{O^2-}} størst.',
+      modul: 'periodesystemet',
     },
     {
       id: 'st-05',
@@ -266,6 +289,7 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
         'Skjermingen fra indre elektroner er omtrent uendret',
         'Sterkere tiltrekning trekker elektronene nærmere kjernen',
       ],
+      modul: 'periodesystemet',
     },
     {
       id: 'ps-22',
@@ -280,6 +304,7 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
         'Mer frastøtning mellom elektronene',
         'Svakere tiltrekning per elektron, så elektronskyen blir større',
       ],
+      modul: 'periodesystemet',
     },
     {
       id: 'ps-24',
@@ -297,6 +322,7 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
       svar: [0, 2, 4],
       hint: 'Tenk på hvor de minste atomene er, og hvor de største er.',
       forklaring: 'Ioniseringsenergien **minker** nedover i en gruppe, og metallisk karakter **minker** mot høyre.',
+      modul: 'periodesystemet',
     },
     {
       id: 'st-12',

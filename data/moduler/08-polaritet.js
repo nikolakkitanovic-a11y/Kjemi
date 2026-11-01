@@ -88,6 +88,7 @@ Et molekyl med polare bindinger er et **dipolmolekyl** bare hvis formen er usymm
       abs: 0.001,
       hint: 'Trekk den minste verdien fra den største.',
       steg: ['$\\Delta EN = 3,0 - 2,1 = 0,9$', 'Det er en polar kovalent binding.'],
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-10',
@@ -99,6 +100,7 @@ Et molekyl med polare bindinger er et **dipolmolekyl** bare hvis formen er usymm
       enhet: null,
       abs: 0.001,
       steg: ['$\\Delta EN = 3,5 - 1,2 = 2,3$', '$2,3 > 1,7$, og det er et metall + ikke-metall → ionebinding.'],
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-11',
@@ -110,6 +112,7 @@ Et molekyl med polare bindinger er et **dipolmolekyl** bare hvis formen er usymm
       elementer: [['Cl–Cl', 0], ['C–H', 0], ['O–H', 1], ['N–H', 1], ['C–O', 1], ['Na–F', 2], ['K–Cl', 2], ['H–H', 0]],
       hint: 'EN: H 2,1 · C 2,5 · N 3,0 · O 3,5 · F 4,0 · Na 0,9 · Cl 3,0 · K 0,8',
       forklaring: 'ΔEN: Cl–Cl 0, C–H 0,4, H–H 0 (upolare). O–H 1,4, N–H 0,9, C–O 1,0 (polare). Na–F 3,1, K–Cl 2,2 (ionebinding).',
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-12',
@@ -122,6 +125,7 @@ Et molekyl med polare bindinger er et **dipolmolekyl** bare hvis formen er usymm
       elementer: ['C–H', 'N–H', 'C–O', 'O–H', 'H–F'],
       hint: 'Regn ut ΔEN for hver binding. H 2,1 · C 2,5 · N 3,0 · O 3,5 · F 4,0',
       forklaring: 'C–H 0,4 < N–H 0,9 < C–O 1,0 < O–H 1,4 < H–F 1,9.',
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-18',
@@ -136,6 +140,7 @@ Et molekyl med polare bindinger er et **dipolmolekyl** bare hvis formen er usymm
         'Dobbeltbindinger er alltid upolare',
       ],
       svar: 0,
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-19',
@@ -156,6 +161,7 @@ Et molekyl med polare bindinger er et **dipolmolekyl** bare hvis formen er usymm
       ],
       hint: 'Har molekylet polare bindinger? Og er formen symmetrisk?',
       forklaring: '{{CH3Cl}} er tetraedrisk, men ikke symmetrisk: én binding er C–Cl og tre er C–H. Da opphever ikke dipolene hverandre.',
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-23',
@@ -172,6 +178,7 @@ Et molekyl med polare bindinger er et **dipolmolekyl** bare hvis formen er usymm
       svar: [0, 1],
       hint: 'Sjekk om ΔEN-verdien og bindingstypen stemmer med grensene.',
       forklaring: 'HF er et molekyl av to ikke-metaller, selv om ΔEN er over 1,7. NaH er et salt med {{H-}}-ioner, selv om ΔEN er under 1,7. Regelen er bare en tommelfingerregel.',
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-25',
@@ -186,6 +193,7 @@ Et molekyl med polare bindinger er et **dipolmolekyl** bare hvis formen er usymm
         'BF₃ har ingen ledige par på B → trigonal plan (symmetrisk)',
         'I BF₃ opphever dipolene hverandre, i NH₃ gjør de ikke det',
       ],
+      modul: 'sterke-bindinger',
     },
   ],
   flashcards: [

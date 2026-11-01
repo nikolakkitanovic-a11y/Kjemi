@@ -105,6 +105,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       stokk: false,
       hint: 'Bruk formelen $2n^2$.',
       forklaring: '$2 \\cdot 2^2 = 8$.',
+      modul: 'elektroner',
     },
     {
       id: 'el-02',
@@ -115,6 +116,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       tekst: 'En orbital kan inneholde maksimalt ___ elektroner, og de må ha motsatt ___.',
       svar: [['2', 'to'], ['spinn']],
       hint: 'Pilene i et orbitaldiagram peker opp og ned: ↑↓.',
+      modul: 'elektroner',
     },
     {
       id: 'el-03',
@@ -129,6 +131,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
         ['f', '7 orbitaler, maks 14 elektroner'],
       ],
       hint: 'Antall orbitaler øker med 2 for hvert underskall: 1, 3, 5, 7.',
+      modul: 'elektroner',
     },
     {
       id: 'el-04',
@@ -145,6 +148,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       svar: 0,
       hint: 'Et p-underskall kan ha maks 6 elektroner, og 2p fylles før 3s.',
       forklaring: '11 elektroner: $1s^2$ (2) + $2s^2$ (4) + $2p^6$ (10) + $3s^1$ (11).',
+      modul: 'elektroner',
     },
     {
       id: 'el-05',
@@ -156,6 +160,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       svar: [['2'], ['8'], ['7']],
       hint: 'Fyll K-skallet (2) og L-skallet (8) først.',
       forklaring: '17 = 2 + 8 + 7. Klor har 7 valenselektroner og står i gruppe 17.',
+      modul: 'elektroner',
     },
     {
       id: 'el-08',
@@ -168,6 +173,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       enhet: null,
       hint: 'Skriv skallfordelingen 2, 8, …',
       steg: ['Skallfordeling: K = 2, L = 8, M = 6', 'Det ytterste skallet (M) har 6 elektroner.'],
+      modul: 'elektroner',
     },
     {
       id: 'el-09',
@@ -180,6 +186,31 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       stokk: false,
       hint: '4s har litt lavere energi enn 3d.',
       forklaring: 'Rekkefølgen er … 3s, 3p, **4s**, 3d, 4p …',
+      modul: 'elektroner',
+    },
+    {
+      id: 'or-01',
+      niva: 1,
+      type: 'orbital',
+      mal: [3],
+      grunnstoff: 'N',
+      hint: 'N har 7 elektroner. Bruk Hunds regel på 2p.',
+    },
+    {
+      id: 'or-02',
+      niva: 1,
+      type: 'orbital',
+      mal: [3],
+      grunnstoff: 'O',
+      hint: 'O har 8 elektroner. Det fjerde 2p-elektronet må pares.',
+    },
+    {
+      id: 'or-03',
+      niva: 1,
+      type: 'orbital',
+      mal: [3],
+      grunnstoff: 'C',
+      hint: 'De to 2p-elektronene skal i hver sin orbital med samme spinn.',
     },
     {
       id: 'el-10',
@@ -193,6 +224,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
         'Ca har 20 elektroner. Argon (18) er edelgassen foran.',
         'De to siste elektronene går i 4s: $[\\mathrm{Ar}]\\,4s^2$.',
       ],
+      modul: 'elektroner',
     },
     {
       id: 'el-11',
@@ -206,6 +238,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
         '13 elektroner: $1s^2$ (2), $2s^2$ (4), $2p^6$ (10), $3s^2$ (12), $3p^1$ (13).',
         'Svar: $1s^2\\,2s^2\\,2p^6\\,3s^2\\,3p^1$',
       ],
+      modul: 'elektroner',
     },
     {
       id: 'el-12',
@@ -220,6 +253,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
         '4s tar 2, og resten (6) går i 3d.',
         'Svar: $[\\mathrm{Ar}]\\,4s^2\\,3d^6$',
       ],
+      modul: 'elektroner',
     },
     {
       id: 'el-13',
@@ -233,6 +267,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
         '{{S^2-}} har $16 + 2 = 18$ elektroner.',
         'Konfigurasjon: $1s^2\\,2s^2\\,2p^6\\,3s^2\\,3p^6$ = $[\\mathrm{Ne}]\\,3s^2\\,3p^6$, samme som argon.',
       ],
+      modul: 'elektroner',
     },
     {
       id: 'el-15',
@@ -252,6 +287,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
         'Det fjerde elektronet pares med ett av dem: ↑↓ ↑ ↑',
         'Det gir **2** uparede elektroner.',
       ],
+      modul: 'elektroner',
     },
     {
       id: 'el-16',
@@ -264,6 +300,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       enhet: null,
       hint: 'N: $2p^3$. Bruk Hunds regel.',
       steg: ['N har $2p^3$.', 'Tre elektroner fordeles på tre p-orbitaler: ↑ ↑ ↑', '**3** uparede elektroner.'],
+      modul: 'elektroner',
     },
     {
       id: 'el-17',
@@ -275,6 +312,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       til: 'Fylles sist',
       elementer: ['3p', '4s', '3d', '4p', '5s'],
       hint: 'Husk at 4s fylles før 3d.',
+      modul: 'elektroner',
     },
     {
       id: 'el-19',
@@ -285,6 +323,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       tekst: '4s fylles før 3d fordi 4s har ___ energi enn 3d.',
       svar: [['lavere', 'mindre', 'litt lavere']],
       hint: 'Elektronene fyller alltid de ledige orbitalene med lavest energi først.',
+      modul: 'elektroner',
     },
     {
       id: 'el-20',
@@ -297,6 +336,38 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       enhet: null,
       hint: 'Bruk $2n^2$.',
       steg: ['$2n^2 = 2 \\cdot 4^2 = 32$', 'Det tilsvarer 4s (2) + 4p (6) + 4d (10) + 4f (14) = 32.'],
+      modul: 'elektroner',
+    },
+    { id: 'or-04', niva: 2, type: 'orbital', mal: [3], konfig: true, grunnstoff: 'F' },
+    {
+      id: 'or-05',
+      niva: 2,
+      type: 'orbital',
+      mal: [3],
+      konfig: true,
+      grunnstoff: 'Na',
+      hint: '[Ne] er fylt inn. Hvor går det siste elektronet?',
+    },
+    { id: 'or-06', niva: 2, type: 'orbital', mal: [3], konfig: true, grunnstoff: 'S' },
+    {
+      id: 'or-07',
+      niva: 2,
+      type: 'orbital',
+      mal: [3],
+      konfig: true,
+      grunnstoff: 'P',
+      hint: 'Tre elektroner i 3p: ett i hver orbital.',
+    },
+    { id: 'or-08', niva: 2, type: 'orbital', mal: [3], konfig: true, grunnstoff: 'Ca', hint: '4s fylles før 3d.' },
+    {
+      id: 'or-09',
+      niva: 2,
+      type: 'orbital',
+      mal: [3, 5],
+      konfig: true,
+      grunnstoff: 'Cl',
+      ladning: -1,
+      hint: 'Kloridionet har ett elektron mer enn kloratomet.',
     },
     {
       id: 'el-21',
@@ -311,6 +382,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
         'Et fullt 3d-underskall er mer stabilt, så ett elektron flyttes fra 4s til 3d.',
         'Svar: $[\\mathrm{Ar}]\\,4s^1\\,3d^{10}$',
       ],
+      modul: 'elektroner',
     },
     {
       id: 'el-24',
@@ -326,6 +398,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
         'Nitrogen: $2p^3$ fordelt som ↑ ↑ ↑ i tre p-orbitaler',
         'Nitrogen har tre uparede elektroner',
       ],
+      modul: 'elektroner',
     },
     {
       id: 'el-25',
@@ -344,6 +417,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       stokk: false,
       hint: 'I grunntilstanden er alle lavere underskall fylt før et høyere tas i bruk.',
       forklaring: 'Alternativ B (Ne-atom med et elektron i 3s), D (K-atom med elektron i 3d i stedet for 4s) og E (Be med elektron i 2p) er eksiterte tilstander.',
+      modul: 'elektroner',
     },
     {
       id: 'el-28',
@@ -358,6 +432,34 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
         'Ett elektron flyttes fra 4s til 3d slik at både 4s og 3d blir halvfulle.',
         'Svar: $[\\mathrm{Ar}]\\,4s^1\\,3d^5$',
       ],
+      modul: 'elektroner',
+    },
+    {
+      id: 'or-10',
+      niva: 3,
+      type: 'orbital',
+      mal: [3],
+      konfig: true,
+      grunnstoff: 'Fe',
+      hint: ['Fe har 26 elektroner: [Ar] + 8.', 'To i 4s, seks i 3d. Hunds regel: fem enkle før det første paret.'],
+    },
+    {
+      id: 'or-11',
+      niva: 3,
+      type: 'orbital',
+      mal: [3],
+      konfig: true,
+      grunnstoff: 'Cr',
+      hint: ['Krom er et unntak.', 'Halvfullt 3d-underskall er ekstra stabilt: 4s¹ 3d⁵.'],
+    },
+    {
+      id: 'or-12',
+      niva: 3,
+      type: 'orbital',
+      mal: [3],
+      konfig: true,
+      grunnstoff: 'Cu',
+      hint: ['Kobber er et unntak.', 'Fullt 3d-underskall er ekstra stabilt: 4s¹ 3d¹⁰.'],
     },
   ],
   flashcards: [

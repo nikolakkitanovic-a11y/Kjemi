@@ -74,6 +74,7 @@ Nedover i gruppe 1 blir ionene større, og smeltepunktet synker. Bortover i peri
         'De har høyt smeltepunkt',
       ],
       svar: 0,
+      modul: 'sterke-bindinger',
     },
     {
       id: 'me-01',
@@ -271,6 +272,7 @@ Nedover i gruppe 1 blir ionene større, og smeltepunktet synker. Bortover i peri
         'I et ionegitter kommer like ladninger mot hverandre når lagene forskyves',
         'Frastøtningen gjør at saltkrystallen sprekker',
       ],
+      modul: 'sterke-bindinger',
     },
     {
       id: 'sb-27',
@@ -283,6 +285,7 @@ Nedover i gruppe 1 blir ionene større, og smeltepunktet synker. Bortover i peri
       elementer: ['Na', 'Mg', 'Al'],
       hint: 'Flere valenselektroner i elektronsjøen og mindre kationer gir sterkere metallbinding.',
       forklaring: 'Na (98 °C) har 1 valenselektron, Mg (650 °C) har 2 og Al (660 °C) har 3. Kationene blir også mindre og høyere ladet.',
+      modul: 'sterke-bindinger',
     },
     {
       id: 'me-15',

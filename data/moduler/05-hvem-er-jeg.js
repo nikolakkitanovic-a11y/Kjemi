@@ -76,6 +76,7 @@ Valenselektroner i hovedgruppene: gruppe 1 → 1, gruppe 2 → 2, gruppe 13 → 
       alternativer: ['Like mange valenselektroner', 'Like mange elektronskall', 'Samme atommasse', 'Like mange nøytroner'],
       svar: 0,
       hint: 'Det er dette som gir dem like kjemiske egenskaper.',
+      modul: 'periodesystemet',
     },
     {
       id: 'ps-02',
@@ -86,6 +87,7 @@ Valenselektroner i hovedgruppene: gruppe 1 → 1, gruppe 2 → 2, gruppe 13 → 
       alternativer: ['Antall elektronskall', 'Antall valenselektroner', 'Antall protoner', 'Ladningen til ionet'],
       svar: 0,
       hint: 'Natrium står i periode 3. Hvor mange skall har natrium?',
+      modul: 'periodesystemet',
     },
     {
       id: 'ps-06',
@@ -96,6 +98,7 @@ Valenselektroner i hovedgruppene: gruppe 1 → 1, gruppe 2 → 2, gruppe 13 → 
       tekst: 'Mg har ___ valenselektroner, P har ___ og Ar har ___.',
       svar: [['2'], ['5'], ['8']],
       hint: 'Se på gruppenummeret. For gruppe 13–18 trekker du fra 10.',
+      modul: 'periodesystemet',
     },
     {
       id: 'hv-01',
@@ -147,6 +150,7 @@ Valenselektroner i hovedgruppene: gruppe 1 → 1, gruppe 2 → 2, gruppe 13 → 
       svar: [0, 1, 2, 5],
       hint: 'Neon har 10 elektroner. Regn ut antall elektroner i hvert ion.',
       forklaring: '{{Na+}} (11 − 1), {{F-}} (9 + 1), {{Mg^2+}} (12 − 2) og {{O^2-}} (8 + 2) har alle 10 elektroner. {{K+}} og {{Cl-}} har 18, som argon.',
+      modul: 'elektroner',
     },
     {
       id: 'ps-16',
@@ -157,6 +161,7 @@ Valenselektroner i hovedgruppene: gruppe 1 → 1, gruppe 2 → 2, gruppe 13 → 
       tekst: 'Grunnstoff (navn eller symbol): ___',
       svar: [['svovel', 'S']],
       hint: 'Periode 3 har 3 skall. Gruppe 16 betyr 6 valenselektroner: 2, 8, 6.',
+      modul: 'periodesystemet',
     },
     {
       id: 'ps-17',
@@ -168,6 +173,7 @@ Valenselektroner i hovedgruppene: gruppe 1 → 1, gruppe 2 → 2, gruppe 13 → 
       svar: 0,
       hint: 'Høyeste skall er nummer 3. Antall valenselektroner er $2 + 5$.',
       forklaring: 'Tre skall → periode 3. Sju valenselektroner → gruppe 17. Det er klor.',
+      modul: 'periodesystemet',
     },
     {
       id: 'ps-18',
@@ -178,6 +184,7 @@ Valenselektroner i hovedgruppene: gruppe 1 → 1, gruppe 2 → 2, gruppe 13 → 
       kategorier: ['s', 'p', 'd', 'f'],
       elementer: [['Na', 0], ['Ca', 0], ['Fe', 2], ['Cu', 2], ['Cl', 1], ['C', 1], ['U', 3], ['Nd', 3]],
       hint: 'Blokken er det underskallet som fylles sist.',
+      modul: 'periodesystemet',
     },
     {
       id: 'hv-05',
@@ -262,6 +269,14 @@ Valenselektroner i hovedgruppene: gruppe 1 → 1, gruppe 2 → 2, gruppe 13 → 
       forklaring: 'Høyeste skall er 3 (periode 3). Valenselektroner: $2 + 3 = 5$ → gruppe 15. Det er fosfor.',
     },
     {
+      id: 'gen-hvem-2',
+      niva: 2,
+      type: 'gen',
+      kilde: 'hvem',
+      mal: [5],
+      sporsmal: 'Tilfeldig: hvem er jeg ut fra konfigurasjon og ladning?',
+    },
+    {
       id: 'el-26',
       niva: 3,
       type: 'fyllinn',
@@ -271,6 +286,7 @@ Valenselektroner i hovedgruppene: gruppe 1 → 1, gruppe 2 → 2, gruppe 13 → 
       svar: [['gallium', 'Ga']],
       hint: 'Tell elektronene: argon har 18.',
       steg: ['$18 + 2 + 10 + 1 = 31$ elektroner', 'Atomnummer 31 er gallium (Ga), i gruppe 13, periode 4.'],
+      modul: 'elektroner',
     },
     {
       id: 'el-27',
@@ -286,6 +302,7 @@ Gruppe: ___`,
         '$36 + 2 + 10 + 5 = 53$ elektroner → jod (I).',
         'Valenselektroner: $5s^2\\,5p^5$ = 7, altså gruppe 17 (halogenene).',
       ],
+      modul: 'elektroner',
     },
     {
       id: 'ps-25',
@@ -301,6 +318,7 @@ Gruppe: ___`,
         'Grunnstoffet har 3 valenselektroner → gruppe 13.',
         'Gruppe 13, periode 3 = aluminium.',
       ],
+      modul: 'periodesystemet',
     },
     {
       id: 'hv-13',
@@ -374,6 +392,14 @@ Ladning 2+: ___`,
         'Zn: [Ar] 4s² 3d¹⁰',
         '4s avgis først → Zn²⁺: [Ar] 3d¹⁰',
       ],
+    },
+    {
+      id: 'gen-hvem-3',
+      niva: 3,
+      type: 'gen',
+      kilde: 'hvem',
+      mal: [5, 4],
+      sporsmal: 'Tilfeldig ion: hvem er jeg ut fra konfigurasjon og ladning?',
     },
   ],
   flashcards: [

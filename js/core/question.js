@@ -66,6 +66,12 @@
     if (q.type === 'navn') return 'Hva heter forbindelsen {{' + q.formel + '}}?';
     if (q.type === 'formel') return 'Skriv den kjemiske formelen for **' + q.navn + '**.';
     if (q.type === 'balanser') return 'Balanser reaksjonslikningen. Skriv koeffisientene i feltene (tomt felt betyr 1).';
+    if (q.type === 'orbital') {
+      const e = KJ.grunnstoffMap[q.grunnstoff];
+      const ion = q.ladning ? '{{' + q.grunnstoff + '^' + (Math.abs(q.ladning) > 1 ? Math.abs(q.ladning) : '') + (q.ladning > 0 ? '+' : '-') + '}}' : e.navn + ' ({{' + q.grunnstoff + '}})';
+      return 'Vis hvordan elektronene i ' + ion + ' fordeles i orbitalene i grunntilstanden.' + (q.konfig ? ' Skriv også elektronkonfigurasjonen, både fullt og med edelgasskjerne.' : '');
+    }
+    if (q.type === 'salt') return 'Sett sammen saltet **' + q.navn + '**. Velg hvor mange av hvert ion som trengs for at saltet skal bli elektrisk nøytralt, og skriv formelen.' + (q.visIoner ? '' : ' Du må selv finne ionene og ladningene.');
     if (q.type === 'konfig') {
       const e = KJ.grunnstoffMap[q.grunnstoff];
       const ion = q.ladning ? '{{' + q.grunnstoff + '^' + (Math.abs(q.ladning) > 1 ? Math.abs(q.ladning) : '') + (q.ladning > 0 ? '+' : '-') + '}}' : e.navn + ' ({{' + q.grunnstoff + '}})';
@@ -77,8 +83,12 @@
 
   class Oppgavekort {
     constructor(q, opts) {
-      this.q = q;
       this.o = Object.assign({ modus: 'ovelse' }, opts || {});
+      if (q.type === 'gen') {
+        this.spec = q;
+        q = this.o.instans || KJ.generer(q);
+      }
+      this.q = q;
       this.forsok = 0;
       this.hintNr = 0;
       this.losningVist = false;
@@ -87,6 +97,7 @@
       this.el = document.createElement('article');
       this.el.className = 'qcard q-' + q.type + ' modus-' + this.o.modus;
       this.el.dataset.id = q.id;
+      this.el.kort = this;
       this.el.setAttribute('aria-labelledby', this.id + '-p');
       this.forbered();
       this.render();
@@ -98,6 +109,12 @@
       if (q.type === 'kobling') this.hoyreRek = KJ.shuffleUlik(q.par.map((_, i) => i));
       if (q.type === 'rekkefolge') this.orden = KJ.shuffleUlik(q.elementer.map((_, i) => i));
       if (q.type === 'sortering') this.itemRek = KJ.shuffle(q.elementer.map((_, i) => i));
+      if (q.type === 'salt') this.antall = { nk: 1, na: 1 };
+      if (q.type === 'orbital') {
+        this.oppsett = KJ.orbitalOppsett(q);
+        this.bokser = {};
+        this.oppsett.rader.forEach((r) => (this.bokser[r.orb] = new Array(r.bokser).fill('')));
+      }
       if (q.type === 'tall') this.vit = q.vitenskapelig != null ? q.vitenskapelig : Math.abs(q.svar) >= 1e5 || (Math.abs(q.svar) < 1e-3 && q.svar !== 0);
     }
 
@@ -109,7 +126,7 @@
       const nr = this.o.nummer ? '<span class="q-nr">Oppgave ' + this.o.nummer + (this.o.totalt ? ' av ' + this.o.totalt : '') + '</span>' : '';
       const tema = this.o.visTema && KJ.temaMap[q.tema] ? '<span class="q-tema" style="--tc:' + KJ.temaMap[q.tema].farge + '">' + esc(KJ.temaMap[q.tema].tittel) + '</span>' : '';
       this.el.innerHTML =
-        '<header class="q-head">' + nr + nivaHtml(q.niva) + malHtml(q) + '<span class="q-type">' + KJ.TYPENAVN[q.type] + '</span>' + tema +
+        '<header class="q-head">' + nr + nivaHtml(q.niva) + malHtml(q) + '<span class="q-type">' + KJ.TYPENAVN[q.type] + '</span>' + (this.spec ? '<span class="q-gen">Tilfeldig</span>' : '') + tema +
         '<span class="q-status" aria-hidden="true"></span></header>' +
         '<div class="q-prompt" id="' + this.id + '-p">' + KJ.fmtBlock(standardSporsmal(q)) + '</div>' +
         '<div class="q-body">' + this.kropp() + '</div>' +
@@ -118,6 +135,7 @@
             '<button type="button" class="btn btn-primary" data-a="sjekk">' + KJ.icon('check', 18) + (q.type === 'forklaring' ? 'Sammenlign med modellsvar' : 'Sjekk svar') + '</button>' +
             (hint.length ? '<button type="button" class="btn btn-ghost" data-a="hint">' + KJ.icon('bulb', 18) + 'Hint</button>' : '') +
             '<button type="button" class="btn btn-quiet" data-a="losning" hidden>' + KJ.icon('eye', 18) + 'Vis løsning</button>' +
+            (this.spec ? '<button type="button" class="btn btn-quiet" data-a="ny">' + KJ.icon('shuffle', 18) + 'Ny variant</button>' : '') +
             '</div>'
           : '') +
         '<div class="q-fb" role="status" aria-live="polite"></div>' +
@@ -179,13 +197,14 @@
               .map(
                 (f, i) =>
                   '<span class="eq-term"><input class="inp koef" data-i="' + (off + i) + '" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" aria-label="Koeffisient foran ' + esc(f) + '">' +
-                  '<span class="eq-sp">' + KJ.ce(f) + '</span></span>'
+                  '<button type="button" class="eq-sp" data-endre="' + esc(f) + '" title="Prøv å endre formelen">' + KJ.ce(f) + '</button></span>'
               )
               .join('<span class="eq-plus">+</span>');
           return (
             '<div class="eq">' + side(q.reaktanter, 0) + '<span class="eq-arrow" aria-label="gir">' + KJ.tex('\\longrightarrow') + '</span>' + side(q.produkter, q.reaktanter.length) + '</div>' +
-            '<div class="eq-tools"><button type="button" class="btn btn-small btn-ghost" data-a="tell" aria-expanded="false">' + KJ.icon('scale', 16) + 'Tell atomer</button></div>' +
-            '<div class="eq-count" hidden></div>'
+            '<p class="q-note">Skriv koeffisientene i feltene. Tabellen teller atomene mens du skriver. Trykk på en formel hvis du vil prøve å endre den.</p>' +
+            '<div class="eq-edit" hidden></div>' +
+            '<div class="eq-count"></div>'
           );
         }
         case 'navn':
@@ -220,7 +239,58 @@
           );
         }
         case 'rekkefolge':
-          return '<div class="order-wrap">' + (q.fra ? '<p class="order-end">' + KJ.icon('up', 14) + esc(q.fra) + '</p>' : '') + '<ol class="order"></ol>' + (q.til ? '<p class="order-end">' + KJ.icon('down', 14) + esc(q.til) + '</p>' : '') + '</div>';
+          return (
+            '<div class="order-wrap">' + (q.fra ? '<p class="order-end">' + KJ.icon('up', 14) + esc(q.fra) + '</p>' : '') + '<ol class="order"></ol>' + (q.til ? '<p class="order-end">' + KJ.icon('down', 14) + esc(q.til) + '</p>' : '') + '</div>' +
+            (q.begrunnelse
+              ? '<fieldset class="opts begr"><legend class="fld-l" style="margin-bottom:6px">Hvilken begrunnelse er riktig?</legend>' +
+                (this.begrRek || (this.begrRek = KJ.shuffle(q.begrunnelse.alternativer.map((_, i) => i))))
+                  .map((i, k) => '<label class="opt" data-i="' + i + '"><input type="radio" name="' + n + '-b" value="' + i + '"><span class="opt-key" aria-hidden="true">' + String.fromCharCode(65 + k) + '</span><span class="opt-text">' + fmt(q.begrunnelse.alternativer[i]) + '</span></label>')
+                  .join('') +
+                '</fieldset>'
+              : '')
+          );
+        case 'salt': {
+          const k = C.parse(q.kation);
+          const a = C.parse(q.anion);
+          const stepper = (felt, label) =>
+            '<div class="stepper"><button type="button" class="ibtn" data-step="' + felt + '" data-d="-1" aria-label="Færre ' + label + '">−</button>' +
+            '<output class="step-v" data-v="' + felt + '">1</output>' +
+            '<button type="button" class="ibtn" data-step="' + felt + '" data-d="1" aria-label="Flere ' + label + '">+</button></div>';
+          const ion = (f, felt, label, lad) =>
+            '<div class="salt-ion"><span class="fld-l">' + label + '</span>' +
+            (q.visIoner ? '<span class="salt-f">' + KJ.ce(f.ce) + '</span>' : '<label class="salt-lad"><span class="sr-only">Ladning til ' + label + '</span><input class="inp lad" data-lad="' + lad + '" placeholder="ladning" autocomplete="off" inputmode="text"></label>') +
+            stepper(felt, label.toLowerCase()) + '</div>';
+          return (
+            '<div class="salt">' +
+            ion(k, 'nk', 'Kation', 'lk') + '<span class="salt-plus">+</span>' + ion(a, 'na', 'Anion', 'la') +
+            '</div>' +
+            '<p class="salt-regnskap" aria-live="polite"></p>' +
+            '<label class="fld fld-wide"><span class="fld-l">Formel for saltet</span><input class="inp txt mono" data-salt autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="f.eks. Al2(SO4)3"></label>' +
+            '<p class="preview" aria-live="polite"><span class="muted">Forhåndsvisning:</span> <span class="pv"></span></p>'
+          );
+        }
+        case 'orbital': {
+          const L = this.oppsett;
+          return (
+            '<div class="orbdia">' +
+            (L.kjerne ? '<div class="orb-rad"><span class="orb-l">[' + L.kjerne + ']</span><span class="muted" style="font-size:.85rem">edelgasskjerne (' + L.kjerneE + ' elektroner) er fylt inn</span></div>' : '') +
+            L.rader
+              .map(
+                (r) =>
+                  '<div class="orb-rad" data-orb="' + r.orb + '"><span class="orb-l">' + r.orb + '</span><div class="orb-boxes">' +
+                  this.bokser[r.orb].map((st, j) => '<button type="button" class="orb-box orb-btn" data-box="' + r.orb + '" data-j="' + j + '" aria-label="' + r.orb + ', orbital ' + (j + 1) + ': tom"></button>').join('') +
+                  '</div></div>'
+              )
+              .join('') +
+            '</div>' +
+            '<p class="q-note">Trykk på en boks for å bytte: tom → ↑ → ↓ → ↑↓ → ↑↑ → tom. <span class="orb-teller"></span></p>' +
+            (q.konfig
+              ? '<div class="num-row" style="margin-top:8px"><label class="fld fld-wide"><span class="fld-l">Full konfigurasjon</span><input class="inp mono kfull" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="1s2 2s2 2p6 …"></label>' +
+                (L.n > 2 ? '<label class="fld fld-wide"><span class="fld-l">Med edelgasskjerne</span><input class="inp mono kedel" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="[Ne] 3s2 …"></label>' : '') +
+                '</div>'
+              : '')
+          );
+        }
         case 'sortering':
           return (
             '<div class="sort">' +
@@ -273,8 +343,24 @@
         if (a === 'sjekk') this.sjekk();
         else if (a === 'hint') this.visHint();
         else if (a === 'losning') this.visLosning();
-        else if (a === 'tell') this.tell(b);
         else if (a === 'vurder') this.vurder();
+        else if (a === 'ny') this.nyVariant();
+        else if (a === 'endre-ok') this.provEndring();
+        else if (a === 'endre-avbryt') this.lukkEndring();
+        else if (b.dataset.endre != null) this.apneEndring(b.dataset.endre);
+        else if (b.dataset.step && !this.last) {
+          const f = b.dataset.step;
+          this.antall[f] = Math.max(1, Math.min(9, this.antall[f] + +b.dataset.d));
+          this.oppdaterSalt();
+          this.endret();
+        } else if (b.dataset.box && !this.last) {
+          const r = b.dataset.box;
+          const j = +b.dataset.j;
+          const sy = KJ.ORB_SYKLUS;
+          this.bokser[r][j] = sy[(sy.indexOf(this.bokser[r][j]) + 1) % sy.length];
+          this.oppdaterOrbital();
+          this.endret();
+        }
         else if (b.dataset.mv) {
           const pos = +b.dataset.pos;
           const ny = pos + +b.dataset.mv;
@@ -289,7 +375,9 @@
       });
       el.addEventListener('input', (e) => {
         if (q.type === 'formel' || q.type === 'konfig') this.forhandsvis();
-        if (q.type === 'balanser' && !this.el.querySelector('.eq-count').hidden) this.tell();
+        if (q.type === 'balanser' && e.target.classList.contains('koef')) this.tell();
+        if (q.type === 'salt') this.oppdaterSalt();
+        if (q.type === 'orbital') this.oppdaterOrbital();
         if (q.type === 'forklaring') {
           const t = el.querySelector('.area').value.trim();
           el.querySelector('.cnt').textContent = t ? t.split(/\s+/).length : 0;
@@ -304,7 +392,15 @@
           this.endret();
         }
       });
+      if (q.type === 'balanser') this.tell();
+      if (q.type === 'salt') this.oppdaterSalt();
+      if (q.type === 'orbital') this.oppdaterOrbital();
       el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.target.matches('.eq-edit input')) {
+          e.preventDefault();
+          this.provEndring();
+          return;
+        }
         if (e.key === 'Enter' && this.o.modus === 'ovelse' && e.target.matches('input.inp') && !e.target.matches('[type=radio],[type=checkbox]')) {
           e.preventDefault();
           this.sjekk();
@@ -318,8 +414,117 @@
 
     /** Har eleven svart noe? (Rangering teller først når noe er flyttet.) */
     besvart() {
-      if (this.q.type === 'rekkefolge') return !!this.rort;
+      if (this.q.type === 'rekkefolge') return !!this.rort || (this.q.begrunnelse && this.hentSvar().begr != null);
       return KJ.harSvar(this.q, this.hentSvar());
+    }
+
+    /** Lager en ny tilfeldig variant av en generert oppgave. */
+    nyVariant() {
+      if (!this.spec) return;
+      const ny = new KJ.Oppgavekort(this.spec, Object.assign({}, this.o, { instans: null }));
+      this.el.replaceWith(ny.el);
+      if (this.o.onNy) this.o.onNy(ny);
+      const p = ny.el.querySelector('.q-prompt');
+      p.setAttribute('tabindex', '-1');
+      p.focus({ preventScroll: true });
+    }
+
+    /* ---------- Saltbygger ---------- */
+    oppdaterSalt() {
+      const q = this.q;
+      const el = this.el;
+      el.querySelector('[data-v="nk"]').textContent = this.antall.nk;
+      el.querySelector('[data-v="na"]').textContent = this.antall.na;
+      const lad = (felt, fasit) => {
+        if (q.visIoner) return fasit;
+        const v = String((el.querySelector('[data-lad="' + felt + '"]') || {}).value || '').trim().replace(/[−–]/g, '-');
+        if (v === '+' || v === '-') return v === '+' ? 1 : -1;
+        const n = parseInt(v.replace(/^(\d+)([+-])$/, '$2$1'), 10);
+        return isNaN(n) ? null : n;
+      };
+      const lk = lad('lk', C.parse(q.kation).ladning);
+      const la = lad('la', C.parse(q.anion).ladning);
+      const reg = el.querySelector('.salt-regnskap');
+      if (lk == null || la == null) {
+        reg.innerHTML = '<span class="muted">Skriv ladningene for å se ladningsregnskapet.</span>';
+      } else {
+        const sum = this.antall.nk * lk + this.antall.na * la;
+        const fort = (x) => (x > 0 ? '+' + x : String(x));
+        reg.className = 'salt-regnskap ' + (sum === 0 ? 'ok' : 'bad');
+        reg.innerHTML =
+          '<span class="muted">Ladningsregnskap:</span> ' + KJ.tex(this.antall.nk + '\\cdot(' + fort(lk) + ') + ' + this.antall.na + '\\cdot(' + fort(la) + ') = ' + fort(sum).replace('+0', '0')) +
+          (sum === 0 ? ' <strong>nøytralt</strong>' : ' <strong>ikke nøytralt</strong>');
+      }
+      const inn = el.querySelector('[data-salt]').value;
+      const pv = el.querySelector('.pv');
+      try {
+        pv.innerHTML = inn.trim() ? KJ.ce(C.parse(inn).ce) : '';
+      } catch (err) {
+        pv.innerHTML = '<span class="muted">' + esc(err.kjemi ? err.message : 'Ugyldig') + '</span>';
+      }
+    }
+
+    /* ---------- Orbitaldiagram ---------- */
+    oppdaterOrbital() {
+      const el = this.el;
+      let n = this.oppsett.kjerneE;
+      Object.keys(this.bokser).forEach((r) => {
+        this.bokser[r].forEach((st, j) => {
+          const b = el.querySelector('[data-box="' + r + '"][data-j="' + j + '"]');
+          b.textContent = KJ.ORB_PIL[st];
+          b.classList.toggle('pauli', st === 'uu');
+          b.setAttribute('aria-label', r + ', orbital ' + (j + 1) + ': ' + ({ '': 'tom', u: 'ett elektron opp', d: 'ett elektron ned', ud: 'to elektroner, motsatt spinn', uu: 'to elektroner, samme spinn' }[st]));
+          n += st === 'ud' || st === 'uu' ? 2 : st ? 1 : 0;
+        });
+      });
+      el.querySelector('.orb-teller').textContent = 'Elektroner plassert: ' + n + ' av ' + this.oppsett.n + '.';
+    }
+
+    /* ---------- Balansering: forsøk på å endre en indeks ---------- */
+    apneEndring(f) {
+      if (this.last) return;
+      const box = this.el.querySelector('.eq-edit');
+      box.hidden = false;
+      box.dataset.f = f;
+      box.innerHTML =
+        '<label class="fld fld-wide"><span class="fld-l">Endre formelen ' + KJ.ce(f) + '</span><input class="inp mono" value="' + esc(f) + '" autocomplete="off" autocapitalize="off" spellcheck="false"></label>' +
+        '<div class="btn-row" style="margin-top:8px"><button type="button" class="btn btn-small btn-primary" data-a="endre-ok">Endre</button><button type="button" class="btn btn-small btn-quiet" data-a="endre-avbryt">Avbryt</button></div>' +
+        '<div class="eq-edit-fb" aria-live="polite"></div>';
+      box.querySelector('input').focus();
+    }
+    lukkEndring() {
+      const box = this.el.querySelector('.eq-edit');
+      box.hidden = true;
+      box.innerHTML = '';
+    }
+    provEndring() {
+      const box = this.el.querySelector('.eq-edit');
+      const f = box.dataset.f;
+      const ny = box.querySelector('input').value.trim();
+      const fb = box.querySelector('.eq-edit-fb');
+      const KJENTE = { H2O2: 'hydrogenperoksid', O3: 'ozon', CO: 'karbonmonoksid', H2O: 'vann', CO2: 'karbondioksid', NO2: 'nitrogendioksid', NO: 'nitrogenmonoksid', SO3: 'svoveltrioksid', SO2: 'svoveldioksid' };
+      let tekst;
+      if (!ny || ny === f) {
+        this.lukkEndring();
+        return;
+      }
+      const m = /^(\d+)\s*(.+)$/.exec(ny);
+      if (m && m[2] === f) {
+        tekst = 'Tallet foran formelen er en **koeffisient**. Skriv ' + m[1] + ' i feltet foran formelen i stedet.';
+      } else {
+        let p = null;
+        try {
+          p = C.parse(ny);
+        } catch (e) {
+          /* ugyldig formel */
+        }
+        const navn = p && KJENTE[p.kanon] ? ' Det er **' + KJENTE[p.kanon] + '**.' : '';
+        tekst =
+          'Du prøver å endre **indeksen**. {{' + f + '}} og {{' + (p ? p.ce : ny) + '}} er to forskjellige stoffer.' + navn +
+          ' Reaksjonslikningen beskriver bestemte stoffer, så formlene ligger fast. Du kan bare endre **koeffisientene** (tallene foran) for å få like mange atomer på hver side.';
+      }
+      fb.innerHTML = '<div class="fb-info" style="margin-top:10px"><div class="fb-inner">' + KJ.icon('info', 18) + '<div><p class="fb-main">' + KJ.fmt(tekst) + '</p></div></div></div>';
+      box.querySelector('input').value = f;
     }
 
     forhandsvis() {
@@ -380,8 +585,22 @@
           return el.querySelector('.txt').value;
         case 'kobling':
           return [...el.querySelectorAll('.sel')].map((s) => (s.value === '' ? null : +s.value));
-        case 'rekkefolge':
-          return this.orden.slice();
+        case 'rekkefolge': {
+          if (!q.begrunnelse) return this.orden.slice();
+          const b = el.querySelector('.begr input:checked');
+          return { orden: this.orden.slice(), begr: b ? +b.value : null };
+        }
+        case 'salt': {
+          const lk = el.querySelector('[data-lad="lk"]');
+          const la = el.querySelector('[data-lad="la"]');
+          return { nk: this.antall.nk, na: this.antall.na, lk: lk ? lk.value : null, la: la ? la.value : null, formel: el.querySelector('[data-salt]').value };
+        }
+        case 'orbital': {
+          const ut = { bokser: JSON.parse(JSON.stringify(this.bokser)) };
+          if (el.querySelector('.kfull')) ut.full = el.querySelector('.kfull').value;
+          if (el.querySelector('.kedel')) ut.edel = el.querySelector('.kedel').value;
+          return ut;
+        }
         case 'sortering':
           return q.elementer.map((_, i) => {
             const r = el.querySelector('input[name="' + this.id + '-s' + i + '"]:checked');
@@ -424,12 +643,31 @@
         case 'kobling':
           el.querySelectorAll('.sel').forEach((s, i) => (s.value = svar[i] == null ? '' : String(svar[i])));
           break;
-        case 'rekkefolge':
-          if (Array.isArray(svar) && svar.length === this.orden.length) {
-            this.orden = svar.slice();
+        case 'rekkefolge': {
+          const orden = Array.isArray(svar) ? svar : svar.orden;
+          if (Array.isArray(orden) && orden.length === this.orden.length) {
+            this.orden = orden.slice();
             this.rort = true;
           }
           this.tegnRekkefolge();
+          if (!Array.isArray(svar) && svar.begr != null) {
+            const r = el.querySelector('.begr input[value="' + svar.begr + '"]');
+            if (r) r.checked = true;
+          }
+          break;
+        }
+        case 'salt':
+          this.antall = { nk: svar.nk || 1, na: svar.na || 1 };
+          if (el.querySelector('[data-lad="lk"]')) el.querySelector('[data-lad="lk"]').value = svar.lk || '';
+          if (el.querySelector('[data-lad="la"]')) el.querySelector('[data-lad="la"]').value = svar.la || '';
+          el.querySelector('[data-salt]').value = svar.formel || '';
+          this.oppdaterSalt();
+          break;
+        case 'orbital':
+          if (svar.bokser) Object.keys(this.bokser).forEach((r) => svar.bokser[r] && (this.bokser[r] = svar.bokser[r].slice()));
+          if (el.querySelector('.kfull')) el.querySelector('.kfull').value = svar.full || '';
+          if (el.querySelector('.kedel')) el.querySelector('.kedel').value = svar.edel || '';
+          this.oppdaterOrbital();
           break;
         case 'sortering':
           svar.forEach((v, i) => {
@@ -512,6 +750,28 @@
           else if (valgt) o.classList.add('is-wrong');
           else if (visFasit && fasit.includes(i)) o.classList.add('is-missed');
         });
+      } else if (q.type === 'orbital' && res) {
+        el.querySelectorAll('.orb-rad[data-orb]').forEach((r) => {
+          r.classList.remove('is-right', 'is-wrong');
+          r.classList.add(res.radOk && res.radOk[r.dataset.orb] ? 'is-right' : 'is-wrong');
+        });
+        [['.kfull', 'full'], ['.kedel', 'edel']].forEach(([sel, k]) => {
+          const i = el.querySelector(sel);
+          if (i && res.konfDeler) {
+            i.classList.remove('is-right', 'is-wrong');
+            i.classList.add(res.konfDeler[k] ? 'is-right' : 'is-wrong');
+          }
+        });
+      } else if (q.type === 'salt' && res && res.saltDeler) {
+        const d = res.saltDeler;
+        el.querySelectorAll('.lad').forEach((i) => i.classList.toggle('is-wrong', !d.ladning));
+        el.querySelectorAll('.stepper').forEach((st) => {
+          st.classList.toggle('is-right', d.antall);
+          st.classList.toggle('is-wrong', !d.antall);
+        });
+        const f = el.querySelector('[data-salt]');
+        f.classList.remove('is-right', 'is-wrong');
+        f.classList.add(d.formel ? 'is-right' : 'is-wrong');
       } else if (res && res.deler) {
         const sel = { fyllinn: '.blank', kobling: '.match-row', rekkefolge: '.order-item', sortering: '.sort-row' }[q.type];
         if (!sel) return;
@@ -521,6 +781,16 @@
           n.classList.remove('is-right', 'is-wrong');
           n.classList.add(res.deler[i] ? 'is-right' : 'is-wrong');
         });
+        if (q.type === 'rekkefolge' && q.begrunnelse) {
+          el.querySelectorAll('.begr .opt').forEach((o) => {
+            const i = +o.dataset.i;
+            const valgt = o.querySelector('input').checked;
+            o.classList.remove('is-right', 'is-wrong', 'is-missed');
+            if (valgt && i === q.begrunnelse.svar) o.classList.add('is-right');
+            else if (valgt) o.classList.add('is-wrong');
+            else if (visFasit && i === q.begrunnelse.svar) o.classList.add('is-missed');
+          });
+        }
       } else if (res && (q.type !== 'balanser' || res.riktig)) {
         el.querySelectorAll('.q-body .inp:not(.area)').forEach((i) => {
           i.classList.remove('is-right', 'is-wrong');
@@ -622,7 +892,7 @@
         if (i.closest('.checklist') && this.o.selvvurdering) return;
         i.disabled = true;
       });
-      this.el.querySelectorAll('.q-body .ibtn').forEach((b) => (b.disabled = true));
+      this.el.querySelectorAll('.q-body .ibtn, .q-body .orb-btn, .q-body .eq-sp').forEach((b) => (b.disabled = true));
     }
 
     /** Viser rettet svar med fasit (brukes i prøvegjennomgang). */
@@ -675,6 +945,10 @@
         return true;
       case 'forklaring':
         return !!String(svar.tekst || '').trim();
+      case 'salt':
+        return !!String(svar.formel || '').trim();
+      case 'orbital':
+        return Object.values(svar.bokser || {}).some((b) => b.some((x) => x)) || !!String(svar.full || '').trim();
       default:
         return !!String(svar || '').trim();
     }

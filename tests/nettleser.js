@@ -120,9 +120,52 @@ const logg = (ok, msg) => {
     return [x.toFixed(Math.max(0, gs - 1 - exp)).replace('.', ','), null];
   };
 
+  /** Den konkrete oppgaven som vises (genererte oppgaver får nye verdier hver gang). */
+  async function hentInstans(id) {
+    return page.evaluate((id) => {
+      const q = JSON.parse(JSON.stringify(document.querySelector('.qcard[data-id="' + id + '"]').kort.q));
+      if (q.type === 'konfig') q.fasitTekst = KJ.kjemi.konfigTekst(KJ.kjemi.konfig(KJ.grunnstoffMap[q.grunnstoff].z, q.ladning || 0), q.notasjon !== 'full');
+      return q;
+    }, id);
+  }
+
   async function fyllRiktig(q) {
+    if (q.type === 'gen') q = await hentInstans(q.id);
     const kort = page.locator('.qcard[data-id="' + q.id + '"]');
     switch (q.type) {
+      case 'salt': {
+        const fasit = await page.evaluate((q) => KJ.byggSalt(q.kation, q.anion), q);
+        for (let i = 1; i < fasit.nk; i++) await kort.locator('[data-step="nk"][data-d="1"]').click();
+        for (let i = 1; i < fasit.na; i++) await kort.locator('[data-step="na"][data-d="1"]').click();
+        if (!q.visIoner) {
+          await kort.locator('[data-lad="lk"]').fill((fasit.qk > 1 ? fasit.qk : '') + '+');
+          await kort.locator('[data-lad="la"]').fill((Math.abs(fasit.qa) > 1 ? Math.abs(fasit.qa) : '') + '-');
+        }
+        await kort.locator('[data-salt]').fill(fasit.formel);
+        break;
+      }
+      case 'orbital': {
+        const plan = await page.evaluate((q) => {
+          const L = KJ.orbitalOppsett(q);
+          const ascii = (t) => t.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, (m) => m.split('').map((c) => '⁰¹²³⁴⁵⁶⁷⁸⁹'.indexOf(c)).join(''));
+          return {
+            rader: L.rader.map((r) => ({ orb: r.orb, mål: KJ.fyllOrbitalRad(r.bokser, r.forventet) })),
+            full: ascii(KJ.kjemi.konfigTekst(L.k, false)),
+            edel: ascii(KJ.kjemi.konfigTekst(L.k, true)),
+          };
+        }, q);
+        for (const r of plan.rader) {
+          for (let j = 0; j < r.mål.length; j++) {
+            const klikk = ['', 'u', 'd', 'ud', 'uu'].indexOf(r.mål[j]);
+            for (let k = 0; k < klikk; k++) await kort.locator('[data-box="' + r.orb + '"][data-j="' + j + '"]').click();
+          }
+        }
+        if (q.konfig) {
+          await kort.locator('.kfull').fill(plan.full);
+          if (await kort.locator('.kedel').count()) await kort.locator('.kedel').fill(plan.edel);
+        }
+        break;
+      }
       case 'flervalg':
         for (const i of [].concat(q.svar)) await kort.locator('.opt[data-i="' + i + '"]').click();
         break;
@@ -168,6 +211,7 @@ const logg = (ok, msg) => {
           const her = orden.indexOf(pos);
           await kort.locator('.order-item').nth(her).locator('[data-mv="-1"]').click();
         }
+        if (q.begrunnelse) await kort.locator('.begr .opt[data-i="' + q.begrunnelse.svar + '"]').click();
         break;
       case 'sortering':
         // Klikk direkte på radioknappen: et vanlig museklikk kan treffe den faste toppmenyen når raden ligger under den.
@@ -236,7 +280,6 @@ const logg = (ok, msg) => {
   await ga('#/modul/balansering/oppgaver?niva=0&q=rl-11');
   await page.waitForSelector('.qcard .koef');
   await page.locator('.qcard .koef').nth(1).fill('4');
-  await page.locator('.qcard [data-a="tell"]').click();
   logg((await page.locator('.qcard .atomtab tr.bad').count()) > 0, 'atomtelling viser ubalanse');
   await page.locator('.qcard [data-a="sjekk"]').click();
   logg((await page.locator('.qcard .q-fb.fb-bad').count()) === 1, 'ubalansert likning rettes som feil');
@@ -269,6 +312,42 @@ const logg = (ok, msg) => {
   await page.locator('.qcard [data-a="sjekk"]').click();
   await page.waitForTimeout(100);
   logg((await page.evaluate(() => KJ.store.feilbank().length)) === 2, 'to riktige på rad fjerner oppgaven fra feilbanken');
+
+  /* ---------- Interaktive typer ---------- */
+  console.log('\nInteraktive typer');
+  await ga('#/modul/partikler/oppgaver?niva=0&q=gen-pne-ion');
+  await page.waitForSelector('.qcard[data-id="gen-pne-ion"]');
+  const forVariant = await page.locator('.qcard .q-prompt').innerText();
+  let byttet = false;
+  for (let i = 0; i < 6 && !byttet; i++) {
+    await page.locator('.qcard [data-a="ny"]').click();
+    byttet = (await page.locator('.qcard .q-prompt').innerText()) !== forVariant;
+  }
+  logg(byttet, '«Ny variant» lager en ny tilfeldig oppgave');
+  await ga('#/modul/balansering/oppgaver?niva=0&q=rl-01');
+  await page.waitForSelector('.qcard[data-id="rl-01"]');
+  logg((await page.locator('.qcard .atomtab').count()) === 1, 'balansering viser atomtabellen hele tiden');
+  await page.locator('.qcard .eq-sp').last().click();
+  await page.locator('.qcard .eq-edit input').fill('H2O2');
+  await page.locator('.qcard [data-a="endre-ok"]').click();
+  const indeksTekst = await page.locator('.qcard .eq-edit-fb').innerText();
+  logg(/indeksen/.test(indeksTekst) && /hydrogenperoksid/.test(indeksTekst), 'forsøk på å endre indeks gir forklaring (H₂O → H₂O₂)');
+  await ga('#/modul/konfigurasjon/oppgaver?niva=0&q=or-01');
+  await page.waitForSelector('.qcard[data-id="or-01"] .orb-btn');
+  // Nitrogen med paret 2p-elektron (brudd på Hund): 1s ↑↓, 2s ↑↓, 2p ↑↓ ↑ _
+  const klikk = async (orb, j, n) => { for (let k = 0; k < n; k++) await page.locator('.qcard [data-box="' + orb + '"][data-j="' + j + '"]').click(); };
+  await klikk('1s', 0, 3); await klikk('2s', 0, 3); await klikk('2p', 0, 3); await klikk('2p', 1, 1);
+  await page.locator('.qcard [data-a="sjekk"]').click();
+  logg((await page.locator('.qcard .q-fb').innerText()).includes('Hunds regel'), 'orbitaldiagram: brudd på Hunds regel får tilbakemelding');
+  await skjerm('03b-orbital');
+  await ga('#/modul/saltformler/oppgaver?niva=0&q=sa-04');
+  await page.waitForSelector('.qcard[data-id="sa-04"] .salt');
+  await page.locator('.qcard [data-step="nk"][data-d="1"]').click();
+  logg((await page.locator('.qcard .salt-regnskap').innerText()).includes('ikke nøytralt'), 'saltbygger viser ladningsregnskap (ikke nøytralt)');
+  await page.locator('.qcard [data-step="nk"][data-d="1"]').click();
+  await page.locator('.qcard [data-step="na"][data-d="1"]').click();
+  logg((await page.locator('.qcard .salt-regnskap').innerText()).includes('nøytralt') && !(await page.locator('.qcard .salt-regnskap').innerText()).includes('ikke'), 'saltbygger: 3 Ca²⁺ og 2 PO₄³⁻ er nøytralt');
+  await skjerm('03c-saltbygger');
 
   /* ---------- Læringsmål og selvvurdering ---------- */
   console.log('\nLæringsmål og selvvurdering');

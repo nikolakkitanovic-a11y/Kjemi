@@ -125,7 +125,22 @@
       case 'kobling':
         return '<ul class="fasit-liste">' + q.par.map((p) => '<li>' + KJ.fmt(p[0]) + ' → ' + KJ.fmt(p[1]) + '</li>').join('') + '</ul>';
       case 'rekkefolge':
-        return q.elementer.map((e) => KJ.fmt(e)).join(' <span class="lt">&lt;</span> ');
+        return (
+          q.elementer.map((e) => KJ.fmt(e)).join(' <span class="lt">&lt;</span> ') +
+          (q.begrunnelse ? '<p style="margin:8px 0 0"><strong>Begrunnelse:</strong> ' + KJ.fmt(q.begrunnelse.alternativer[q.begrunnelse.svar]) + '</p>' : '')
+        );
+      case 'salt': {
+        const b = KJ.byggSalt(q.kation, q.anion);
+        const k = C.parse(q.kation);
+        const a = C.parse(q.anion);
+        return (
+          KJ.tex(b.nk + '\\cdot(' + (b.qk > 0 ? '+' : '') + b.qk + ') + ' + b.na + '\\cdot(' + b.qa + ') = 0') +
+          ' → ' + KJ.ce(C.parse(b.formel).ce) +
+          '<p style="margin:6px 0 0" class="muted">' + b.nk + ' × ' + KJ.ce(k.ce) + ' og ' + b.na + ' × ' + KJ.ce(a.ce) + '</p>'
+        );
+      }
+      case 'orbital':
+        return KJ.orbitalFasitHtml(q);
       case 'sortering':
         return (
           '<ul class="fasit-liste">' +
@@ -314,10 +329,61 @@
   };
 
   R.rekkefolge = function (q, svar) {
-    svar = svar || [];
-    const deler = q.elementer.map((_, i) => svar[i] === i);
+    let orden = svar || [];
+    let begr = null;
+    if (!Array.isArray(orden)) {
+      begr = orden.begr;
+      orden = orden.orden || [];
+    }
+    const deler = q.elementer.map((_, i) => orden[i] === i);
     const ant = deler.filter(Boolean).length;
-    return { riktig: ant === deler.length, andel: ant / deler.length, deler, melding: ant === deler.length ? 'Riktig rekkefølge!' : ant + ' av ' + deler.length + ' står på riktig plass.' };
+    const ordenOk = ant === deler.length;
+    if (!q.begrunnelse) return { riktig: ordenOk, andel: ant / deler.length, deler, melding: ordenOk ? 'Riktig rekkefølge!' : ant + ' av ' + deler.length + ' står på riktig plass.' };
+    const begrOk = begr === q.begrunnelse.svar;
+    let mld;
+    if (ordenOk && begrOk) mld = 'Riktig rekkefølge og riktig begrunnelse!';
+    else if (ordenOk) mld = begr == null ? 'Riktig rekkefølge. Velg også en begrunnelse.' : 'Riktig rekkefølge, men begrunnelsen holder ikke.';
+    else mld = ant + ' av ' + deler.length + ' står på riktig plass.' + (begrOk ? ' Begrunnelsen er riktig.' : '');
+    return { riktig: ordenOk && begrOk, andel: (ant / deler.length) * 0.6 + (begrOk ? 0.4 : 0), deler, begrOk, melding: mld };
+  };
+
+  R.salt = function (q, svar) {
+    svar = svar || {};
+    const b = KJ.byggSalt(q.kation, q.anion);
+    const deler = { ladning: true, antall: false, formel: false };
+    const meldinger = [];
+    if (!q.visIoner) {
+      const lad = (v) => {
+        const t = String(v || '').trim().replace(/[−–]/g, '-');
+        if (t === '+' || t === '-') return t === '+' ? 1 : -1;
+        return parseInt(t.replace(/^(\d+)([+-])$/, '$2$1'), 10);
+      };
+      const lk = lad(svar.lk);
+      const la = lad(svar.la);
+      deler.ladning = lk === b.qk && la === b.qa;
+      if (!deler.ladning) meldinger.push('Sjekk ladningene til ionene.');
+    }
+    deler.antall = +svar.nk === b.nk && +svar.na === b.na;
+    if (!deler.antall) {
+      const sum = (+svar.nk || 0) * b.qk + (+svar.na || 0) * b.qa;
+      if (sum !== 0) meldinger.push('Ladningsregnskapet går ikke opp (summen er ' + (sum > 0 ? '+' : '') + sum + ').');
+      else meldinger.push('Saltet er nøytralt, men bruk minste mulige hele tall.');
+    }
+    const tolk = C.tolkninger(svar.formel || '');
+    const fasitKanon = C.parse(b.formel).kanon;
+    deler.formel = tolk.some((t) => t.kanon === fasitKanon);
+    if (!deler.formel) {
+      const samme = tolk.find((t) => C.sammeAntall(t.antall, C.parse(b.formel).antall));
+      meldinger.push(samme ? 'Formelen har riktige atomer, men husk parentes rundt sammensatte ioner og kationet først.' : 'Formelen er ikke riktig.');
+    }
+    const n = Object.keys(deler).length;
+    const ant = Object.values(deler).filter(Boolean).length;
+    const riktig = ant === n;
+    return { riktig, andel: ant / n, saltDeler: deler, melding: riktig ? 'Riktig – saltet er elektrisk nøytralt!' : meldinger.join(' ') };
+  };
+
+  R.orbital = function (q, svar) {
+    return KJ.rettOrbital(q, svar || {});
   };
 
   R.sortering = function (q, svar) {
@@ -370,6 +436,7 @@
   };
 
   KJ.rett = function (q, svar) {
+    if (q.type === 'gen') return { riktig: false, andel: 0, tomt: true, melding: 'Ikke besvart.' };
     const f = R[q.type];
     if (!f) return { riktig: false, andel: 0, melding: 'Ukjent oppgavetype' };
     return f(q, svar);
