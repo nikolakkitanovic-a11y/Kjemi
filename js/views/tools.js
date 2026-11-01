@@ -171,6 +171,7 @@
             '<section><h3>' + esc(s.tittel) + '</h3>' +
             (s.formler || []).map((f) => '<div class="frm"><div>' + KJ.tex(f.tex, false) + '</div><div class="t">' + KJ.fmt(f.tekst) + '</div></div>').join('') +
             (s.tabell ? KJ.tabellHtml(s.tabell) : '') +
+            (s.merk ? '<p class="muted" style="font-size:.85rem;margin:6px 0 0">' + KJ.fmt(s.merk) + '</p>' : '') +
             (s.ioner ? KJ.tabellHtml({ hode: ['Formel', 'Navn', 'Ladning'], rader: KJ.tavlaIoner().map((i) => ['{{' + i.formel + '}}', i.navn, KJ.ladningTekst(i.ladning)]) }) : '') +
             '</section>'
         )

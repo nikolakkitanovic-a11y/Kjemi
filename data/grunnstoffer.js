@@ -5,8 +5,9 @@
  *  - Molar masse: standard atommasse avrundet slik lærebøkene gjør. Tall i
  *    parentes i periodesystemet (radioaktive grunnstoffer uten stabile isotoper)
  *    er nukleontallet til den mest stabile isotopen; de er markert med «r».
- *  - Elektronegativitet: Paulings skala med én desimal, slik læreboken bruker
- *    (H 2,1 · C 2,5 · N 3,0 · O 3,5 · F 4,0 · Cl 3,0 · Na 0,9).
+ *  - Elektronegativitet: med én desimal. H, C, N, O, P, S og Cl er verdiene læreren
+ *    oppgir på prøven (H 2,1 · C 2,5 · N 3,0 · O 3,5 · P 2,2 · S 2,6 · Cl 3,2),
+ *    og de stemmer med notatene (ΔEN for HCl = 1,1, LiCl = 2,2, NaF = 3,1).
  *    null = ingen etablert verdi. Verdiene for f-blokken er omtrentlige.
  *  - Kategori: alk alkalimetall · jal jordalkalimetall · inn innskuddsmetall ·
  *    met andre metaller · hlv halvmetall · ikm ikke-metall · hlg halogen ·
@@ -30,9 +31,9 @@
     [12, 'Mg', 'magnesium', 24.31, 1.2, 'jal'],
     [13, 'Al', 'aluminium', 26.98, 1.5, 'met'],
     [14, 'Si', 'silisium', 28.09, 1.8, 'hlv'],
-    [15, 'P', 'fosfor', 30.97, 2.1, 'ikm'],
-    [16, 'S', 'svovel', 32.06, 2.5, 'ikm'],
-    [17, 'Cl', 'klor', 35.45, 3.0, 'hlg'],
+    [15, 'P', 'fosfor', 30.97, 2.2, 'ikm'],
+    [16, 'S', 'svovel', 32.06, 2.6, 'ikm'],
+    [17, 'Cl', 'klor', 35.45, 3.2, 'hlg'],
     [18, 'Ar', 'argon', 39.95, null, 'edg'],
     [19, 'K', 'kalium', 39.1, 0.8, 'alk'],
     [20, 'Ca', 'kalsium', 40.08, 1.0, 'jal'],

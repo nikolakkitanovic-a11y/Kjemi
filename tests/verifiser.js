@@ -172,7 +172,7 @@ for (const t of KJ.temaer) {
           if (n >= 0) sjekk(KJ.rett(q, Object.assign({}, fasit, { bevis: bevis.concat(n) })).riktig, hvor + ': nøytral observasjon gir feil');
           const ir = q.obs.findIndex((o) => o[1] === 'i');
           if (ir >= 0) sjekk(!KJ.rett(q, Object.assign({}, fasit, { bevis: bevis.concat(ir) })).riktig, hvor + ': irrelevant observasjon godtas som bevis');
-          sjekk(!KJ.rett(q, Object.assign({}, fasit, { type: (q.svar + 1) % 5 })).riktig, hvor + ': feil stofftype godtas');
+          sjekk(!KJ.rett(q, Object.assign({}, fasit, { type: (q.svar + 1) % KJ.STOFFTYPER.length })).riktig, hvor + ': feil stofftype godtas');
           break;
         }
         case 'markering': {
@@ -255,7 +255,7 @@ for (const t of KJ.temaer) {
           const ascii = C.konfigTekst(k, false).replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, (m) => m.split('').map((c) => '⁰¹²³⁴⁵⁶⁷⁸⁹'.indexOf(c)).join(''));
           sjekk(KJ.rett(q, ascii).riktig, hvor + ': full ASCII-fasit «' + ascii + '» godtas ikke');
           sjekk(KJ.rett(q, ascii.replace(/\s+/g, '')).riktig, hvor + ': fasit uten mellomrom «' + ascii.replace(/\s+/g, '') + '» godtas ikke');
-          sjekk(q.steg && q.steg.length, hvor + ': mangler løsningsforslag');
+          sjekk((q.steg && q.steg.length) || (KJ.autoSteg(q) || []).length, hvor + ': mangler løsningsforslag');
           break;
         }
         case 'forklaring':
@@ -378,6 +378,43 @@ console.log('  ' + antLikn + ' likninger i tekst kontrollert');
 }
 
 /* ---------- Kjemimotoren ---------- */
+console.log('\nLøsningsforslag, pensum og øveprøven');
+{
+  let uten = [];
+  KJ.alleOppgaver().forEach((q) => {
+    const har = q.forklaring || (q.steg && q.steg.length) || (KJ.autoSteg(q) || []).length || q.modellsvar || ['lewis', 'markering', 'gen'].includes(q.type);
+    if (!har) uten.push(q.id);
+  });
+  sjekk(!uten.length, 'oppgaver uten løsningsforslag eller forklaring: ' + uten.join(', '));
+  console.log('  alle ' + KJ.alleOppgaver().length + ' oppgavene har løsningsforslag eller forklaring');
+  KJ.alleOppgaver()
+    .filter((q) => q.type === 'detektiv')
+    .forEach((q) => sjekk(q.obs.every((o) => (o[1] === 'k' || o[1] === 'i') && o[2]), q.id + ': observasjon uten tydelig rolle eller forklaring'));
+  const FORBUDT = [/kJ\/mol/, /atomgitter/i, /diamant/i, /grafitt/i, /BF3/, /første ioniseringsenergi/i, /eksitert/i, /\d pm\b/, /suksessiv/i];
+  const tekster = [];
+  const samleT = (v, hvor) => {
+    if (typeof v === 'string') tekster.push([hvor, v]);
+    else if (Array.isArray(v)) v.forEach((x) => samleT(x, hvor));
+    else if (v && typeof v === 'object') Object.keys(v).forEach((k) => samleT(v[k], hvor));
+  };
+  KJ.moduler.forEach((m) => samleT(m, m.id));
+  samleT(KJ.formelark, 'formelark');
+  FORBUDT.forEach((re) => {
+    const treff = tekster.filter(([, t]) => re.test(t));
+    sjekk(!treff.length, 'innhold utenfor pensum (' + re + ') i ' + [...new Set(treff.map((x) => x[0]))].join(', '));
+  });
+  sjekk(KJ.grunnstoffMap.P.en === 2.2 && KJ.grunnstoffMap.S.en === 2.6 && KJ.grunnstoffMap.Cl.en === 3.2, 'elektronegativitet som på prøvearket (P 2,2, S 2,6, Cl 3,2)');
+  const ove = KJ.oveproveIder(false);
+  const alleSlots = KJ.OVEPROVE.deler.reduce((a, d) => a.concat(d.slots.reduce((b, sl) => b.concat(...sl), [])), []);
+  sjekk(alleSlots.every((id) => KJ.oppgave(id)), 'øveprøven peker på oppgaver som ikke finnes: ' + alleSlots.filter((id) => !KJ.oppgave(id)).join(', '));
+  sjekk(ove[0] === 'op-1-1' && ove.length >= 45, 'øveprøven har ' + ove.length + ' oppgaver i lærerens rekkefølge');
+  for (let i = 0; i < 20; i++) {
+    const v = KJ.oveproveIder(true);
+    sjekk(v.length === ove.length && new Set(v).size === v.length, 'ny øveprøve har samme lengde og ingen duplikater');
+  }
+  console.log('  øveprøven: ' + ove.length + ' oppgaver');
+}
+
 console.log('\nOppfølging etter prøven');
 {
   const ids = KJ.malOppgaver(1).slice(0, 5).map((q) => q.id).concat(KJ.malOppgaver(2).slice(0, 5).map((q) => q.id));

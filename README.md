@@ -11,6 +11,8 @@
 - **Smart øving** (`#/ov`): én oppgave om gangen, oftest fra de røde målene og fra oppgaver du har svart feil på. `#/ov?mal=3,7` øver bare på mål 3 og 7.
 - **Øvingsplan** på forsiden frem til prøven, bygd på selvvurderingen: røde mål først, så de som ikke er vurdert, så de gule. Siste dag er satt av til repetisjon og prøvesimulering.
 - **Prøvesimulering** med tidtaker og poeng. Med 20 oppgaver får hvert av de 20 målene minst én oppgave. Resultatsiden viser poeng per læringsmål og hvilke mål du bør øve mer på.
+- **Lærerens øveprøve** (kap. 1–3, 9/10-26) som digital prøve: samme oppgaver og rekkefølge som på papiret, eller en ny prøve i samme stil med varianter. Oppgavene fra øveprøven er merket «Øveprøven». Oppbygningen står i `data/oveprove.js`.
+- **Løsningsforslag steg for steg** til alle oppgavene. For navn, formler, salter, balansering, elektronkonfigurasjon og orbitaldiagram lages løsningen automatisk (`js/core/losning.js`).
 - **Oppfølging etter prøven** (`#/ov?prove=<id>`): nye oppgaver fra målene du fikk under 60 % på, uten oppgavene som var med på prøven. 2–3 oppgaver per mål fra grunnleggende til høyt nivå, høyst 8 mål per runde, fasit etter hvert svar og oppsummering per mål til slutt. Den kan også startes fra «Tidligere prøver».
 - **«Kvelden før»** (`#/kvelden-for`): regler, unntak og vanlige feil for alle målene på ett ark, laget for utskrift. Reglene står i `huskeliste` i hver modulfil.
 - **Feilbank:** en oppgave forsvinner først når du har svart riktig 2 ganger på rad.
@@ -101,10 +103,11 @@ tests/                     automatiske tester
 { id: 'mk-30', niva: 2, type: 'markering', mal: [10], struktur: 'salt-vann',
   typer: ['ion-dipol'], sporsmal: 'Marker alle ion-dipol-bindingene.' },
 
-// Stoffdetektiv. Rolle: 'k' = bevis, 'n' = nøytral, 'i' = sier ikke noe om stofftypen.
-// svar er indeksen i KJ.STOFFTYPER: 0 ionisk, 1 polart molekylært, 2 upolart molekylært, 3 metall, 4 atomgitter.
+// Stoffdetektiv. Rolle: 'k' = egenskap (smeltepunkt, ledningsevne, løselighet, formbarhet) = bevis,
+// 'i' = utseende, farge, lukt eller bruk = ikke bevis. Tredje element forklarer observasjonen i fasiten.
+// svar er indeksen i KJ.STOFFTYPER: 0 ionisk, 1 polart molekylært, 2 upolart molekylært, 3 metall.
 { id: 'sd-30', niva: 2, type: 'detektiv', mal: [19], sporsmal: 'Stoffdetektiv …',
-  obs: [['Smelter ved 801 °C', 'k'], ['Er hvitt', 'i']], svar: 0,
+  obs: [['Smelter ved 801 °C', 'k', 'Høyt smeltepunkt: sterke bindinger.'], ['Er hvitt', 'i', 'Farge sier ingenting.']], svar: 0,
   plan: { sporsmal: 'Hvilken undersøkelse …?', alternativer: ['…', '…'], svar: 0 } },
 ```
 
@@ -130,5 +133,6 @@ Den andre testen trenger Playwright med Chromium.
 
 ## Faglige merknader
 
-- Elektronegativitet følger Paulings skala med én desimal, slik læreboken bruker (H 2,1, C 2,5, O 3,5, Cl 3,0).
+- Elektronegativitet: verdiene læreren oppgir på prøven (H 2,1 · C 2,5 · N 3,0 · O 3,5 · P 2,2 · S 2,6 · Cl 3,2). De stemmer med notatene (ΔEN for HCl = 1,1, LiCl = 2,2, NaF = 3,1).
+- Innholdet følger notatene og momentlisten. Ioniseringsenergi i kJ/mol, suksessive ioniseringsenergier og atomgitter er tatt ut.
 - Disse feilene i notatene er rettet på siden: IF₄ heter jodtetrafluorid (jodheptafluorid er IF₇), «fluorid» skrives med uo, CO₂ (ikke «Co²»), s-orbitaler er kuleformede, metaller har krystallstruktur, London-krefter blir sterkere (ikke «mer permanente») med større elektronsky, hydrogenbindingen er tiltrekningen mellom molekylene, og CuSO₄·5H₂O heter kobber(II)sulfatpentahydrat.

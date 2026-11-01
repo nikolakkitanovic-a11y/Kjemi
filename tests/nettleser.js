@@ -579,6 +579,30 @@ const logg = (ok, msg) => {
     logg((await page.locator('.hist a[href="#/ov?prove=' + h.id + '"]').count()) === 1, 'tidligere prøver har lenke til oppfølgingen');
   }
 
+  // Lærerens øveprøve som digital prøve
+  await ga('#/prove');
+  await page.waitForSelector('[data-a="ove"]');
+  await page.locator('[data-a="ove"]').click();
+  await page.waitForSelector('.exam-bar');
+  {
+    const P = await page.evaluate(() => KJ.store.aktivProve());
+    const fasit = await page.evaluate(() => KJ.oveproveIder(false));
+    logg(P.ids.join() === fasit.join() && P.ids[0] === 'op-1-1' && P.varighet === 90 * 60, 'øveprøven starter med ' + P.ids.length + ' oppgaver i lærerens rekkefølge og 90 minutter');
+    logg((await page.locator('.qcard .q-ove').count()) === 1, 'oppgavene fra øveprøven er merket «Øveprøven»');
+    await skjerm('07c-oveproven');
+    await page.evaluate(() => KJ.store.settAktivProve(null));
+  }
+  await ga('#/');
+  await ga('#/prove');
+  await page.waitForSelector('[data-a="ove-ny"]');
+  await page.locator('[data-a="ove-ny"]').click();
+  await page.waitForSelector('.exam-bar');
+  {
+    const P = await page.evaluate(() => KJ.store.aktivProve());
+    logg(P.ids.length >= 45 && P.navn === 'Øveprøve (ny variant)', 'ny prøve i samme stil har ' + P.ids.length + ' oppgaver');
+    await page.evaluate(() => KJ.store.settAktivProve(null));
+  }
+
   /* ---------- Smart øving, øvingsplan og «Kvelden før» ---------- */
   console.log('\nSmart øving, øvingsplan og «Kvelden før»');
   const vekt = await page.evaluate(() => {

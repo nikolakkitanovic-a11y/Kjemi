@@ -5,6 +5,7 @@
  * Hver oppgave har «mal» med nummeret på læringsmålet den øver på (se data/laeringsmal.js).
  * Se README.md for hvordan du legger til nye oppgaver.
  */
+
 (function () {
   var M = {
     id: 'ioner',
@@ -44,6 +45,7 @@
           ['{{CO3^2-}}', 'karbonat'],
           ['{{PO4^3-}}', 'fosfat'],
         ],
+        forklaring: 'De sammensatte ionene fra tavla må pugges: {{NH4+}} ammonium (eneste positive), {{NO3-}} nitrat, {{OH-}} hydroksid, {{SO4^2-}} sulfat, {{CO3^2-}} karbonat og {{PO4^3-}} fosfat.',
         modul: 'navnsetting',
       },
       {

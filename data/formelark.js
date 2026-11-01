@@ -54,12 +54,20 @@ KJ.formelark = [
     },
   },
   {
+    tittel: 'Elektronegativitet som på prøven',
+    tabell: {
+      hode: ['H', 'C', 'N', 'O', 'P', 'S', 'Cl'],
+      rader: [['2,1', '2,5', '3,0', '3,5', '2,2', '2,6', '3,2']],
+    },
+    merk: 'Dette er verdiene læreren oppgir på prøven. Eksempler: H–S 0,5 · P–H 0,1 · P–Cl 1,0 · H–Cl 1,1 · C–Cl 0,7 · N–H 0,9 · O–H 1,4.',
+  },
+  {
     tittel: 'Molekylform (VSEPR)',
     tabell: {
       hode: ['Bindende + ledige par', 'Form', 'Eksempel'],
       rader: [
         ['2 + 0', 'Lineær, 180°', '{{CO2}}'],
-        ['3 + 0', 'Trigonal plan, 120°', '{{BF3}}'],
+        ['3 + 0', 'Trigonal plan, 120°', '{{CO3^2-}}'],
         ['4 + 0', 'Tetraedrisk, 109,5°', '{{CH4}}'],
         ['3 + 1', 'Trigonal pyramide, ca. 107°', '{{NH3}}'],
         ['2 + 2', 'Vinklet, ca. 104,5°', '{{H2O}}'],

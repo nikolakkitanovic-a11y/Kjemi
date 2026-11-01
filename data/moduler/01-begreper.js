@@ -5,6 +5,7 @@
  * Hver oppgave har «mal» med nummeret på læringsmålet den øver på (se data/laeringsmal.js).
  * Se README.md for hvordan du legger til nye oppgaver.
  */
+
 KJ.modul({
   id: 'begreper',
   nr: 1,
@@ -46,7 +47,7 @@ KJ.modul({
           [
             'Ioniseringsenergi',
             'Energien som trengs for å fjerne det ytterste elektronet fra et atom i gassfase',
-            '{{Na(g) -> Na+(g) + e-}} krever 496 kJ/mol',
+            '{{Na(g) -> Na+(g) + e-}}',
           ],
           [
             'Elektronegativitet',
@@ -75,16 +76,14 @@ Et **ion** har like mange protoner som atomet, men et annet antall elektroner. E
 
 - Øker bortover i en periode (sterkere tiltrekning fra kjernen, mindre atom).
 - Minker nedover i en gruppe (elektronet er lenger fra kjernen og skjermes av indre skall).
-- Edelgassene har høyest ioniseringsenergi i sin periode, alkalimetallene lavest.
-
-Andre ioniseringsenergi er alltid høyere enn den første. Et stort hopp viser at vi begynner å fjerne elektroner fra et fullt, indre skall. Magnesium har 738, 1451 og 7733 kJ/mol. Hoppet etter det andre elektronet viser at Mg har 2 valenselektroner.`,
+- Edelgassene har høyest ioniseringsenergi i sin periode, alkalimetallene lavest.`,
     },
     {
       h: 'Elektronegativitet',
-      tekst: `**Elektronegativitet (EN)** er et atoms evne til å trekke til seg elektronene i en kjemisk binding. Vi bruker Paulings skala, der fluor har høyest verdi (4,0).
+      tekst: `**Elektronegativitet (EN)** er et atoms evne til å trekke til seg elektronene i en kjemisk binding. Verdiene er målt i forhold til fluor, som har høyest verdi (4,0).
 
 - EN **øker bortover** i en periode og **oppover** i en gruppe.
-- Mest elektronegative: F (4,0), O (3,5), N og Cl (3,0).
+- Mest elektronegative: F (4,0), O (3,5), Cl (3,2) og N (3,0).
 - Minst elektronegative (mest **elektropositive**): Cs og Fr (0,7) nede til venstre.
 
 Edelgassene har som regel ingen EN-verdi, fordi de nesten ikke danner bindinger.
@@ -142,6 +141,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
         ['Anion', 'negativt ladd ion'],
       ],
       hint: 'Kationer er positive og trekkes derfor mot katoden, den negative polen.',
+      forklaring: 'Atomnummeret er antall protoner og bestemmer grunnstoffet. Nukleontallet er protoner + nøytroner (tallet øverst i {{^{12}_{6}C}}). Isotoper er samme grunnstoff med ulikt antall nøytroner. Et kation er positivt (har avgitt elektroner), et anion er negativt (har tatt opp elektroner).',
       modul: 'atomet',
     },
     {
@@ -187,6 +187,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
         ['Elektronegativitet', 'evnen et atom har til å trekke på elektronene i en binding'],
         ['Formelenhet', 'minste enhet i en ioneforbindelse'],
       ],
+      forklaring: 'Isotoper har samme antall protoner, men ulikt antall nøytroner. Et ion har ladning fordi antall elektroner er forskjellig fra antall protoner. En orbital er et område der elektronet sannsynligvis er, med plass til to elektroner. Ioniseringsenergi er energien som trengs for å fjerne det ytterste elektronet. Elektronegativitet er hvor hardt et atom trekker på elektronene i en binding. En formelenhet er den minste enheten i en ioneforbindelse.',
     },
     {
       id: 'be-02',
@@ -217,6 +218,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
       ],
       svar: 0,
       hint: 'Tenk på NaCl. Finnes det NaCl-molekyler?',
+      forklaring: 'En ioneforbindelse som NaCl består av et gitter av ioner, ikke av molekyler. Formelen viser bare forholdet mellom ionene (1 : 1 i NaCl, 1 : 2 i {{CaCl2}}), og den minste enheten med dette forholdet kalles en formelenhet. Et ion av flere atomer (D) er et sammensatt ion, ikke en formelenhet.',
     },
     {
       id: 'be-04',
@@ -231,13 +233,14 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
         'Ladningen til et negativt ion',
       ],
       svar: 0,
+      forklaring: 'Elektronegativitet handler om hvor hardt et atom trekker på elektronparet i en **binding**. Energien som trengs for å fjerne et elektron (B), er ioniseringsenergi. Fluor er mest elektronegativt (4,0), og verdiene øker mot høyre og oppover i periodesystemet.',
     },
     {
       id: 'be-05',
       niva: 1,
       type: 'flervalg',
       mal: [1],
-      sporsmal: 'Hva er (første) ioniseringsenergi?',
+      sporsmal: 'Hva er ioniseringsenergi?',
       alternativer: [
         'Energien som trengs for å fjerne det ytterste elektronet fra et atom i gassfase',
         'Energien som frigjøres når et atom tar opp et elektron',
@@ -245,6 +248,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
         'Evnen et atom har til å trekke på bindingselektroner',
       ],
       svar: 0,
+      forklaring: 'Ioniseringsenergi er energien som trengs for å fjerne det ytterste elektronet fra et atom, slik at det blir et positivt ion: {{Na(g) -> Na+(g) + e-}}. Den øker bortover i en periode og minker nedover i en gruppe. Evnen til å trekke på bindingselektroner (D) er elektronegativitet.',
     },
     {
       id: 'be-06',
@@ -254,6 +258,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
       sporsmal: 'Fyll inn.',
       tekst: 'Atomer av samme grunnstoff med ulikt antall nøytroner kalles ___. Et atom som har avgitt elektroner, kalles et ___.',
       svar: [['isotoper', 'isotop'], ['kation', 'positivt ion', 'kationer']],
+      forklaring: 'Isotoper er atomer av samme grunnstoff (like mange protoner) med ulikt antall nøytroner, for eksempel {{^{12}C}} og {{^{14}C}}. Et atom som har avgitt elektroner, får flere protoner enn elektroner og blir et positivt ion, et kation.',
     },
     {
       id: 'be-07',
@@ -268,6 +273,24 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
         'Et atom som har mistet protoner',
       ],
       svar: 0,
+      forklaring: 'Et ion er et atom eller en gruppe atomer med elektrisk ladning, fordi det har avgitt eller tatt opp elektroner. Antall protoner endres aldri i kjemiske reaksjoner (D er feil), og nøytroner påvirker ikke ladningen (B er feil).',
+    },
+    {
+      id: 'op-1-2',
+      niva: 1,
+      type: 'flervalg',
+      mal: [1, 6],
+      ove: true,
+      sporsmal: 'Velg riktig alternativ. Elektronegativiteten til atomer stiger mot høyre innen en periode i det periodiske systemet. Årsaken til dette er at',
+      alternativer: [
+        'atomradius minker når vi går mot høyre i en periode, og de ytre elektronene kommer nærmere kjernen',
+        'det blir flere elektroner rundt atomene når vi går mot høyre i en periode',
+        'elektronene kommer lengre vekk fra atomkjernen når vi går mot høyre i en periode',
+        'antallet nøytroner i atomkjernen øker',
+      ],
+      svar: 0,
+      stokk: false,
+      forklaring: 'Mot høyre i en periode øker kjerneladningen (flere protoner), mens elektronene fyller det samme skallet, så skjermingen er omtrent den samme. Atomet blir **mindre**, og de ytre elektronene kommer **nærmere kjernen**. Da trekker kjernen hardere på elektronene i en binding, og elektronegativiteten stiger. B forklarer ingenting (flere elektroner alene gir ikke sterkere tiltrekning), C er feil retning, og nøytronene (D) har ingen ladning.',
     },
     {
       id: 'at-12',
@@ -313,6 +336,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
       ],
       svar: 0,
       hint: 'Tenk på avstand og skjerming.',
+      forklaring: 'Nedover i gruppe 1 får atomene ett skall mer for hver periode. Valenselektronet er da lenger fra kjernen og skjermes av flere indre elektroner, så det holdes svakere og er lettere å fjerne. Kjerneladningen øker (B er feil), alle har ett valenselektron (C er feil), og atomene blir større (D er feil).',
       modul: 'periodesystemet',
     },
     {
@@ -320,10 +344,11 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
       niva: 2,
       type: 'flervalg',
       mal: [1],
-      sporsmal: 'Hvilket grunnstoff har lavest første ioniseringsenergi?',
+      sporsmal: 'Hvilket grunnstoff har lavest ioniseringsenergi?',
       alternativer: ['Li', 'Na', 'Cs', 'F'],
       svar: 2,
       hint: 'Det er lettest å fjerne et elektron fra et stort atom med ett valenselektron.',
+      forklaring: 'Ioniseringsenergien er lavest nede til venstre i periodesystemet. Cs står lengst ned i gruppe 1, har flest skall og et valenselektron langt fra kjernen, som er lett å fjerne. F har høyest ioniseringsenergi av alternativene.',
       modul: 'periodesystemet',
     },
     {
@@ -339,6 +364,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
         'Formelenhet er bare et annet ord for molekyl',
       ],
       svar: 0,
+      forklaring: 'I NaCl er Na⁺ og Cl⁻ ordnet i et stort gitter der hvert ion er omgitt av ioner med motsatt ladning. Det finnes ingen avgrensede NaCl-molekyler. Formelen viser bare forholdet 1 : 1 mellom ionene, og den minste enheten kalles en formelenhet.',
     },
     {
       id: 'be-09',
@@ -354,13 +380,14 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
         ['F trekker hardest på bindingselektronene', 'elektronegativitet'],
         ['{{CaCl2}}: ett {{Ca^2+}} per to {{Cl-}}', 'formelenhet'],
       ],
+      forklaring: 'Atomer med samme atomnummer og ulikt nukleontall er isotoper. {{Fe^3+}} har ladning og er et ion. $3p_x$ er én av de tre p-orbitalene i tredje skall. Å fjerne et elektron fra et atom i gassfase er ioniseringsenergi. Hvor hardt et atom trekker på bindingselektroner, er elektronegativitet. Forholdet 1 : 2 i {{CaCl2}} er formelenheten.',
     },
     {
       id: 'be-10',
       niva: 2,
       type: 'flervalg',
       mal: [1, 6],
-      sporsmal: 'Hvilket grunnstoff har høyest første ioniseringsenergi i periode 2?',
+      sporsmal: 'Hvilket grunnstoff har høyest ioniseringsenergi i periode 2?',
       alternativer: ['Ne', 'F', 'Li', 'O'],
       svar: 0,
       forklaring: 'Ioniseringsenergien øker bortover perioden. Neon har fullt ytterste skall og størst kjerneladning i perioden.',
@@ -374,24 +401,11 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
       alternativer: [
         'Ioniseringsenergi gjelder et fritt atom som mister et elektron. Elektronegativitet gjelder tiltrekning på et elektronpar i en binding',
         'Det er to ord for det samme',
-        'Elektronegativitet måles i kJ/mol, ioniseringsenergi har ingen enhet',
+        'Elektronegativitet gjelder bare metaller',
         'Ioniseringsenergi gjelder bare metaller',
       ],
       svar: 0,
-    },
-    {
-      id: 'be-12',
-      niva: 2,
-      type: 'flervalg',
-      mal: [1, 5],
-      sporsmal: 'Natrium har første ioniseringsenergi 496 kJ/mol og andre ioniseringsenergi 4562 kJ/mol. Hvorfor er hoppet så stort?',
-      alternativer: [
-        'Det andre elektronet må fjernes fra et fullt indre skall (2p), som er nærmere kjernen og mindre skjermet',
-        'Natrium har to valenselektroner',
-        'Det andre elektronet sitter i 3d',
-        'Kjerneladningen øker når det første elektronet fjernes',
-      ],
-      svar: 0,
+      forklaring: 'Begge øker mot høyre og oppover, fordi små atomer med høy kjerneladning holder hardt på elektronene. Forskjellen er hva de beskriver: ioniseringsenergi gjelder et **fritt atom** som mister et elektron, mens elektronegativitet gjelder et atom i en **binding** som trekker på elektronparet.',
     },
     {
       id: 'be-16',
@@ -406,6 +420,23 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
         'Isotoper er alltid radioaktive',
       ],
       svar: 0,
+      forklaring: 'Isotoper har samme antall protoner og dermed samme antall elektroner og samme elektronkonfigurasjon. Det er elektronene som bestemmer de kjemiske egenskapene, så isotopene reagerer likt. De har bare ulikt antall nøytroner, og bare noen isotoper er radioaktive.',
+    },
+    {
+      id: 'op-1-2c',
+      niva: 2,
+      type: 'flervalg',
+      mal: [1, 6],
+      sporsmal: 'Velg riktig alternativ. Ioniseringsenergien minker nedover i en gruppe. Årsaken til dette er at',
+      alternativer: [
+        'valenselektronet er lenger fra kjernen og skjermes av flere indre elektronskall',
+        'kjerneladningen minker nedover i gruppen',
+        'atomene får færre valenselektroner nedover i gruppen',
+        'atomene blir mindre nedover i gruppen',
+      ],
+      svar: 0,
+      stokk: false,
+      forklaring: 'Nedover i en gruppe får atomene ett skall mer for hver periode. Valenselektronet er da **lenger fra kjernen** og **skjermes** av flere indre elektroner, så det holdes svakere og er lettere å fjerne. Kjerneladningen *øker* (B er feil), antall valenselektroner er det samme i gruppen (C er feil), og atomene blir *større* (D er feil).',
     },
     {
       id: 'at-21',
@@ -456,24 +487,11 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
       modul: 'periodesystemet',
     },
     {
-      id: 'ps-21',
-      niva: 3,
-      type: 'flervalg',
-      mal: [1, 5],
-      sporsmal: 'Et grunnstoff har ioniseringsenergiene 738, 1451 og 7733 kJ/mol. I hvilken gruppe står det?',
-      alternativer: ['Gruppe 1', 'Gruppe 2', 'Gruppe 13', 'Gruppe 17'],
-      svar: 1,
-      stokk: false,
-      hint: 'Se etter det store hoppet.',
-      forklaring: 'Hoppet kommer etter det andre elektronet. Da begynner vi å fjerne elektroner fra et fullt indre skall. Grunnstoffet har 2 valenselektroner (det er magnesium).',
-      modul: 'periodesystemet',
-    },
-    {
       id: 'ps-26',
       niva: 3,
       type: 'rekkefolge',
       mal: [1, 6],
-      sporsmal: 'Ranger etter økende første ioniseringsenergi.',
+      sporsmal: 'Ranger etter økende ioniseringsenergi.',
       fra: 'Lavest',
       til: 'Høyest',
       elementer: ['K', 'Na', 'Mg', 'Cl', 'Ar'],
@@ -487,7 +505,7 @@ Molekylære stoffer, som {{H2O}} og {{CO2}}, består derimot av avgrensede molek
         svar: 0,
       },
       hint: 'Ioniseringsenergien øker mot høyre og oppover.',
-      forklaring: 'K (419) < Na (496) < Mg (738) < Cl (1251) < Ar (1521) kJ/mol.',
+      forklaring: 'K < Na < Mg < Cl < Ar. Ioniseringsenergien **øker bortover** i en periode, fordi kjerneladningen øker og atomene blir mindre, mens skjermingen er omtrent den samme. Den **minker nedover** i en gruppe, fordi valenselektronet er lenger fra kjernen og skjermes av flere indre skall. K står under Na og har derfor lavest. Ar er en edelgass med full oktett og har høyest i periode 3.',
       modul: 'periodesystemet',
     },
     {

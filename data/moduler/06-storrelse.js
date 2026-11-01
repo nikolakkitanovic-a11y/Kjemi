@@ -5,6 +5,7 @@
  * Hver oppgave har «mal» med nummeret på læringsmålet den øver på (se data/laeringsmal.js).
  * Se README.md for hvordan du legger til nye oppgaver.
  */
+
 KJ.modul({
   id: 'storrelse',
   nr: 6,
@@ -92,6 +93,7 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
       svar: 0,
       stokk: false,
       hint: 'Antall protoner øker, men antall skall er det samme.',
+      forklaring: 'Bortover en periode øker kjerneladningen, mens elektronene fyller det samme skallet og skjermer lite for hverandre. Kjernen trekker elektronene nærmere, og atomradien **minker**.',
       modul: 'periodesystemet',
     },
     {
@@ -107,6 +109,7 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
         'Den minker fordi skjermingen øker',
       ],
       svar: 0,
+      forklaring: 'Nedover i en gruppe får atomene ett elektronskall mer for hver periode. Valenselektronene er lenger fra kjernen og skjermes av de indre skallene, så atomradien **øker**, selv om kjerneladningen også øker.',
     },
     {
       id: 'st-02',
@@ -138,6 +141,23 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
       sporsmal: 'Fyll inn.',
       tekst: 'Når indre elektroner reduserer tiltrekningen fra kjernen på valenselektronene, kalles det ___.',
       svar: [['skjerming']],
+      forklaring: 'De indre elektronene står mellom kjernen og valenselektronene og frastøter dem. Det kalles **skjerming**. Valenselektronene kjenner derfor ikke hele kjerneladningen.',
+    },
+    {
+      id: 'op-1-2b',
+      niva: 1,
+      type: 'flervalg',
+      mal: [6],
+      sporsmal: 'Velg riktig alternativ. Atomradien minker mot høyre i en periode. Årsaken til dette er at',
+      alternativer: [
+        'kjerneladningen øker, mens elektronene fyller det samme skallet, så elektronene trekkes nærmere kjernen',
+        'atomene får flere elektronskall mot høyre',
+        'skjermingen øker kraftig mot høyre',
+        'antallet nøytroner øker og trekker elektronene innover',
+      ],
+      svar: 0,
+      stokk: false,
+      forklaring: 'I samme periode har atomene like mange skall. Mot høyre får kjernen flere protoner, mens de nye elektronene havner i det samme skallet og skjermer lite for hverandre. Den økte kjerneladningen trekker hele elektronskyen nærmere, og atomet blir mindre.',
     },
     {
       id: 'ps-10',
@@ -158,6 +178,7 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
         svar: 0,
       },
       hint: 'Alle står i periode 2. Radius minker mot høyre.',
+      forklaring: 'Alle står i periode 2. Mot høyre øker kjerneladningen, og atomene blir mindre: F < O < N < C < Li. Li har lavest kjerneladning (3+) og er størst.',
       modul: 'periodesystemet',
     },
     {
@@ -230,6 +251,7 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
       fra: 'Minst',
       til: 'Størst',
       elementer: ['P', 'Si', 'Al', 'Mg', 'Na'],
+      forklaring: 'I periode 3 minker radien mot høyre fordi kjerneladningen øker, mens antall skall er det samme. P står lengst til høyre av disse og er minst, Na står lengst til venstre og er størst: P < Si < Al < Mg < Na.',
     },
     {
       id: 'st-08',
@@ -244,6 +266,7 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
         '{{Mg^2+}} har flere elektroner',
       ],
       svar: 0,
+      forklaring: 'Begge ionene har 10 elektroner i to skall. Mg har 12 protoner og Na 11. Den høyere kjerneladningen trekker de ti elektronene hardere inn, så {{Mg^2+}} blir minst. Antall skall (B) er det samme, og nøytroner (C) har ingen ladning.',
     },
     {
       id: 'st-09',
@@ -269,17 +292,74 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
         'K har færre valenselektroner',
       ],
       svar: 0,
+      forklaring: 'K står under Na i gruppe 1 og har ett elektronskall mer (fire mot tre). Valenselektronet er lenger fra kjernen, så atomet er større. K har flere protoner (B er feil), men skjermingen fra det ekstra skallet veier tyngre.',
     },
     {
       id: 'st-11',
       niva: 2,
       type: 'rekkefolge',
       mal: [6, 1],
-      sporsmal: 'Ranger alkalimetallene etter økende første ioniseringsenergi.',
+      sporsmal: 'Ranger alkalimetallene etter økende ioniseringsenergi.',
       fra: 'Lavest',
       til: 'Høyest',
       elementer: ['Cs', 'Rb', 'K', 'Na', 'Li'],
-      forklaring: 'Nedover i gruppen er valenselektronet lenger fra kjernen og mer skjermet, så det fjernes lettere. Cs 376, Rb 403, K 419, Na 496, Li 520 kJ/mol.',
+      forklaring: 'Cs < Rb < K < Na < Li. Nedover i gruppen får atomene ett elektronskall mer for hver periode. Valenselektronet er lenger fra kjernen og skjermes av flere indre elektroner, så det trengs mindre energi for å fjerne det.',
+    },
+    {
+      id: 'op-1-5',
+      niva: 2,
+      type: 'flervalg',
+      mal: [6, 1],
+      ove: true,
+      sporsmal: 'Velg riktig alternativ. Hvilken påstand er **feil**?',
+      alternativer: [
+        'Kalsium har lavere ioniseringsenergi enn magnesium.',
+        'Klor har mindre atomradius enn svovel.',
+        'Oksygen har høyere elektronegativitet enn nitrogen.',
+        'Natrium har mindre atomradius enn magnesium.',
+      ],
+      svar: 3,
+      stokk: false,
+      forklaring: 'D er feil: Na og Mg står i samme periode, og Mg står til høyre for Na. Mg har høyere kjerneladning og samme antall skall, så **Mg er minst**. A er riktig: Ca står under Mg, og ioniseringsenergien minker nedover. B er riktig: Cl står til høyre for S i periode 3. C er riktig: O står til høyre for N, og elektronegativiteten øker mot høyre.',
+    },
+    {
+      id: 'op-1-5b',
+      niva: 2,
+      type: 'flervalg',
+      mal: [6, 1],
+      sporsmal: 'Velg riktig alternativ. Hvilken påstand er **feil**?',
+      alternativer: [
+        'Kalium har større atomradius enn natrium.',
+        'Fluor har høyere elektronegativitet enn klor.',
+        '{{Na+}} er mindre enn et natriumatom.',
+        'Klor har lavere ioniseringsenergi enn natrium.',
+      ],
+      svar: 3,
+      stokk: false,
+      forklaring: 'D er feil: Cl står langt til høyre i periode 3 og har høy kjerneladning og liten radius. Det trengs mye mer energi for å fjerne et elektron fra Cl enn fra Na. A er riktig (K har ett skall mer), B er riktig (F står over Cl), og C er riktig (Na⁺ har mistet hele det ytterste skallet).',
+    },
+    {
+      id: 'op-2c',
+      niva: 2,
+      type: 'forklaring',
+      mal: [6],
+      ove: true,
+      sporsmal: '**Forklar** hvorfor atomradien til atomene endrer seg når vi går nedover i en gruppe og mot høyre i en periode.',
+      fagbegreper: ['elektronskall|skall', 'kjerneladning', 'skjerm', 'valenselektron'],
+      kriterier: {
+        lav: 'Sier hvilken vei radien endrer seg.',
+        middels: 'Forklarer med antall skall nedover og kjerneladning bortover.',
+        hoy: 'Forklarer begge retningene med skall, kjerneladning og skjerming, og viser hvorfor den ene effekten er størst.',
+      },
+      modellsvar: `**Nedover i en gruppe øker atomradien.** For hver periode får atomet ett elektronskall mer. Valenselektronene er lenger fra kjernen, og de indre skallene **skjermer** for kjerneladningen. Selv om kjerneladningen øker, er effekten av flere skall størst, så atomet blir større.
+
+**Mot høyre i en periode minker atomradien.** Atomene har like mange skall, men kjerneladningen øker med ett proton for hvert grunnstoff. De nye elektronene havner i det samme skallet og skjermer lite for hverandre. Kjernen trekker derfor sterkere på elektronene, og atomet blir mindre.`,
+      punkter: [
+        'Nedover: flere elektronskall → større radius',
+        'Indre skall skjermer for kjerneladningen',
+        'Mot høyre: samme antall skall, økende kjerneladning',
+        'Elektronene trekkes nærmere kjernen → mindre radius',
+      ],
     },
     {
       id: 'ps-19',
@@ -339,6 +419,7 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
       fra: 'Minst',
       til: 'Størst',
       elementer: ['{{Al^3+}}', '{{Mg^2+}}', '{{Na+}}', '{{F-}}', '{{O^2-}}', '{{N^3-}}'],
+      forklaring: 'Alle har 10 elektroner. Jo flere protoner, jo hardere trekkes elektronene inn, og jo mindre blir ionet: Al³⁺ (13 p) < Mg²⁺ (12) < Na⁺ (11) < F⁻ (9) < O²⁻ (8) < N³⁻ (7).',
     },
     {
       id: 'st-13',
@@ -354,13 +435,14 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
         'På grunn av skjerming kjenner valenselektronene ikke hele kjerneladningen',
       ],
       svar: [0, 2, 4],
+      forklaring: 'Riktig: kationer er mindre enn atomet (de har mistet elektroner, ofte et helt skall). Riktig: i en isoelektronisk rekke er ionet med flest protoner minst. Riktig: skjerming gjør at valenselektronene ikke kjenner hele kjerneladningen. Feil: anioner er **større** enn atomet, og atomradien **minker** bortover en periode.',
     },
     {
       id: 'st-14',
       niva: 3,
       type: 'flervalg',
       mal: [6, 1],
-      sporsmal: 'Hvorfor øker første ioniseringsenergi bortover periode 3?',
+      sporsmal: 'Hvorfor øker ioniseringsenergi bortover periode 3?',
       alternativer: [
         'Kjerneladningen øker og atomene blir mindre, mens skjermingen er nesten den samme',
         'Atomene får flere elektronskall',
@@ -368,6 +450,7 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
         'Atomene får færre elektroner',
       ],
       svar: 0,
+      forklaring: 'Bortover periode 3 får atomene flere protoner, mens elektronene fyller det samme skallet. Skjermingen er omtrent lik, så kjernen trekker hardere på valenselektronene, og atomene blir mindre. Da trengs det mer energi for å fjerne et elektron. Antall skall er det samme i hele perioden (B er feil).',
     },
     {
       id: 'st-15',
@@ -396,6 +479,22 @@ For **isoelektroniske** ioner (samme antall elektroner) gjelder: flere protoner 
         'Nedover: ett skall mer',
         'Mer skjerming og større avstand nedover',
       ],
+    },
+    {
+      id: 'op-1-5c',
+      niva: 3,
+      type: 'flervalg',
+      mal: [6, 1],
+      sporsmal: 'Velg riktig alternativ. Hvilken påstand er **feil**?',
+      alternativer: [
+        '{{O^2-}} er større enn {{F-}}.',
+        'Magnesium har høyere ioniseringsenergi enn kalsium.',
+        'Svovel har høyere elektronegativitet enn klor.',
+        'Litium har større atomradius enn beryllium.',
+      ],
+      svar: 2,
+      stokk: false,
+      forklaring: 'C er feil: Cl står til høyre for S og har høyere elektronegativitet (S 2,6, Cl 3,2). A er riktig: O²⁻ og F⁻ har like mange elektroner (10), men O har færre protoner, så elektronene holdes svakere. B er riktig: Ca står under Mg. D er riktig: Be står til høyre for Li.',
     },
   ],
   flashcards: [

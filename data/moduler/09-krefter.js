@@ -5,6 +5,7 @@
  * Hver oppgave har «mal» med nummeret på læringsmålet den øver på (se data/laeringsmal.js).
  * Se README.md for hvordan du legger til nye oppgaver.
  */
+
 KJ.modul({
   id: 'krefter',
   nr: 9,
@@ -143,6 +144,7 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
       alternativer: ['Ionebinding', 'Upolar kovalent binding', 'Metallbinding', 'Hydrogenbinding'],
       svar: 0,
       hint: 'Natrium er et metall, klor er et ikke-metall.',
+      forklaring: 'Natrium er et metall og klor et ikke-metall. Na avgir et elektron og blir {{Na+}}, Cl tar opp elektronet og blir {{Cl-}}. Tiltrekningen mellom ionene er en **ionebinding** (ΔEN = 3,2 − 0,9 = 2,3).',
       modul: 'sterke-bindinger',
     },
     {
@@ -164,6 +166,7 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
         ['Messing (Cu + Zn)', 2],
       ],
       hint: 'Metall + ikke-metall → ionebinding. Ikke-metall + ikke-metall → kovalent. Metall + metall → metallbinding.',
+      forklaring: 'Metall + ikke-metall gir ionebinding (NaCl, MgO, KBr). Bare ikke-metaller gir kovalente bindinger ({{H2O}}, {{CH4}}, {{CO2}}). Rene metaller og legeringer som messing har metallbinding (Cu, Fe, messing).',
       modul: 'sterke-bindinger',
     },
     {
@@ -178,6 +181,7 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
         ['Polar kovalent binding', 'elektronparet er forskjøvet mot det mest elektronegative atomet'],
         ['Metallbinding', 'kationer i en sjø av delokaliserte elektroner'],
       ],
+      forklaring: 'Ionebinding er tiltrekning mellom positive og negative ioner. I en upolar kovalent binding deles elektronparet likt (ΔEN under ca. 0,5). I en polar kovalent binding er paret forskjøvet mot det mest elektronegative atomet. Metallbinding er metallioner i en sjø av delokaliserte elektroner.',
       modul: 'sterke-bindinger',
     },
     {
@@ -194,6 +198,7 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
       ],
       svar: 0,
       hint: '«Inter» betyr «mellom».',
+      forklaring: 'Intermolekylære krefter er de svake bindingene **mellom** molekyler: London-krefter, dipol-dipol-krefter og hydrogenbindinger. Bindingene inne i molekylet (B) er kovalente bindinger, som er mye sterkere.',
       modul: 'svake-bindinger',
     },
     {
@@ -210,6 +215,7 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
       ],
       svar: 0,
       hint: 'Vanndamp er fortsatt {{H2O}}.',
+      forklaring: 'Når vann koker, skilles vannmolekylene fra hverandre. Da brytes hydrogenbindingene **mellom** molekylene. De kovalente O–H-bindingene inne i molekylet brytes ikke, så vanndampen består fortsatt av {{H2O}}-molekyler.',
       modul: 'svake-bindinger',
     },
     {
@@ -224,6 +230,7 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
         ['Hydrogenbinding', 'H bundet til N, O eller F mot et ledig elektronpar'],
         ['Ion-dipol-binding', 'et ion og et polart molekyl'],
       ],
+      forklaring: 'London-krefter skyldes midlertidige dipoler som induserer dipoler i nabomolekyler. Dipol-dipol-krefter virker mellom permanente dipoler. Hydrogenbinding krever H bundet til N, O eller F og et ledig elektronpar på N, O eller F. Ion-dipol virker mellom et ion og et polart molekyl, som når salt løses i vann.',
       modul: 'svake-bindinger',
     },
     {
@@ -234,6 +241,7 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
       sporsmal: 'Hvilken type kraft finnes mellom **alle** molekyler?',
       alternativer: ['London-krefter', 'Dipol-dipol-krefter', 'Hydrogenbindinger', 'Ion-dipol-krefter'],
       svar: 0,
+      forklaring: 'London-krefter oppstår fordi elektronene hele tiden beveger seg, så alle molekyler får midlertidige dipoler. De finnes derfor mellom **alle** molekyler, også upolare som {{CH4}} og {{I2}}. De andre kreftene krever dipoler, hydrogen på N, O eller F, eller ioner.',
       modul: 'svake-bindinger',
     },
     {
@@ -244,6 +252,7 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
       sporsmal: 'Fyll inn.',
       tekst: 'London-krefter og dipol-dipol-krefter kalles samlet for ___-krefter.',
       svar: [['van der Waals', 'van der waals', 'van der Waalske', 'vanderwaals', 'van-der-waals']],
+      forklaring: 'London-krefter og dipol-dipol-krefter kalles samlet **van der Waals-krefter** (van der Waalske bindinger), som i notatene.',
       modul: 'svake-bindinger',
     },
     {
@@ -255,6 +264,7 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
       alternativer: ['{{NH3}}', '{{CH4}}', '{{H2S}}', '{{HCl}}'],
       svar: 0,
       hint: 'H må være bundet til N, O eller F.',
+      forklaring: 'I {{NH3}} er H bundet til N, og N har et ledig elektronpar, så molekylene danner hydrogenbindinger. I {{CH4}}, {{H2S}} og HCl er H bundet til C, S og Cl, som ikke gir hydrogenbindinger.',
       modul: 'svake-bindinger',
     },
     {
@@ -270,6 +280,7 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
         'Atomene danner kovalente bindinger',
       ],
       svar: 0,
+      forklaring: 'Edelgassene er enkeltatomer, og mellom dem virker bare London-krefter. Nedover i gruppen får atomene flere elektroner og en større elektronsky, så London-kreftene blir sterkere, og det trengs mer energi for å koke dem (He −269 °C, Rn −62 °C).',
       modul: 'svake-bindinger',
     },
     {
@@ -280,6 +291,7 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
       sporsmal: 'Fyll inn.',
       tekst: 'Vannmolekyler som er bundet til ionene i en saltkrystall, kalles ___.',
       svar: [['krystallvann']],
+      forklaring: 'Vannmolekyler som er bundet til ionene i en saltkrystall, kalles **krystallvann**. De holdes på plass av ion-dipol-bindinger, som i {{CuSO4*5H2O}} (kobber(II)sulfatpentahydrat).',
       modul: 'svake-bindinger',
     },
     {
@@ -354,6 +366,59 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
       forklaring: 'Det negative kloridionet tiltrekker den positive enden av vannmolekylet, altså H (δ+).',
     },
     {
+      id: 'op-9a',
+      niva: 1,
+      type: 'forklaring',
+      mal: [9],
+      ove: true,
+      sporsmal: '**Forklar** kort hva vi mener med London-krefter, dipol-dipol-krefter og hydrogenbindinger.',
+      fagbegreper: ['midlertidig', 'indus', 'dipol', 'δ|delladning', 'ledig elektronpar|ledige elektronpar|ledig par'],
+      modellsvar: `**London-krefter** er svake krefter som virker mellom **alle** molekyler. Elektronene beveger seg hele tiden, så det oppstår **midlertidige dipoler** som induserer dipoler i nabomolekylene. Kreftene blir sterkere jo flere elektroner (større molekyl) og jo større kontaktflate.
+
+**Dipol-dipol-krefter** virker mellom **dipolmolekyler** (permanente dipoler). Den positive enden (δ+) av ett molekyl tiltrekker den negative enden (δ−) av et annet.
+
+**Hydrogenbinding** er en spesielt sterk dipol-dipol-binding. Den dannes når et **H-atom bundet til N, O eller F** tiltrekkes av et **ledig elektronpar på N, O eller F** i et annet molekyl.`,
+      punkter: [
+        'London: mellom alle molekyler, midlertidige/induserte dipoler',
+        'London blir sterkere med flere elektroner',
+        'Dipol-dipol: mellom permanente dipoler, δ+ mot δ−',
+        'Hydrogenbinding: H bundet til N, O eller F mot ledig elektronpar på N, O eller F',
+      ],
+    },
+    {
+      id: 'op-9e',
+      niva: 1,
+      type: 'flervalg',
+      mal: [9],
+      sporsmal: 'Hvilke krefter virker mellom molekylene i {{NH3}}? Velg alle som passer.',
+      alternativer: ['London-krefter', 'Dipol-dipol-krefter', 'Hydrogenbindinger', 'Ion-dipol-bindinger'],
+      svar: [0, 1, 2],
+      stokk: false,
+      forklaring: 'London-krefter virker mellom alle molekyler. {{NH3}} er en dipol (polare N–H-bindinger og pyramideform), så det er også dipol-dipol-krefter. H er bundet til N, og N har et ledig par, så det dannes hydrogenbindinger. Ion-dipol krever ioner, og det finnes ikke i rent {{NH3}}.',
+    },
+    {
+      id: 'op-9f',
+      niva: 1,
+      type: 'flervalg',
+      mal: [9],
+      sporsmal: 'Hvilke krefter virker mellom molekylene i HCl? Velg alle som passer.',
+      alternativer: ['London-krefter', 'Dipol-dipol-krefter', 'Hydrogenbindinger', 'Ion-dipol-bindinger'],
+      svar: [0, 1],
+      stokk: false,
+      forklaring: 'London-krefter virker mellom alle molekyler. HCl er en dipol (ΔEN 1,1), så det er dipol-dipol-krefter. Det er ingen hydrogenbindinger, fordi H er bundet til Cl, ikke til N, O eller F.',
+    },
+    {
+      id: 'op-9g',
+      niva: 1,
+      type: 'flervalg',
+      mal: [9],
+      sporsmal: 'Hvilke krefter virker mellom molekylene i {{CH4}}? Velg alle som passer.',
+      alternativer: ['London-krefter', 'Dipol-dipol-krefter', 'Hydrogenbindinger', 'Ion-dipol-bindinger'],
+      svar: [0],
+      stokk: false,
+      forklaring: 'C–H er nesten upolar (ΔEN 0,4), og {{CH4}} er symmetrisk (tetraedrisk), så molekylet er upolart. Da virker bare London-krefter.',
+    },
+    {
       id: 'sv-10',
       niva: 2,
       type: 'sortering',
@@ -373,6 +438,7 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
         ['{{S8}}', 0],
       ],
       hint: 'Er molekylet en dipol? Er H bundet til N, O eller F?',
+      forklaring: 'Upolare molekyler ({{CH4}}, {{I2}}, {{CO2}}, {{S8}}) har bare London-krefter. Dipoler uten H på N, O eller F (HCl, {{H2S}}, CO) har dipol-dipol-krefter. {{H2O}}, HF og {{NH3}} har H bundet til O, F eller N og danner hydrogenbindinger.',
       modul: 'svake-bindinger',
     },
     {
@@ -401,6 +467,7 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
         'HCl er upolart',
       ],
       svar: 0,
+      forklaring: 'I HF er H bundet til F, som er svært elektronegativt og har ledige elektronpar, så HF-molekylene danner **hydrogenbindinger**. HCl er også en dipol, men har bare dipol-dipol-krefter. Hydrogenbindinger er sterkest, så HF koker ved høyere temperatur. HCl har faktisk flere elektroner enn HF (B er feil).',
       modul: 'svake-bindinger',
     },
     {
@@ -413,6 +480,7 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
       svar: 3,
       stokk: false,
       hint: 'Alle er upolare. Størst molekyl gir sterkest London-krefter.',
+      forklaring: 'Alle er upolare hydrokarboner med bare London-krefter. {{C4H10}} er størst og har flest elektroner og størst kontaktflate, så London-kreftene er sterkest og kokepunktet høyest.',
       modul: 'svake-bindinger',
     },
     {
@@ -423,22 +491,7 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
       sporsmal: 'Hvilken type binding dannes mellom {{Na+}} og vannmolekylene når NaCl løses i vann?',
       alternativer: ['Ion-dipol-binding', 'Hydrogenbinding', 'Kovalent binding', 'London-krefter'],
       svar: 0,
-      modul: 'svake-bindinger',
-    },
-    {
-      id: 'sv-16',
-      niva: 2,
-      type: 'flervalg',
-      mal: [9],
-      sporsmal: 'Pentan (rett kjede) koker ved 36 °C, mens 2,2-dimetylpropan (kuleformet) koker ved 9,5 °C. Begge er {{C5H12}}. Hvorfor?',
-      alternativer: [
-        'Den rette kjeden gir større kontaktflate og sterkere London-krefter',
-        'Pentan har flere elektroner',
-        'Pentan danner hydrogenbindinger',
-        'Det kuleformede molekylet er en dipol',
-      ],
-      svar: 0,
-      hint: 'Molekylene har like mange elektroner. Hva er forskjellig?',
+      forklaring: '{{Na+}} er et ion, og vannmolekylene er dipoler. O-enden (δ−) av vannmolekylene vender mot {{Na+}}. Tiltrekningen mellom et ion og en dipol kalles en **ion-dipol-binding**.',
       modul: 'svake-bindinger',
     },
     {
@@ -454,6 +507,7 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
         'O–H-bindingene må brytes når vann koker',
       ],
       svar: 0,
+      forklaring: 'Begge er vinklede dipoler, men bare vann har H bundet til et svært elektronegativt atom (O) med ledige par. Vannmolekylene danner derfor hydrogenbindinger, som er mye sterkere enn dipol-dipol-kreftene i {{H2S}}. {{H2S}} har flere elektroner (B er feil), og når vann koker, brytes ikke O–H-bindingene (D er feil).',
       modul: 'svake-bindinger',
     },
     {
@@ -549,6 +603,75 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
       forklaring: 'OH og {{NH2}} har H bundet til O eller N og ledige elektronpar. O i C=O har ledige par og kan ta imot H fra vann. Hydrokarbondelene har bare H bundet til C og danner ikke hydrogenbindinger.',
     },
     {
+      id: 'op-9b',
+      niva: 2,
+      type: 'forklaring',
+      mal: [9],
+      ove: true,
+      sporsmal: `En eller flere av kreftene London-krefter, dipol-dipol-krefter og hydrogenbindinger finnes mellom molekylene i {{PH3}} og {{NH3}}. Forklar hvilke krefter vi har mellom molekylene i hvert av de to stoffene.
+
+Elektronegativitet (som på prøven): H 2,1 · C 2,5 · N 3,0 · O 3,5 · P 2,2 · S 2,6 · Cl 3,2`,
+      fagbegreper: [
+        'London',
+        'dipol',
+        'hydrogenbinding',
+        'ΔEN|elektronegativitet',
+        'ledig elektronpar|ledige elektronpar|ledig par',
+      ],
+      kriterier: {
+        lav: 'Nevner én riktig kraft for hvert stoff.',
+        middels: 'Sier at PH₃ har London-krefter og NH₃ hydrogenbindinger, med en kort begrunnelse.',
+        hoy: 'Begrunner med ΔEN, molekylform og kravene til hydrogenbinding, og bruker det til å sammenligne kokepunktene.',
+      },
+      modellsvar: `{{PH3}}: ΔEN for P–H er 2,2 − 2,1 = 0,1, så bindingene er nesten upolare, og molekylet er bare svært svakt polart. Mellom molekylene virker først og fremst **London-krefter** (og bare svake dipol-dipol-krefter). Det er **ingen hydrogenbindinger**, fordi H er bundet til P, ikke til N, O eller F.
+
+{{NH3}}: ΔEN for N–H er 3,0 − 2,1 = 0,9, og molekylet er en trigonal pyramide, altså en **dipol**. H er bundet til N, og N har et ledig elektronpar, så molekylene danner **hydrogenbindinger**. I tillegg virker **London-krefter** (og dipol-dipol-krefter).
+
+Derfor koker {{NH3}} ved −33 °C, mens {{PH3}} koker ved −88 °C, selv om {{PH3}} har flere elektroner.`,
+      punkter: [
+        'PH₃: ΔEN 0,1, nesten upolart → hovedsakelig London-krefter',
+        'PH₃: ingen hydrogenbindinger (H bundet til P)',
+        'NH₃: ΔEN 0,9, dipol',
+        'NH₃: hydrogenbindinger (H på N og ledig par på N), i tillegg London',
+      ],
+    },
+    {
+      id: 'op-9c',
+      niva: 2,
+      type: 'forklaring',
+      mal: [9],
+      sporsmal: 'Forklar hvilke krefter vi har mellom molekylene i HCl og i HF, og hvorfor HF har høyere kokepunkt enn HCl. (EN: H 2,1, Cl 3,2, F 4,0)',
+      fagbegreper: ['dipol', 'London', 'hydrogenbinding', 'kokepunkt'],
+      modellsvar: `**HCl:** ΔEN = 3,2 − 2,1 = 1,1, så HCl er en **dipol**. Mellom molekylene virker **dipol-dipol-krefter** og **London-krefter**. Det blir ingen hydrogenbindinger, fordi H er bundet til Cl.
+
+**HF:** ΔEN = 4,0 − 2,1 = 1,9. H er bundet til F, som har ledige elektronpar, så molekylene danner **hydrogenbindinger** (i tillegg til London-krefter).
+
+Hydrogenbindinger er sterkere enn vanlige dipol-dipol-krefter, så det trengs mer energi for å skille HF-molekylene. HF koker ved 20 °C og HCl ved −85 °C.`,
+      punkter: [
+        'HCl: dipol-dipol og London',
+        'HF: hydrogenbindinger (H bundet til F)',
+        'Hydrogenbindinger er sterkest → høyest kokepunkt for HF',
+      ],
+    },
+    {
+      id: 'op-9d',
+      niva: 2,
+      type: 'forklaring',
+      mal: [9],
+      sporsmal: 'Forklar hvilke krefter vi har mellom molekylene i {{H2S}} og i {{H2O}}, og hvorfor vann har mye høyere kokepunkt. (EN: H 2,1, O 3,5, S 2,6)',
+      fagbegreper: ['London', 'dipol', 'hydrogenbinding', 'kokepunkt'],
+      modellsvar: `{{H2S}}: ΔEN = 2,6 − 2,1 = 0,5. Molekylet er vinklet og en svak **dipol**. Mellom molekylene virker **London-krefter** og svake **dipol-dipol-krefter**. Ingen hydrogenbindinger, fordi H er bundet til S.
+
+{{H2O}}: ΔEN = 3,5 − 2,1 = 1,4. H er bundet til O, og O har to ledige elektronpar, så vannmolekylene danner **hydrogenbindinger** til hverandre.
+
+Hydrogenbindingene må brytes når vann koker, og det krever mye energi. Vann koker ved 100 °C, mens {{H2S}} koker ved −60 °C, selv om {{H2S}} har flere elektroner.`,
+      punkter: [
+        'H₂S: London og svake dipol-dipol-krefter',
+        'H₂O: hydrogenbindinger',
+        'Hydrogenbindinger er mye sterkere → høyere kokepunkt',
+      ],
+    },
+    {
       id: 'sv-20',
       niva: 3,
       type: 'forklaring',
@@ -591,6 +714,7 @@ Store molekyler kan folde seg slik at ulike deler av samme molekyl holdes sammen
         'Is har ingen hydrogenbindinger',
       ],
       svar: 0,
+      forklaring: 'Når vann fryser, låser hydrogenbindingene vannmolekylene i et åpent, sekskantet gitter med mye tomrom. Is har derfor lavere tetthet enn flytende vann og flyter. Molekylene er like store i is og vann (C er feil).',
       modul: 'svake-bindinger',
     },
     {

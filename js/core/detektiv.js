@@ -1,21 +1,16 @@
 /*
  * Stoffdetektiv: observasjoner → stofftype, bevis og plan for en undersøkelse.
  *
- * q.obs:  [[tekst, rolle], ...]  rolle 'k' = bevis (skal krysses av),
- *                                 'n' = nøytral (kan krysses av, men avgjør ikke),
- *                                 'i' = sier ikke noe om stofftypen (skal ikke krysses av)
+ * q.obs:  [[tekst, rolle, forklaring], ...]
+ *         rolle 'k' = egenskap (smeltepunkt, ledningsevne, løselighet, formbarhet): bevis, skal krysses av
+ *         rolle 'i' = utseende, farge, lukt eller bruk: sier ikke noe om stofftypen, skal ikke krysses av
+ *         ('n' = kan krysses av eller ikke; brukes ikke lenger)
  * q.svar: indeks i KJ.STOFFTYPER
  * q.plan: valgfri { sporsmal, alternativer, svar }  neste undersøkelse
  */
 (function (KJ) {
   'use strict';
-  KJ.STOFFTYPER = [
-    'Ionisk forbindelse (salt)',
-    'Molekylært stoff, polart',
-    'Molekylært stoff, upolart',
-    'Metall',
-    'Atomgitter (kovalent nettverk)',
-  ];
+  KJ.STOFFTYPER = ['Ionisk forbindelse (salt)', 'Molekylært stoff, polart', 'Molekylært stoff, upolart', 'Metall'];
 
   KJ.detektivDeler = (q) => ['type', 'bevis'].concat(q.plan ? ['plan'] : []);
 
@@ -30,8 +25,8 @@
     const mangler = q.obs.map((o, i) => (o[1] === 'k' && !bevis.includes(i) ? i : -1)).filter((i) => i >= 0);
     const ikke = bevis.filter((i) => q.obs[i] && q.obs[i][1] === 'i');
     deler.bevis = !mangler.length && !ikke.length;
-    if (mangler.length) linjer.push('Du mangler ' + mangler.length + ' observasjon' + (mangler.length > 1 ? 'er' : '') + ' som er bevis.');
-    if (ikke.length) linjer.push('Du har krysset av for noe som ikke sier noe om stofftypen (' + ikke.map((i) => '«' + q.obs[i][0] + '»').join(', ') + ').');
+    if (mangler.length) linjer.push('Du mangler ' + mangler.length + ' observasjon' + (mangler.length > 1 ? 'er' : '') + ' av egenskaper. Alle observasjoner av smeltepunkt, ledningsevne, løselighet og formbarhet er bevis.');
+    if (ikke.length) linjer.push('Du har krysset av for noe som ikke sier noe om stofftypen (' + ikke.map((i) => '«' + q.obs[i][0] + '»').join(', ') + '). Farge, lukt, utseende og bruk er ikke bevis.');
     if (q.plan) {
       deler.plan = svar.plan === q.plan.svar;
       if (!deler.plan) linjer.push(svar.plan == null ? 'Du har ikke valgt en undersøkelse.' : 'Undersøkelsen du valgte, skiller ikke sikkert mellom stofftypene.');
@@ -49,8 +44,10 @@
   KJ.detektivFasitHtml = function (q) {
     return (
       '<p style="margin:0 0 6px"><strong>Stofftype:</strong> ' + KJ.STOFFTYPER[q.svar] + '</p>' +
-      '<p style="margin:0 0 4px"><strong>Bevis:</strong></p><ul class="fasit-liste">' +
-      q.obs.filter((o) => o[1] === 'k').map((o) => '<li>' + KJ.fmt(o[0]) + '</li>').join('') +
+      '<p style="margin:0 0 4px"><strong>Observasjonene:</strong></p><ul class="det-fasit">' +
+      q.obs
+        .map((o) => '<li class="' + (o[1] === 'i' ? 'ikke' : 'bevis') + '"><b>' + (o[1] === 'i' ? '✗ ' : '✓ ') + KJ.fmt(o[0]) + '</b>' + (o[2] ? ': ' + KJ.fmt(o[2]) : o[1] === 'i' ? ': sier ikke noe om stofftypen' : '') + '</li>')
+        .join('') +
       '</ul>' +
       (q.plan ? '<p style="margin:8px 0 0"><strong>Undersøkelse:</strong> ' + KJ.fmt(q.plan.alternativer[q.plan.svar]) + '</p>' : '')
     );

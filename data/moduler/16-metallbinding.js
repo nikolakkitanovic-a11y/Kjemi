@@ -5,6 +5,7 @@
  * Hver oppgave har «mal» med nummeret på læringsmålet den øver på (se data/laeringsmal.js).
  * Se README.md for hvordan du legger til nye oppgaver.
  */
+
 KJ.modul({
   id: 'metallbinding',
   nr: 16,
@@ -79,6 +80,7 @@ Nedover i gruppe 1 blir ionene større, og smeltepunktet synker. Bortover i peri
         'De har høyt smeltepunkt',
       ],
       svar: 0,
+      forklaring: 'I et metall er valenselektronene delokaliserte, det vil si at de ikke tilhører ett bestemt atom. Disse frie elektronene kan bevege seg gjennom metallet når det kobles til en spenning, og metallet leder strøm. Metallionene sitter fast i gitteret (B er feil).',
       modul: 'sterke-bindinger',
     },
     {
@@ -94,6 +96,7 @@ Nedover i gruppe 1 blir ionene større, og smeltepunktet synker. Bortover i peri
         'Svake krefter mellom metallmolekyler',
       ],
       svar: 0,
+      forklaring: 'Metallatomene avgir valenselektronene og blir positive metallioner i et gitter. Elektronene beveger seg fritt mellom ionene som en «sjø av elektroner», og tiltrekningen mellom ionene og elektronene er metallbindingen. Delte elektronpar (B) er kovalent binding, og positive og negative ioner (C) er ionebinding.',
     },
     {
       id: 'me-02',
@@ -103,6 +106,7 @@ Nedover i gruppe 1 blir ionene større, og smeltepunktet synker. Bortover i peri
       sporsmal: 'Fyll inn.',
       tekst: 'I et metall ligger positive ___ i et gitter, omgitt av en sjø av frie ___.',
       svar: [['metallioner', 'kationer', 'metallkationer', 'ioner'], ['elektroner', 'valenselektroner']],
+      forklaring: 'I et metall ligger positive **metallioner** i et gitter, omgitt av en sjø av frie (delokaliserte) **elektroner**. Det er tiltrekningen mellom dem som holder metallet sammen.',
     },
     {
       id: 'me-03',
@@ -117,6 +121,7 @@ Nedover i gruppe 1 blir ionene større, og smeltepunktet synker. Bortover i peri
         'Nøytrale atomer med delte elektronpar',
       ],
       svar: 0,
+      forklaring: 'Et metallgitter består av positive metallioner og delokaliserte valenselektroner. Det finnes ingen negative ioner (B), ingen molekyler (C) og ingen delte elektronpar mellom bestemte atomer (D).',
     },
     {
       id: 'me-04',
@@ -128,6 +133,7 @@ Nedover i gruppe 1 blir ionene større, og smeltepunktet synker. Bortover i peri
       svar: 0,
       stokk: false,
       hint: 'Nedover i gruppe 1 blir ionene større.',
+      forklaring: 'Cs står lengst ned i gruppe 1. Det har bare ett valenselektron og de største ionene, så elektronsjøen er langt fra kjernene og metallbindingen er svakest. Smeltepunktet er derfor lavest (Cs 28 °C, Li 181 °C).',
     },
     {
       id: 'me-05',
@@ -142,6 +148,7 @@ Nedover i gruppe 1 blir ionene større, og smeltepunktet synker. Bortover i peri
         'Et metall i flytende form',
       ],
       svar: 0,
+      forklaring: 'En legering er en blanding av to eller flere metaller, eller av et metall og et ikke-metall som karbon. Eksempler er messing (kobber og sink) og stål (jern og karbon). Legeringer har metallbinding.',
     },
     {
       id: 'me-14',
@@ -156,6 +163,38 @@ Nedover i gruppe 1 blir ionene større, og smeltepunktet synker. Bortover i peri
         'Metaller består av molekyler',
       ],
       svar: 0,
+      forklaring: 'Metallbindingen er ikke retningsbestemt: elektronsjøen holder alle ionene sammen uansett hvordan de ligger. Når metallet hamres, kan lagene av metallioner gli forbi hverandre uten at bindingen brytes. Derfor kan metaller formes.',
+    },
+    {
+      id: 'op-10a',
+      niva: 1,
+      type: 'forklaring',
+      mal: [18],
+      ove: true,
+      sporsmal: 'Hva er en metallbinding?',
+      fagbegreper: ['metallion', 'delokalisert|frie elektroner|sjø av elektroner', 'valenselektron', 'tiltrekning'],
+      modellsvar: 'Metallbinding er bindingen mellom atomene i et **metall**. Metallatomene avgir valenselektronene sine og blir **positive metallioner** som ligger ordnet i et gitter. Valenselektronene er **delokaliserte** og beveger seg fritt mellom ionene, som en «sjø av elektroner». Tiltrekningen mellom de positive metallionene og de negative elektronene holder metallet sammen.',
+      punkter: [
+        'Binding mellom metallatomer',
+        'Positive metallioner i et gitter',
+        'Delokaliserte valenselektroner («sjø av elektroner»)',
+        'Tiltrekning mellom ionene og elektronene',
+      ],
+    },
+    {
+      id: 'op-10b',
+      niva: 1,
+      type: 'forklaring',
+      mal: [18],
+      ove: true,
+      sporsmal: 'Hvorfor er metallene gode strømledere?',
+      fagbegreper: ['delokalisert|frie elektroner', 'bevege', 'ladde partikler|ladning'],
+      modellsvar: 'Strøm er ladde partikler som beveger seg. I et metall er valenselektronene **delokaliserte** og ikke bundet til ett bestemt atom. Når vi kobler til en spenning, kan disse **frie elektronene** bevege seg gjennom metallet, og metallet leder strøm. Det gjelder både i fast og flytende form.',
+      punkter: [
+        'Strøm = ladde partikler som beveger seg',
+        'Delokaliserte (frie) elektroner',
+        'Elektronene kan bevege seg når det kobles til spenning',
+      ],
     },
     {
       id: 'me-06',
@@ -171,6 +210,7 @@ Nedover i gruppe 1 blir ionene større, og smeltepunktet synker. Bortover i peri
         'Færre valenselektroner',
       ],
       svar: [0, 1, 2],
+      forklaring: 'Metallbindingen blir sterkere når hvert atom bidrar med flere valenselektroner, når metallionene har høyere ladning, og når ionene er mindre, slik at elektronene kommer nærmere kjernene. Større atomradius og færre valenselektroner gir svakere binding og lavere smeltepunkt.',
     },
     {
       id: 'me-07',
@@ -196,6 +236,7 @@ Nedover i gruppe 1 blir ionene større, og smeltepunktet synker. Bortover i peri
         'Kalium er ikke et metall',
       ],
       svar: 0,
+      forklaring: 'Begge har ett valenselektron. Li står øverst i gruppe 1 og har det minste ionet. Elektronsjøen kommer nærmere kjernene, tiltrekningen blir sterkere, og smeltepunktet blir høyere (Li 181 °C, K 63 °C).',
     },
     {
       id: 'me-09',
@@ -210,6 +251,7 @@ Nedover i gruppe 1 blir ionene større, og smeltepunktet synker. Bortover i peri
         'Mg er et ikke-metall',
       ],
       svar: 0,
+      forklaring: 'Na bidrar med ett valenselektron og danner {{Na+}}, mens Mg bidrar med to og danner {{Mg^2+}}. {{Mg^2+}} har høyere ladning og er mindre, og elektronsjøen er tettere. Tiltrekningen blir mye sterkere, så Mg smelter ved mye høyere temperatur. Begge har tre skall (B er feil).',
     },
     {
       id: 'me-10',
@@ -235,6 +277,7 @@ Nedover i gruppe 1 blir ionene større, og smeltepunktet synker. Bortover i peri
         'Legeringen har ikke metallbinding',
       ],
       svar: 0,
+      forklaring: 'I rent kobber er alle atomene like store, og lagene glir lett forbi hverandre. I messing er det sinkatomer med en annen størrelse mellom kobberatomene. De forstyrrer lagene, så de glir vanskeligere, og legeringen blir hardere. Messing har fortsatt metallbinding.',
     },
     {
       id: 'me-12',
@@ -249,6 +292,7 @@ Nedover i gruppe 1 blir ionene større, og smeltepunktet synker. Bortover i peri
         'Metaller har ikke elektroner',
       ],
       svar: 0,
+      forklaring: 'Metaller har frie elektroner både i fast og flytende form, så de leder alltid. Salter har ioner som sitter fast i gitteret i fast form. Først når saltet smelter eller løses i vann, blir ionene frie til å bevege seg og lede strøm.',
     },
     {
       id: 'me-13',
@@ -263,6 +307,48 @@ Nedover i gruppe 1 blir ionene større, og smeltepunktet synker. Bortover i peri
         'Bindingene går bare i én retning',
       ],
       svar: 0,
+      forklaring: 'Elektronene i et metall er delokaliserte og tiltrekker alle metallionene rundt seg, ikke bare ett nabo-atom. Bindingen har derfor ingen bestemt retning. Det er forskjellen fra kovalente bindinger, der et elektronpar deles mellom to bestemte atomer.',
+    },
+    {
+      id: 'op-10c',
+      niva: 2,
+      type: 'forklaring',
+      mal: [18],
+      ove: true,
+      sporsmal: 'Natrium og magnesium har smeltepunkt på henholdsvis 98 °C og 650 °C. Forklar denne store forskjellen ved hjelp av bindingsteori.',
+      fagbegreper: ['metallbinding', 'valenselektron', 'ladning', 'delokalisert|elektronsjø|sjø av elektroner', 'tiltrekning'],
+      kriterier: {
+        lav: 'Sier at magnesium har sterkere binding.',
+        middels: 'Forklarer at Mg har flere valenselektroner og høyere ioneladning.',
+        hoy: 'Forklarer med antall valenselektroner, ioneladning og ionestørrelse hvorfor metallbindingen blir sterkere, og knytter det til energien som trengs for å smelte.',
+      },
+      modellsvar: `Begge er metaller med **metallbinding**: positive metallioner i en sjø av delokaliserte elektroner.
+
+- Natrium har **ett** valenselektron og danner {{Na+}}. Hvert atom bidrar med ett elektron til elektronsjøen.
+- Magnesium har **to** valenselektroner og danner {{Mg^2+}}. Hvert atom bidrar med to elektroner.
+
+{{Mg^2+}} har **høyere ladning** og er **mindre** enn {{Na+}} (høyere kjerneladning i samme periode), og elektronsjøen er tettere. Tiltrekningen mellom ionene og elektronene blir derfor mye sterkere i magnesium. Det krever mer energi å bryte metallbindingen, og smeltepunktet blir høyere.`,
+      punkter: [
+        'Begge har metallbinding',
+        'Mg har to valenselektroner, Na har ett',
+        'Mg²⁺ har høyere ladning og er mindre',
+        'Sterkere tiltrekning → sterkere metallbinding → høyere smeltepunkt',
+      ],
+    },
+    {
+      id: 'op-10c2',
+      niva: 2,
+      type: 'forklaring',
+      mal: [18],
+      sporsmal: 'Natrium smelter ved 98 °C og aluminium ved 660 °C. Forklar forskjellen ved hjelp av bindingsteori.',
+      fagbegreper: ['metallbinding', 'valenselektron', 'ladning', 'tiltrekning'],
+      modellsvar: 'Begge har **metallbinding**. Natrium bidrar med **ett** valenselektron per atom og danner {{Na+}}, mens aluminium bidrar med **tre** og danner {{Al^3+}}. {{Al^3+}} har høyere ladning, er mindre, og elektronsjøen blir tettere. Tiltrekningen mellom metallionene og elektronene blir mye sterkere, så det trengs mer energi for å smelte aluminium.',
+      punkter: [
+        'Begge har metallbinding',
+        'Al har tre valenselektroner, Na ett',
+        'Al³⁺ har høyere ladning og er mindre',
+        'Sterkere tiltrekning → høyere smeltepunkt',
+      ],
     },
     {
       id: 'sb-21',

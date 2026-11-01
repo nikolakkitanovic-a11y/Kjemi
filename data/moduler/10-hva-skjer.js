@@ -5,6 +5,7 @@
  * Hver oppgave har «mal» med nummeret på læringsmålet den øver på (se data/laeringsmal.js).
  * Se README.md for hvordan du legger til nye oppgaver.
  */
+
 KJ.modul({
   id: 'hva-skjer',
   nr: 10,
@@ -73,6 +74,7 @@ Vurder også hvor stor den upolare delen av molekylet er, og om molekylet blir s
         'Den øker fordi molekylet blir upolart',
       ],
       svar: 0,
+      forklaring: 'OH-gruppen er polar (ΔEN for O–H er 1,4), og H er bundet til O. Metanol kan derfor danne hydrogenbindinger med vannmolekylene og løses svært godt i vann. Metan har bare upolare C–H-bindinger og løses dårlig.',
     },
     {
       id: 'hs-02',
@@ -87,6 +89,7 @@ Vurder også hvor stor den upolare delen av molekylet er, og om molekylet blir s
         'Den øker fordi London-kreftene blir sterkere',
       ],
       svar: 0,
+      forklaring: 'En alkohol har én polar OH-gruppe og en upolar karbonkjede. Når kjeden blir lengre, blir den upolare (hydrofobe) delen en større del av molekylet, og løseligheten i vann minker. Metanol og etanol løses fullstendig, heksanol nesten ikke.',
     },
     {
       id: 'hs-11',
@@ -131,6 +134,7 @@ Vurder også hvor stor den upolare delen av molekylet er, og om molekylet blir s
         ['{{C6H12O6}}', 0],
         ['{{CH4}}', 1],
       ],
+      forklaring: 'Hydrofile stoffer er polare eller ladde og kan binde seg til vann: {{CH3OH}} og {{C6H12O6}} (OH-grupper), {{NH3}} (hydrogenbindinger) og KCl (ioner, ion-dipol). Hydrofobe stoffer er upolare: {{C8H18}}, {{CCl4}} og {{CH4}}.',
       modul: 'svake-bindinger',
     },
     {
@@ -146,6 +150,7 @@ Vurder også hvor stor den upolare delen av molekylet er, og om molekylet blir s
         'Molekylet blir et ion',
       ],
       svar: 0,
+      forklaring: 'C–Cl-bindingen er polar (ΔEN 0,7), og molekylet blir usymmetrisk, så kloretan blir en dipol. Men H er fortsatt bare bundet til C, så molekylet kan ikke danne hydrogenbindinger. Det er ikke et ion, fordi ingen elektroner er avgitt eller tatt opp.',
     },
     {
       id: 'hs-04',
@@ -160,6 +165,7 @@ Vurder også hvor stor den upolare delen av molekylet er, og om molekylet blir s
         'Bindingene blir upolare',
       ],
       svar: 0,
+      forklaring: 'Hver C–Cl-binding er polar (ΔEN 0,7). Men {{CCl4}} er tetraedrisk med fire like atomer rundt C, så de fire bindingsdipolene opphever hverandre. Molekylet er upolart, akkurat som {{CH4}}.',
     },
     {
       id: 'hs-05',
@@ -174,6 +180,7 @@ Vurder også hvor stor den upolare delen av molekylet er, og om molekylet blir s
         'Molekylet blir upolart',
       ],
       svar: 0,
+      forklaring: 'Når COOH blir til {{COO-}}, får gruppen en hel negativ ladning. Den tiltrekker H-enden (δ+) av vannmolekylene med ion-dipol-bindinger, som er sterkere enn hydrogenbindingene COOH-gruppen hadde. Derfor øker løseligheten.',
     },
     {
       id: 'hs-06',
@@ -190,6 +197,7 @@ Vurder også hvor stor den upolare delen av molekylet er, og om molekylet blir s
         ['Legger til en {{NH2}}-gruppe', 0],
         ['Bytter en OH-gruppe med {{CH3}}', 1],
       ],
+      forklaring: 'Polare grupper (OH, {{NH2}}) og ladde grupper ({{COO-}}) binder seg til vann og gjør stoffet mer løselig. En lengre upolar karbonkjede, eller å bytte en OH-gruppe med upolar {{CH3}}, gjør stoffet mindre løselig.',
     },
     {
       id: 'hs-10',
@@ -204,6 +212,7 @@ Vurder også hvor stor den upolare delen av molekylet er, og om molekylet blir s
         'Acetationet er upolart',
       ],
       svar: 0,
+      forklaring: 'Acetationet har en ladd {{COO-}}-gruppe som danner sterke ion-dipol-bindinger med vann. Den upolare delen ({{CH3}}) er liten, så den ladde delen dominerer, og saltet løses godt.',
     },
     {
       id: 'hs-12',
@@ -263,6 +272,7 @@ Vurder også hvor stor den upolare delen av molekylet er, og om molekylet blir s
         'Dimetyleter er et lineært molekyl',
       ],
       svar: 0,
+      forklaring: 'Begge har samme formel, men atomene er bundet forskjellig. I etanol er H bundet direkte til O (OH-gruppe), så molekylene danner hydrogenbindinger med hverandre. I dimetyleter sitter O mellom to C-atomer, og ingen H er bundet til O. Da blir det bare svakere dipol-dipol-krefter, og kokepunktet blir mye lavere.',
       modul: 'svake-bindinger',
     },
     {
@@ -291,6 +301,7 @@ Vurder også hvor stor den upolare delen av molekylet er, og om molekylet blir s
         'C=O-bindingene er upolare',
       ],
       svar: 0,
+      forklaring: 'Både C=O- og S=O-bindinger er polare. {{CO2}} har ingen ledige par på C og er lineært, så dipolene opphever hverandre. S har et ledig elektronpar, så {{SO2}} blir vinklet. Da opphever ikke dipolene hverandre, og molekylet blir en dipol. S er mindre elektronegativt enn O (B er feil).',
     },
     {
       id: 'hs-08',

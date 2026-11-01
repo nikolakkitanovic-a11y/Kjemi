@@ -5,6 +5,7 @@
  * Hver oppgave har «mal» med nummeret på læringsmålet den øver på (se data/laeringsmal.js).
  * Se README.md for hvordan du legger til nye oppgaver.
  */
+
 KJ.modul({
   id: 'anvendelse',
   nr: 17,
@@ -287,25 +288,22 @@ KJ.modul({
       type: 'forklaring',
       mal: [20, 17],
       sporsmal: 'Vurder påstanden: «Et stoff med høyt smeltepunkt er alltid en ioneforbindelse.»',
-      fagbegreper: [
-        'ionebinding|ioneforbindelse',
-        'metallbinding|metall',
-        'atomgitter|kovalent nettverk',
-        'smeltepunkt',
-        'ledningsevne|leder',
-      ],
+      fagbegreper: ['ionebinding|ioneforbindelse', 'metallbinding|metall', 'smeltepunkt', 'ledningsevne|leder'],
       kriterier: {
         lav: 'Sier at påstanden er feil.',
         middels: 'Gir ett moteksempel med riktig bindingstype.',
-        hoy: 'Gir moteksempler fra flere stofftyper (metall, atomgitter), forklarer hvorfor smeltepunktet er høyt i hvert tilfelle, og foreslår flere egenskaper som må undersøkes.',
+        hoy: 'Gir moteksempler, forklarer hvorfor smeltepunktet er høyt i hvert tilfelle, og foreslår flere egenskaper som må undersøkes for å avgjøre stofftypen.',
       },
-      modellsvar: 'Påstanden er feil. Ioneforbindelser har ofte høyt smeltepunkt fordi sterke ionebindinger i gitteret må brytes, for eksempel NaCl (801 °C) og MgO (2852 °C). Men også andre stofftyper har høye smeltepunkter. Metaller som jern (1538 °C) og wolfram (3422 °C) har sterk metallbinding. Atomgitter som kvarts ({{SiO2}}, ca. 1700 °C) og diamant har sterke kovalente bindinger i et nettverk. For å avgjøre stofftypen må vi derfor se på flere egenskaper, for eksempel om stoffet leder strøm i fast form (metall) eller bare smeltet (ionisk).',
+      modellsvar: `Påstanden er feil. Ioneforbindelser har ofte høyt smeltepunkt fordi sterke ionebindinger i gitteret må brytes, for eksempel NaCl (801 °C) og MgO (2852 °C).
+
+Men også **metaller** kan ha svært høyt smeltepunkt. Jern smelter ved 1538 °C og wolfram ved 3422 °C, fordi metallbindingen mellom metallionene og de delokaliserte elektronene er sterk.
+
+For å avgjøre stofftypen må vi se på flere egenskaper. Et metall leder strøm også i fast form, mens et salt bare leder når det er smeltet eller løst i vann.`,
       punkter: [
         'Påstanden er feil',
         'Ioneforbindelser har ofte høyt smeltepunkt (sterke ionebindinger)',
-        'Moteksempel: metaller (Fe, W)',
-        'Moteksempel: atomgitter (SiO₂, diamant)',
-        'Flere egenskaper trengs, f.eks. ledningsevne',
+        'Moteksempel: metaller (Fe, W) med sterk metallbinding',
+        'Flere egenskaper trengs, f.eks. ledningsevne i fast form',
       ],
     },
     {
@@ -371,35 +369,6 @@ I vann er O–H-bindingene polare (ΔEN 1,4), og molekylet er vinklet, så det e
         'Forklarer at salter er sprø',
         'Viser ikke elektronene / edelgasskonfigurasjon',
         'Ingen molekyler, bare formelenhet',
-      ],
-    },
-    {
-      id: 'an-11',
-      niva: 3,
-      type: 'forklaring',
-      mal: [20, 19],
-      sporsmal: 'En elev har funnet at et ukjent svart stoff leder strøm i fast form, og konkluderer med at det er et metall. Vurder konklusjonen. Hvilke andre undersøkelser kan eleven gjøre?',
-      fagbegreper: ['delokaliserte elektroner|frie elektroner', 'metallbinding', 'atomgitter', 'grafitt', 'formbar', 'konklusjon'],
-      kriterier: {
-        lav: 'Sier at konklusjonen er riktig eller feil uten å begrunne.',
-        middels: 'Forklarer hvorfor metaller leder strøm og foreslår én ny undersøkelse.',
-        hoy: 'Gir et moteksempel (grafitt), forklarer det på partikkelnivå, foreslår flere undersøkelser og vurderer hvor sikker konklusjonen er.',
-      },
-      modellsvar: `Ledningsevne i fast form er **typisk** for metaller, fordi metaller har delokaliserte elektroner som kan bevege seg. Konklusjonen er derfor rimelig, men **ikke sikker**.
-
-Grafitt er et **atomgitter** av karbon som også leder strøm i fast form. Hvert C-atom er bundet til tre andre i lag, og det fjerde valenselektronet kan bevege seg langs lagene.
-
-Eleven bør undersøke flere egenskaper:
-- Kan stoffet bøyes eller hamres flatt? Metaller er **formbare** fordi metallbindingen ikke er retningsbestemt. Grafitt smuldrer.
-- Har stoffet metallglans på en frisk flate?
-- Hvor høyt er smeltepunktet?
-
-**Vurdering:** Én observasjon er sjelden nok til en sikker konklusjon. Flere uavhengige observasjoner som peker i samme retning gjør konklusjonen sterkere.`,
-      punkter: [
-        'Ledningsevne i fast form er typisk for metaller',
-        'Moteksempel: grafitt (atomgitter) leder også',
-        'Foreslår test av formbarhet',
-        'Én observasjon gir ikke sikker konklusjon',
       ],
     },
     {
@@ -539,7 +508,7 @@ Sammenlign med vann: også der er bindingene polare, men molekylet er **vinklet*
       },
       modellsvar: `Nedover i en gruppe får atomene **ett elektronskall mer** for hver periode. Valenselektronene er da lenger fra kjernen.
 
-Kjerneladningen øker, men de indre elektronene **skjermer** for den. Valenselektronene merker omtrent den samme effektive kjerneladningen nedover i gruppen. Effekten av flere skall er derfor større enn effekten av økt kjerneladning, og radien øker. Eksempel: Li 152 pm, Na 186 pm, K 227 pm.
+Kjerneladningen øker, men de indre elektronene **skjermer** for den. Valenselektronene merker omtrent den samme effektive kjerneladningen nedover i gruppen. Effekten av flere skall er derfor større enn effekten av økt kjerneladning, og radien øker. Eksempel: Li er minst, så kommer Na og K.
 
 **Skallmodellen hjelper** fordi den viser at elektronene ligger i skall i økende avstand fra kjernen, og at de indre skallene skjermer.
 
@@ -550,7 +519,7 @@ Kjerneladningen øker, men de indre elektronene **skjermer** for den. Valenselek
         'Flere elektronskall nedover',
         'Indre elektroner skjermer for kjerneladningen',
         'Effekten av flere skall er størst',
-        'Eksempel med tall',
+        'Eksempel (Li < Na < K)',
         'Vurderer skallmodellen (styrke og begrensning)',
       ],
     },

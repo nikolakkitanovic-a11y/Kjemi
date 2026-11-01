@@ -5,6 +5,7 @@
  * Hver oppgave har «mal» med nummeret på læringsmålet den øver på (se data/laeringsmal.js).
  * Se README.md for hvordan du legger til nye oppgaver.
  */
+
 KJ.modul({
   id: 'saltformler',
   nr: 13,
@@ -65,6 +66,7 @@ $3 \\cdot (+2) + 2 \\cdot (-3) = +6 - 6 = 0$ → {{Ca3(PO4)2}}`,
       sporsmal: 'Fyll inn.',
       tekst: 'Når et metall reagerer med et ikke-metall, ___ metallet elektroner og blir et ___.',
       svar: [['avgir', 'gir fra seg', 'mister', 'gir bort'], ['kation', 'positivt ion']],
+      forklaring: 'Et metall har få valenselektroner og **avgir** dem lett. Da får det flere protoner enn elektroner og blir et positivt ion, et **kation**. Ikke-metallet tar opp elektronene og blir et anion.',
       modul: 'sterke-bindinger',
     },
     {
@@ -138,9 +140,11 @@ $3 \\cdot (+2) + 2 \\cdot (-3) = +6 - 6 = 0$ → {{Ca3(PO4)2}}`,
       niva: 2,
       type: 'formel',
       mal: [15, 14],
+      ove: true,
       navn: 'ammoniumnitrat',
       svar: 'NH4NO3',
       hint: '{{NH4+}} og {{NO3-}} har ladning +1 og −1.',
+      forklaring: 'Ammoniumnitrat består av ammoniumionet {{NH4+}} og nitrationet {{NO3-}}. Ladningene er +1 og −1, så det trengs ett av hvert: {{NH4NO3}}. Det trengs ingen parentes, fordi det bare er ett av hvert ion.',
       modul: 'navnsetting',
     },
     {
@@ -154,7 +158,16 @@ $3 \\cdot (+2) + 2 \\cdot (-3) = +6 - 6 = 0$ → {{Ca3(PO4)2}}`,
       steg: ['{{Ca^2+}} og {{PO4^3-}}', '3 · (+2) = +6 og 2 · (−3) = −6', 'Formel: {{Ca3(PO4)2}}'],
       modul: 'navnsetting',
     },
-    { id: 'nv-39', niva: 2, type: 'formel', mal: [15, 14], navn: 'sølvnitrat', svar: 'AgNO3', modul: 'navnsetting' },
+    {
+      id: 'nv-39',
+      niva: 2,
+      type: 'formel',
+      mal: [15, 14],
+      navn: 'sølvnitrat',
+      svar: 'AgNO3',
+      forklaring: 'Sølv danner bare {{Ag+}}, så navnet har ikke romertall. Nitrat er {{NO3-}}. +1 og −1 gir ett av hvert: {{AgNO3}}.',
+      modul: 'navnsetting',
+    },
     {
       id: 'sa-03',
       niva: 2,
@@ -204,10 +217,46 @@ $3 \\cdot (+2) + 2 \\cdot (-3) = +6 - 6 = 0$ → {{Ca3(PO4)2}}`,
       sporsmal: 'Saltbygger: tilfeldig salt med ionene vist',
     },
     {
+      id: 'op-3',
+      niva: 2,
+      type: 'fyllinn',
+      mal: [15],
+      ove: true,
+      sporsmal: 'Skriv riktig formelenhet for saltene du får ved å kombinere kationene {{Na+}}, {{Al^3+}} og {{Cu^2+}} med anionene {{O^2-}} og {{Cl-}}.',
+      tekst: `Na⁺ og O²⁻: ___
+Al³⁺ og O²⁻: ___
+Cu²⁺ og O²⁻: ___
+Na⁺ og Cl⁻: ___
+Al³⁺ og Cl⁻: ___
+Cu²⁺ og Cl⁻: ___`,
+      svar: [['Na2O'], ['Al2O3'], ['CuO'], ['NaCl'], ['AlCl3'], ['CuCl2']],
+      steg: [
+        'Saltet må være elektrisk nøytralt: summen av ladningene skal bli null. Bruk minste hele tall.',
+        '{{Na+}} og {{O^2-}}: 2 · (+1) + (−2) = 0 → {{Na2O}}',
+        '{{Al^3+}} og {{O^2-}}: 2 · (+3) + 3 · (−2) = 0 → {{Al2O3}}',
+        '{{Cu^2+}} og {{O^2-}}: (+2) + (−2) = 0 → **CuO**',
+        '{{Na+}} og {{Cl-}}: (+1) + (−1) = 0 → **NaCl**',
+        '{{Al^3+}} og {{Cl-}}: (+3) + 3 · (−1) = 0 → {{AlCl3}}',
+        '{{Cu^2+}} og {{Cl-}}: (+2) + 2 · (−1) = 0 → {{CuCl2}}',
+      ],
+    },
+    {
+      id: 'op-f-fe2so43',
+      niva: 2,
+      type: 'formel',
+      mal: [15, 13, 14],
+      ove: true,
+      navn: 'jern(III)sulfat',
+      svar: 'Fe2(SO4)3',
+    },
+    { id: 'op-f-k3po4', niva: 2, type: 'formel', mal: [15, 14], ove: true, navn: 'kaliumfosfat', svar: 'K3PO4' },
+    { id: 'op-f-caoh2', niva: 2, type: 'formel', mal: [15, 14], ove: true, navn: 'kalsiumhydroksid', svar: 'Ca(OH)2' },
+    {
       id: 'nv-28',
       niva: 3,
       type: 'formel',
       mal: [15, 13],
+      ove: true,
       navn: 'kobber(I)oksid',
       svar: 'Cu2O',
       hint: '{{Cu+}} og {{O^2-}}',
@@ -317,6 +366,29 @@ $3 \\cdot (+2) + 2 \\cdot (-3) = +6 - 6 = 0$ → {{Ca3(PO4)2}}`,
         'Elektronene Ca avgir, tas opp av Cl',
         'Ladningsregnskap: 1·(+2) + 2·(−1) = 0',
         'Samlet positiv ladning = samlet negativ ladning → nøytralt',
+      ],
+    },
+    {
+      id: 'op-3b',
+      niva: 3,
+      type: 'fyllinn',
+      mal: [15, 14],
+      sporsmal: 'Skriv riktig formelenhet for saltene du får ved å kombinere kationene {{K+}}, {{Fe^3+}} og {{Mg^2+}} med anionene {{S^2-}} og {{NO3-}}.',
+      tekst: `K⁺ og S²⁻: ___
+Fe³⁺ og S²⁻: ___
+Mg²⁺ og S²⁻: ___
+K⁺ og NO₃⁻: ___
+Fe³⁺ og NO₃⁻: ___
+Mg²⁺ og NO₃⁻: ___`,
+      svar: [['K2S'], ['Fe2S3'], ['MgS'], ['KNO3'], ['Fe(NO3)3'], ['Mg(NO3)2']],
+      steg: [
+        'Summen av ladningene skal bli null. Sammensatte ioner (her {{NO3-}}) settes i parentes når det trengs mer enn ett.',
+        '{{K+}} og {{S^2-}}: 2 · (+1) + (−2) = 0 → {{K2S}}',
+        '{{Fe^3+}} og {{S^2-}}: 2 · (+3) + 3 · (−2) = 0 → {{Fe2S3}}',
+        '{{Mg^2+}} og {{S^2-}}: (+2) + (−2) = 0 → **MgS**',
+        '{{K+}} og {{NO3-}}: (+1) + (−1) = 0 → {{KNO3}}',
+        '{{Fe^3+}} og {{NO3-}}: (+3) + 3 · (−1) = 0 → {{Fe(NO3)3}}',
+        '{{Mg^2+}} og {{NO3-}}: (+2) + 2 · (−1) = 0 → {{Mg(NO3)2}}',
       ],
     },
   ],

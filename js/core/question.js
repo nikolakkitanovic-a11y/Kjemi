@@ -63,20 +63,21 @@
 
   function standardSporsmal(q) {
     if (q.sporsmal) return q.sporsmal;
-    if (q.type === 'navn') return 'Hva heter forbindelsen {{' + q.formel + '}}?';
-    if (q.type === 'formel') return 'Skriv den kjemiske formelen for **' + q.navn + '**.';
+    if (q.type === 'navn') return /^[A-Z][a-z]?$/.test(q.formel) ? 'Skriv navnet på grunnstoffet {{' + q.formel + '}}.' : 'Skriv navnet på forbindelsen {{' + q.formel + '}}.';
+    if (q.type === 'formel') return 'Skriv formelen for **' + q.navn + '**.';
     if (q.type === 'balanser') return 'Balanser reaksjonslikningen. Skriv koeffisientene i feltene (tomt felt betyr 1).';
     if (q.type === 'orbital') {
       const e = KJ.grunnstoffMap[q.grunnstoff];
       const ion = q.ladning ? '{{' + q.grunnstoff + '^' + (Math.abs(q.ladning) > 1 ? Math.abs(q.ladning) : '') + (q.ladning > 0 ? '+' : '-') + '}}' : e.navn + ' ({{' + q.grunnstoff + '}})';
       return 'Vis hvordan elektronene i ' + ion + ' fordeles i orbitalene i grunntilstanden.' + (q.konfig ? ' Skriv også elektronkonfigurasjonen, både fullt og med edelgasskjerne.' : '');
     }
-    if (q.type === 'salt') return 'Sett sammen saltet **' + q.navn + '**. Velg hvor mange av hvert ion som trengs for at saltet skal bli elektrisk nøytralt, og skriv formelen.' + (q.visIoner ? '' : ' Du må selv finne ionene og ladningene.');
+    if (q.type === 'salt') return 'Skriv riktig formelenhet for **' + q.navn + '**. Velg hvor mange av hvert ion som trengs for at saltet skal bli elektrisk nøytralt, og skriv formelen.' + (q.visIoner ? '' : ' Du må selv finne ionene og ladningene.');
     if (q.type === 'konfig') {
       const e = KJ.grunnstoffMap[q.grunnstoff];
       const ion = q.ladning ? '{{' + q.grunnstoff + '^' + (Math.abs(q.ladning) > 1 ? Math.abs(q.ladning) : '') + (q.ladning > 0 ? '+' : '-') + '}}' : e.navn + ' ({{' + q.grunnstoff + '}})';
-      const not = q.notasjon === 'full' ? ' Bruk full notasjon.' : q.notasjon === 'edelgass' ? ' Bruk edelgassnotasjon.' : '';
-      return 'Skriv elektronkonfigurasjonen til ' + ion + ' i grunntilstanden.' + not;
+      if (q.notasjon === 'full') return 'Skriv fullstendig elektronkonfigurasjon til ' + ion + '.';
+      if (q.notasjon === 'edelgass') return 'Skriv elektronkonfigurasjonen til ' + ion + ' med edelgasskjerne.';
+      return 'Skriv elektronkonfigurasjonen til ' + ion + '.';
     }
     return '';
   }
@@ -130,7 +131,7 @@
       const nr = this.o.nummer ? '<span class="q-nr">Oppgave ' + this.o.nummer + (this.o.totalt ? ' av ' + this.o.totalt : '') + '</span>' : '';
       const tema = this.o.visTema && KJ.temaMap[q.tema] ? '<span class="q-tema" style="--tc:' + KJ.temaMap[q.tema].farge + '">' + esc(KJ.temaMap[q.tema].tittel) + '</span>' : '';
       this.el.innerHTML =
-        '<header class="q-head">' + nr + nivaHtml(q.niva) + malHtml(q) + '<span class="q-type">' + KJ.TYPENAVN[q.type] + '</span>' + (this.spec ? '<span class="q-gen">Tilfeldig</span>' : '') + tema +
+        '<header class="q-head">' + nr + nivaHtml(q.niva) + malHtml(q) + '<span class="q-type">' + KJ.TYPENAVN[q.type] + '</span>' + (this.spec ? '<span class="q-gen">Tilfeldig</span>' : '') + (q.ove ? '<span class="q-ove" title="Samme oppgave som på lærerens øveprøve">Øveprøven</span>' : '') + tema +
         '<span class="q-status" aria-hidden="true"></span></header>' +
         '<div class="q-prompt" id="' + this.id + '-p">' + KJ.fmtBlock(standardSporsmal(q)) + '</div>' +
         '<div class="q-body">' + this.kropp() + '</div>' +
@@ -276,14 +277,15 @@
         case 'detektiv': {
           const n = this.id;
           return (
-            '<div class="det-obs"><p class="fld-l">Observasjoner</p><ul>' +
+            '<div class="det-obs"><p class="det-steg"><b>1</b>Kryss av for observasjonene som er bevis</p>' +
+            '<p class="q-note" style="margin:0 0 6px">Bevis er egenskaper: smeltepunkt, kokepunkt, ledningsevne, løselighet og formbarhet. Farge, lukt, utseende og bruk er ikke bevis.</p><ul>' +
             q.obs.map((o, i) => '<li><label class="chk"><input type="checkbox" data-bevis="' + i + '"><span>' + fmt(o[0]) + '</span></label></li>').join('') +
-            '</ul><p class="q-note">Kryss av for observasjonene som er bevis for stofftypen.</p></div>' +
-            '<fieldset class="opts det-type"><legend class="fld-l" style="margin-bottom:6px">Hva slags stoff er dette?</legend>' +
+            '</ul></div>' +
+            '<fieldset class="opts det-type"><legend class="det-steg"><b>2</b>Hva slags stoff er dette?</legend>' +
             KJ.STOFFTYPER.map((t, i) => '<label class="opt" data-i="' + i + '"><input type="radio" name="' + n + '-t" data-dtype value="' + i + '"><span class="opt-key" aria-hidden="true">' + String.fromCharCode(65 + i) + '</span><span class="opt-text">' + t + '</span></label>').join('') +
             '</fieldset>' +
             (q.plan
-              ? '<fieldset class="opts det-plan"><legend class="fld-l" style="margin-bottom:6px">' + fmt(q.plan.sporsmal) + '</legend>' +
+              ? '<fieldset class="opts det-plan"><legend class="det-steg"><b>3</b>' + fmt(q.plan.sporsmal) + '</legend>' +
                 (this.planRek || (this.planRek = KJ.shuffle(q.plan.alternativer.map((_, i) => i))))
                   .map((i, k) => '<label class="opt" data-i="' + i + '"><input type="radio" name="' + n + '-p" data-dplan value="' + i + '"><span class="opt-key" aria-hidden="true">' + String.fromCharCode(65 + k) + '</span><span class="opt-text">' + fmt(q.plan.alternativer[i]) + '</span></label>')
                   .join('') +
@@ -969,7 +971,9 @@
     losningHtml() {
       const q = this.q;
       let h = '<h3 class="sol-h">Fasit</h3><div class="sol-fasit">' + KJ.fasit(q) + '</div>';
-      if (q.steg && q.steg.length) h += '<h3 class="sol-h">Løsningsforslag steg for steg</h3><ol class="steps">' + q.steg.map((s) => '<li>' + KJ.fmtBlock(s) + '</li>').join('') + '</ol>';
+      const auto = KJ.autoSteg ? KJ.autoSteg(q) : null;
+      if (auto && auto.length) h += '<h3 class="sol-h">Løsningsforslag steg for steg</h3><ol class="steps">' + auto.map((s) => '<li>' + s + '</li>').join('') + '</ol>';
+      else if (q.steg && q.steg.length) h += '<h3 class="sol-h">Løsningsforslag steg for steg</h3><ol class="steps">' + q.steg.map((s) => '<li>' + KJ.fmtBlock(s) + '</li>').join('') + '</ol>';
       if (q.forklaring) h += '<h3 class="sol-h">Forklaring</h3>' + KJ.fmtBlock(q.forklaring);
       return h;
     }

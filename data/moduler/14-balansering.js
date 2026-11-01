@@ -5,6 +5,7 @@
  * Hver oppgave har «mal» med nummeret på læringsmålet den øver på (se data/laeringsmal.js).
  * Se README.md for hvordan du legger til nye oppgaver.
  */
+
 KJ.modul({
   id: 'balansering',
   nr: 14,
@@ -102,6 +103,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       niva: 1,
       type: 'balanser',
       mal: [16],
+      ove: true,
       reaktanter: ['N2', 'H2'],
       produkter: ['NH3'],
       svar: [1, 3, 2],
@@ -153,6 +155,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       sporsmal: 'Hva kalles tallet 2 i $2\\,\\ce{H2O}$ (tallet foran formelen)?',
       alternativer: ['Koeffisient', 'Indeks', 'Ladning', 'Tilstandssymbol'],
       svar: 0,
+      forklaring: 'Tallet foran formelen er **koeffisienten**, og den forteller hvor mange molekyler eller formelenheter det er. Tallet nede til høyre i formelen (2 i {{H2O}}) er **indeksen**, og den forteller hvor mange atomer det er i ett molekyl. Når du balanserer, endrer du bare koeffisientene.',
       modul: 'reaksjonslikninger',
     },
     {
@@ -168,6 +171,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
         'Fordi oksygen ikke kan ha indeks 2',
       ],
       svar: 0,
+      forklaring: 'Indeksene er en del av stoffet. Endrer du {{H2O}} til {{H2O2}}, får du hydrogenperoksid, et helt annet stoff. Riktig er å endre koeffisientene: {{2H2O -> 2H2 + O2}}.',
       modul: 'reaksjonslikninger',
     },
     {
@@ -175,6 +179,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       niva: 1,
       type: 'balanser',
       mal: [16],
+      ove: true,
       reaktanter: ['Al', 'O2'],
       produkter: ['Al2O3'],
       svar: [4, 3, 2],
@@ -217,6 +222,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       niva: 2,
       type: 'balanser',
       mal: [16],
+      ove: true,
       reaktanter: ['C2H6', 'O2'],
       produkter: ['CO2', 'H2O'],
       svar: [2, 7, 4, 6],
@@ -262,6 +268,7 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       niva: 2,
       type: 'balanser',
       mal: [16],
+      ove: true,
       reaktanter: ['KClO3'],
       produkter: ['KCl', 'O2'],
       svar: [2, 2, 3],
@@ -335,6 +342,17 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       modul: 'reaksjonslikninger',
     },
     {
+      id: 'rl-35',
+      niva: 2,
+      type: 'balanser',
+      mal: [16],
+      ove: true,
+      reaktanter: ['Na3PO4', 'CaCl2'],
+      produkter: ['Ca3(PO4)2', 'NaCl'],
+      svar: [2, 3, 1, 6],
+      hint: ['Behold {{PO4^3-}} som én enhet.', 'Start med Ca: det trengs 3 {{CaCl2}} for å få 3 Ca.'],
+    },
+    {
       id: 'rl-24',
       niva: 3,
       type: 'balanser',
@@ -396,18 +414,6 @@ Er det ioner med i likningen, må også **summen av ladningene** være lik på b
       reaktanter: ['Ca3(PO4)2', 'H2SO4'],
       produkter: ['CaSO4', 'H3PO4'],
       svar: [1, 3, 3, 2],
-      modul: 'reaksjonslikninger',
-    },
-    {
-      id: 'rl-29',
-      niva: 3,
-      type: 'balanser',
-      mal: [16],
-      reaktanter: ['Fe^3+', 'OH-'],
-      produkter: ['Fe(OH)3'],
-      svar: [1, 3, 1],
-      hint: 'Både atomer og ladning må stemme.',
-      steg: ['Fe: 1 = 1', 'OH: 3 til høyre → $3\\,\\ce{OH-}$', 'Ladning: $+3 + 3 \\cdot (-1) = 0$ til venstre, 0 til høyre.'],
       modul: 'reaksjonslikninger',
     },
     {

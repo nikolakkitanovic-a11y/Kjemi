@@ -83,11 +83,16 @@ KJ.ionModul = function (M) {
     sporsmal: 'Hvilken ladning har ionet?',
     kategorier: ladKat.map(lt),
     elementer: ioner.map((i) => [i.navn, ladKat.indexOf(i.ladning)]),
+    forklaring:
+      'Sorter ionene etter ladning: ' +
+      ladKat.map((l) => '**' + lt(l) + '**: ' + ioner.filter((i) => i.ladning === l).map((i) => i.navn).join(', ')).join(' · ') +
+      '. Pugg-tips: bare ammonium er positivt, fosfat er 3−, karbonat og sulfat er 2−, resten er 1−.',
   });
   nye.push({
     id: 'io-kobling', niva: 1, type: 'kobling', mal: [14],
     sporsmal: 'Koble navnet med riktig formel.',
     par: ioner.map((i) => [i.navn, '{{' + i.formel + '}}']),
+    forklaring: 'Navn, formel og ladning må pugges sammen: ' + ioner.map((i) => i.navn + ' {{' + i.formel + '}}').join(', ') + '. Ladningen hører til hele ionet og må alltid skrives med.',
   });
   const positivt = ioner.find((i) => i.ladning > 0);
   if (positivt) {
@@ -96,6 +101,7 @@ KJ.ionModul = function (M) {
       sporsmal: 'Hvilket av ionene fra tavla er positivt?',
       alternativer: [positivt].concat(ioner.filter((i) => i.ladning < 0).slice(0, 3)).map((i) => i.navn),
       svar: 0,
+      forklaring: positivt.navn[0].toUpperCase() + positivt.navn.slice(1) + ', {{' + positivt.formel + '}}, er det eneste positive ionet på tavla. Det oppfører seg som et metallion i salter, for eksempel i {{NH4Cl}} (ammoniumklorid). Alle de andre ionene er negative.',
     });
   }
   nye.push({
@@ -108,6 +114,7 @@ KJ.ionModul = function (M) {
       'Det er bare en vane, begge betyr det samme',
     ],
     svar: 0,
+    forklaring: 'Et sammensatt ion er én enhet. Når det trengs mer enn ett, settes ionet i parentes og tallet skrives utenfor: {{Ca(OH)2}} betyr ett {{Ca^2+}} og to {{OH-}}. {{CaOH2}} ville betydd ett O og to H, som er et annet (og feil) regnskap.',
   });
   nye.push({
     id: 'io-elektroner', niva: 3, type: 'forklaring', mal: [14, 7],

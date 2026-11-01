@@ -155,6 +155,11 @@
         : '') +
       '</section>' +
       '<section class="container exam-setup"><div class="panel">' +
+      '<div class="form-block ove-blokk"><h3>' + KJ.icon('file', 18) + 'Lærerens øveprøve</h3>' +
+      '<p class="form-hint">' + esc(KJ.OVEPROVE.navn) + ' (' + esc(KJ.OVEPROVE.dato) + '): ' + KJ.oveproveIder(false).length + ' oppgaver i samme rekkefølge som på papiret, ' + KJ.OVEPROVE.tid + ' minutter. «Ny prøve i samme stil» har samme oppbygning, men nye oppgaver.</p>' +
+      '<div class="btn-row"><button type="button" class="btn btn-primary" data-a="ove">' + KJ.icon('play', 18) + 'Ta øveprøven</button>' +
+      '<button type="button" class="btn btn-ghost" data-a="ove-ny">' + KJ.icon('shuffle', 18) + 'Ny prøve i samme stil</button></div></div>' +
+      '<h3 class="exam-egen">Eller lag din egen prøve</h3>' +
       '<div class="form-block"><h3>Læringsmål</h3><div class="chips" data-tema>' +
       KJ.MAL.map((m) => {
         const modul = KJ.malModul(m.nr);
@@ -181,7 +186,7 @@
             .map((h) => {
               const svake = h.mal ? Object.keys(h.mal).filter((nr) => h.mal[nr] < 60).length : 0;
               return (
-                '<li><span>' + new Date(h.dato).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' }) + ' · ' + h.antall + ' oppg.</span><span><b>' + h.prosent + ' %</b> · karakter ' + h.karakter + '</span>' +
+                '<li><span>' + (h.navn ? '<b class="hist-navn">' + esc(h.navn) + '</b> · ' : '') + new Date(h.dato).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' }) + ' · ' + h.antall + ' oppg.</span><span><b>' + h.prosent + ' %</b> · karakter ' + h.karakter + '</span>' +
                 (svake ? '<a class="hist-ov" href="#/ov?prove=' + h.id + '">' + KJ.icon('zap', 14) + 'Nye oppgaver i ' + svake + ' svake mål</a>' : '') +
                 '</li>'
               );
@@ -241,6 +246,18 @@
       innst.forklaring = e.target.checked;
       oppdater();
     });
+    const startOve = (variant) => {
+      const go = () => {
+        const ids = KJ.oveproveIder(variant);
+        const P = { id: Date.now(), ids, svar: {}, flagg: {}, selv: {}, start: Date.now(), varighet: KJ.OVEPROVE.tid * 60, idx: 0, navn: variant ? 'Øveprøve (ny variant)' : 'Øveprøven' };
+        S.settAktivProve(P);
+        kjor(main, P, settRydd);
+      };
+      if (aktiv) KJ.bekreft('Starte en ny prøve?', 'Den påbegynte prøven blir forkastet.', 'Start ny', 'Avbryt').then((ja) => ja && go());
+      else go();
+    };
+    main.querySelector('[data-a="ove"]').addEventListener('click', () => startOve(false));
+    main.querySelector('[data-a="ove-ny"]').addEventListener('click', () => startOve(true));
     main.querySelector('[data-a="start"]').addEventListener('click', () => {
       const startNy = () => {
         const ids = velgOppgaver(innst);
@@ -437,7 +454,7 @@
       Object.keys(pm).forEach((nr) => (ut[nr] = Math.round((100 * pm[nr].p) / pm[nr].m)));
       return ut;
     };
-    S.lagreResultat({ id: P.id, dato: Date.now(), poeng: R.poeng, maks: R.maks, prosent: R.prosent, karakter: R.karakter, antall: P.ids.length, tid: brukt, mal: malProsent(perMal(R.rader)), ids: P.ids.slice() });
+    S.lagreResultat({ id: P.id, dato: Date.now(), poeng: R.poeng, maks: R.maks, prosent: R.prosent, karakter: R.karakter, antall: P.ids.length, tid: brukt, mal: malProsent(perMal(R.rader)), ids: P.ids.slice(), navn: P.navn || null });
 
     main.innerHTML =
       '<div class="view"><section class="container">' +

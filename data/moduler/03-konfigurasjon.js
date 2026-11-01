@@ -5,6 +5,7 @@
  * Hver oppgave har «mal» med nummeret på læringsmålet den øver på (se data/laeringsmal.js).
  * Se README.md for hvordan du legger til nye oppgaver.
  */
+
 KJ.modul({
   id: 'konfigurasjon',
   nr: 3,
@@ -123,6 +124,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       tekst: 'En orbital kan inneholde maksimalt ___ elektroner, og de må ha motsatt ___.',
       svar: [['2', 'to'], ['spinn']],
       hint: 'Pilene i et orbitaldiagram peker opp og ned: ↑↓.',
+      forklaring: 'Pauliprinsippet sier at en orbital har plass til maks **to** elektroner, og de må ha motsatt **spinn** (↑↓). Derfor har et s-underskall (1 orbital) plass til 2, p (3 orbitaler) til 6 og d (5 orbitaler) til 10 elektroner.',
       modul: 'elektroner',
     },
     {
@@ -138,6 +140,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
         ['f', '7 orbitaler, maks 14 elektroner'],
       ],
       hint: 'Antall orbitaler øker med 2 for hvert underskall: 1, 3, 5, 7.',
+      forklaring: 'Hver orbital har plass til to elektroner. s har 1 orbital (2 elektroner), p har 3 orbitaler (6), d har 5 orbitaler (10) og f har 7 orbitaler (14).',
       modul: 'elektroner',
     },
     {
@@ -218,6 +221,39 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       mal: [3],
       grunnstoff: 'C',
       hint: 'De to 2p-elektronene skal i hver sin orbital med samme spinn.',
+    },
+    {
+      id: 'op-1-4',
+      niva: 1,
+      type: 'flervalg',
+      mal: [3],
+      ove: true,
+      sporsmal: 'Velg riktig alternativ. Hva er rekkefølgen for stigende energi på orbitalene innenfor hvert energinivå (skall)?',
+      alternativer: ['d < s < f < p', 's < p < d < f', 'p < s < f < d', 'f < d < p < s'],
+      svar: 1,
+      stokk: false,
+      forklaring: 'Innenfor samme skall har **s** lavest energi, så kommer **p**, **d** og **f**. Derfor fylles for eksempel 3s før 3p, og 3p før 3d. (Mellom ulike skall kan det overlappe: 4s har lavere energi enn 3d.)',
+    },
+    {
+      id: 'op-5-n',
+      niva: 1,
+      type: 'konfig',
+      mal: [3],
+      ove: true,
+      sporsmal: 'Skriv fullstendig elektronkonfigurasjon til grunnstoffet N.',
+      grunnstoff: 'N',
+      notasjon: 'full',
+      hint: 'Nitrogen har 7 elektroner. Fyll 1s, 2s og 2p.',
+    },
+    {
+      id: 'op-5-p',
+      niva: 1,
+      type: 'konfig',
+      mal: [3],
+      sporsmal: 'Skriv fullstendig elektronkonfigurasjon til grunnstoffet P.',
+      grunnstoff: 'P',
+      notasjon: 'full',
+      hint: 'Fosfor har 15 elektroner.',
     },
     {
       id: 'el-10',
@@ -319,6 +355,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       til: 'Fylles sist',
       elementer: ['3p', '4s', '3d', '4p', '5s'],
       hint: 'Husk at 4s fylles før 3d.',
+      forklaring: 'Rekkefølgen følger energien: 3p < 4s < 3d < 4p < 5s. 4s har litt lavere energi enn 3d og fylles derfor først, og etter 3d kommer 4p. Bruk diagonalregelen eller periodesystemet: periode 4 starter med 4s, så kommer d-blokken (3d), så p-blokken (4p).',
       modul: 'elektroner',
     },
     {
@@ -330,6 +367,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       tekst: '4s fylles før 3d fordi 4s har ___ energi enn 3d.',
       svar: [['lavere', 'mindre', 'litt lavere']],
       hint: 'Elektronene fyller alltid de ledige orbitalene med lavest energi først.',
+      forklaring: '4s fylles før 3d fordi 4s har litt **lavere** energi enn 3d i atomer som kalium og kalsium. Elektronene går alltid inn i det ledige underskallet med lavest energi (oppbyggingsprinsippet).',
       modul: 'elektroner',
     },
     {
@@ -377,6 +415,65 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       hint: 'Kloridionet har ett elektron mer enn kloratomet.',
     },
     {
+      id: 'op-1-3',
+      niva: 2,
+      type: 'flervalg',
+      mal: [3, 4],
+      ove: true,
+      sporsmal: 'Velg riktig alternativ. Hva er elektronkonfigurasjonen til vanadium?',
+      alternativer: [
+        '$1s^2\\,2s^2\\,2p^6\\,3s^2\\,3p^6\\,3d^2\\,4s^3$',
+        '$1s^2\\,2s^2\\,2p^6\\,3s^2\\,3p^6\\,3d^3\\,4s^2$',
+        '$1s^2\\,2s^2\\,2p^6\\,3s^2\\,3p^6\\,3d^4\\,4s^1$',
+        '$1s^2\\,2s^2\\,2p^6\\,3s^2\\,3p^6\\,3d^5$',
+      ],
+      svar: 1,
+      stokk: false,
+      forklaring: 'Vanadium har atomnummer 23, altså 23 elektroner. Etter argon (18) fylles **4s** med 2 elektroner, og de siste 3 går i **3d**: $[\\mathrm{Ar}]\\,4s^2\\,3d^3$. A er umulig, fordi et s-underskall har plass til maks 2 elektroner. C og D har riktig antall elektroner, men følger ikke oppbyggingsprinsippet (4s skal fylles før 3d). Bare Cr og Cu er unntak.',
+    },
+    {
+      id: 'op-1-3b',
+      niva: 2,
+      type: 'flervalg',
+      mal: [3, 4],
+      sporsmal: 'Velg riktig alternativ. Hva er elektronkonfigurasjonen til titan?',
+      alternativer: [
+        '$1s^2\\,2s^2\\,2p^6\\,3s^2\\,3p^6\\,3d^2\\,4s^2$',
+        '$1s^2\\,2s^2\\,2p^6\\,3s^2\\,3p^6\\,3d^4$',
+        '$1s^2\\,2s^2\\,2p^6\\,3s^2\\,3p^6\\,4s^2\\,4p^2$',
+        '$1s^2\\,2s^2\\,2p^6\\,3s^2\\,3p^6\\,3d^1\\,4s^3$',
+      ],
+      svar: 0,
+      stokk: false,
+      forklaring: 'Titan har 22 elektroner: $[\\mathrm{Ar}]\\,4s^2\\,3d^2$. Etter 4s fylles 3d, ikke 4p (C er feil). B hopper over 4s, og D har 3 elektroner i et s-underskall, som er umulig.',
+    },
+    {
+      id: 'op-1-3d',
+      niva: 2,
+      type: 'flervalg',
+      mal: [3, 4],
+      sporsmal: 'Velg riktig alternativ. Hva er elektronkonfigurasjonen til jern?',
+      alternativer: [
+        '$1s^2\\,2s^2\\,2p^6\\,3s^2\\,3p^6\\,3d^6\\,4s^2$',
+        '$1s^2\\,2s^2\\,2p^6\\,3s^2\\,3p^6\\,3d^8$',
+        '$1s^2\\,2s^2\\,2p^6\\,3s^2\\,3p^8\\,4s^2$',
+        '$1s^2\\,2s^2\\,2p^6\\,3s^2\\,3p^6\\,4s^2\\,4p^6$',
+      ],
+      svar: 0,
+      stokk: false,
+      forklaring: 'Jern har 26 elektroner: $[\\mathrm{Ar}]\\,4s^2\\,3d^6$. B hopper over 4s. C har 8 elektroner i 3p, men et p-underskall har plass til maks 6. D fyller 4p før 3d.',
+    },
+    {
+      id: 'op-5-v',
+      niva: 2,
+      type: 'konfig',
+      mal: [3, 4],
+      sporsmal: 'Skriv fullstendig elektronkonfigurasjon til grunnstoffet V.',
+      grunnstoff: 'V',
+      notasjon: 'full',
+      hint: 'Vanadium har 23 elektroner. Husk at 4s fylles før 3d.',
+    },
+    {
       id: 'el-21',
       niva: 3,
       type: 'konfig',
@@ -412,7 +509,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       niva: 3,
       type: 'flervalg',
       mal: [3],
-      sporsmal: 'Hvilke konfigurasjoner beskriver et atom i **grunntilstanden** (ikke eksitert)?',
+      sporsmal: 'Hvilke konfigurasjoner følger oppbyggingsprinsippet (underskallene med lavest energi fylles først)?',
       alternativer: [
         '$1s^2\\,2s^2\\,2p^6\\,3s^1$',
         '$1s^2\\,2s^2\\,2p^5\\,3s^1$',
@@ -423,7 +520,7 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       svar: [0, 2],
       stokk: false,
       hint: 'I grunntilstanden er alle lavere underskall fylt før et høyere tas i bruk.',
-      forklaring: 'Alternativ B (Ne-atom med et elektron i 3s), D (K-atom med elektron i 3d i stedet for 4s) og E (Be med elektron i 2p) er eksiterte tilstander.',
+      forklaring: 'A og C er riktige. B (et elektron i 3s mens 2p ikke er fullt), D (et elektron i 3d mens 4s er tomt) og E (et elektron i 2p mens 2s ikke er fullt) følger ikke oppbyggingsprinsippet: et elektron står i et underskall med høyere energi selv om et lavere underskall har ledig plass.',
       modul: 'elektroner',
     },
     {

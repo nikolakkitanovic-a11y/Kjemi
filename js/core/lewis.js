@@ -69,7 +69,7 @@
     steg.push({ k: 'form', type: 'valg', tekst: 'Hvilken form har ' + (D.ion ? 'ionet' : 'molekylet') + '?', valg: FORMER, svar: D.form });
     steg.push({ k: 'polare', type: 'janei', tekst: 'Har ' + (D.ion ? 'ionet' : 'molekylet') + ' polare bindinger?', svar: D.polare });
     if (!D.ion) steg.push({ k: 'dipol', type: 'janei', tekst: 'Er molekylet en dipol?', svar: D.dipol });
-    return steg;
+    return q.hoppOver ? steg.filter((st) => !q.hoppOver.includes(st.k)) : steg;
   };
 
   function forklaring(q, k, D) {
@@ -100,6 +100,8 @@
     }
     return '';
   }
+
+  KJ.lewisForklaring = (q, k) => forklaring(q, k, KJ.lewisData(q));
 
   function norm(v, type) {
     if (v == null) return null;
@@ -249,7 +251,7 @@
     const vis = (st) => (st.type === 'janei' ? (st.svar ? 'ja' : 'nei') : st.svar);
     return (
       '<div class="lewis-fasit"><figure>' + KJ.lewisSvg(q, { delta: true }) + '<figcaption>' + KJ.esc(q.navn || '') + (D.polare ? ' · δ viser delladningene' : '') + '</figcaption></figure>' +
-      '<ol class="lewis-svar">' + steg.map((st) => '<li><span>' + KJ.fmt(st.tekst) + '</span> <b>' + vis(st) + '</b></li>').join('') + '</ol></div>'
+      '<ol class="lewis-svar">' + steg.map((st) => '<li><span>' + KJ.fmt(st.tekst) + '</span> <b>' + vis(st) + '</b><br><span class="muted">' + KJ.fmt(forklaring(q, st.k, D)) + '</span></li>').join('') + '</ol></div>'
     );
   };
 })(window.KJ);

@@ -5,6 +5,7 @@
  * Hver oppgave har «mal» med nummeret på læringsmålet den øver på (se data/laeringsmal.js).
  * Se README.md for hvordan du legger til nye oppgaver.
  */
+
 KJ.modul({
   id: 'hvem-er-jeg',
   nr: 5,
@@ -54,17 +55,7 @@ Valenselektroner i hovedgruppene: gruppe 1 → 1, gruppe 2 → 2, gruppe 13 → 
     { term: 'Gruppe', def: 'Loddrett kolonne. Hovedgruppene har like mange valenselektroner.' },
     { term: 'Isoelektronisk', def: 'Atomer/ioner med samme elektronkonfigurasjon, f.eks. {{Na+}} og {{Ne}}.' },
   ],
-  eksempler: [
-    {
-      tittel: 'Lese ioniseringsenergier',
-      oppgave: 'Et grunnstoff i periode 3 har ioniseringsenergiene 578, 1817, 2745 og 11 577 kJ/mol. Hvilket grunnstoff er det?',
-      steg: [
-        'Se etter det store hoppet: fra 2745 til 11 577 kJ/mol, altså etter det tredje elektronet.',
-        'Grunnstoffet har 3 valenselektroner og står i gruppe 13.',
-        'Gruppe 13, periode 3 = aluminium (Al).',
-      ],
-    },
-  ],
+  eksempler: [],
   feller: [
     'Isoelektroniske ioner har samme konfigurasjon. Ladningen avgjør hvilket ion det er.',
     'For kationer: protoner = elektroner **+** ladning. For anioner: protoner = elektroner **−** ladningen.',
@@ -81,6 +72,7 @@ Valenselektroner i hovedgruppene: gruppe 1 → 1, gruppe 2 → 2, gruppe 13 → 
       alternativer: ['Like mange valenselektroner', 'Like mange elektronskall', 'Samme atommasse', 'Like mange nøytroner'],
       svar: 0,
       hint: 'Det er dette som gir dem like kjemiske egenskaper.',
+      forklaring: 'Grunnstoffer i samme hovedgruppe har like mange valenselektroner, og derfor lignende kjemiske egenskaper. Gruppe 1 har ett valenselektron, gruppe 2 har to, gruppe 13 har tre osv. Antall skall (B) er likt i samme **periode**, ikke gruppe.',
       modul: 'periodesystemet',
     },
     {
@@ -92,6 +84,7 @@ Valenselektroner i hovedgruppene: gruppe 1 → 1, gruppe 2 → 2, gruppe 13 → 
       alternativer: ['Antall elektronskall', 'Antall valenselektroner', 'Antall protoner', 'Ladningen til ionet'],
       svar: 0,
       hint: 'Natrium står i periode 3. Hvor mange skall har natrium?',
+      forklaring: 'Periodenummeret er antall elektronskall. Natrium står i periode 3 og har elektroner i tre skall (2, 8, 1). Antall valenselektroner (B) gis av gruppen.',
       modul: 'periodesystemet',
     },
     {
@@ -103,6 +96,7 @@ Valenselektroner i hovedgruppene: gruppe 1 → 1, gruppe 2 → 2, gruppe 13 → 
       tekst: 'Mg har ___ valenselektroner, P har ___ og Ar har ___.',
       svar: [['2'], ['5'], ['8']],
       hint: 'Se på gruppenummeret. For gruppe 13–18 trekker du fra 10.',
+      forklaring: 'I hovedgruppene gir gruppenummeret antall valenselektroner: gruppe 1–2 har like mange som gruppenummeret, gruppe 13–18 har gruppenummeret minus 10. Mg står i gruppe 2 (2), P i gruppe 15 (5) og Ar i gruppe 18 (8, full oktett).',
       modul: 'periodesystemet',
     },
     {
@@ -146,6 +140,28 @@ Valenselektroner i hovedgruppene: gruppe 1 → 1, gruppe 2 → 2, gruppe 13 → 
       steg: ['$[\\mathrm{Ar}]\\,4s^2$ → $18 + 2 = 20$ → kalsium'],
     },
     {
+      id: 'op-2a',
+      niva: 1,
+      type: 'forklaring',
+      mal: [5],
+      ove: true,
+      sporsmal: 'Grunnstoffene deles inn i grupper og perioder i det periodiske systemet. Hva er felles for grunnstoffer som er i **samme gruppe**?',
+      fagbegreper: ['valenselektron', 'gruppe', 'egenskap'],
+      modellsvar: 'Grunnstoffer i samme (hoved)gruppe har **like mange valenselektroner** (elektroner i det ytterste skallet). I gruppe 1 og 2 er det like mange som gruppenummeret, og i gruppe 13–18 er det gruppenummeret minus 10. Derfor har de **lignende kjemiske egenskaper** og danner ofte ioner med samme ladning, for eksempel {{Na+}} og {{K+}} i gruppe 1.',
+      punkter: ['Like mange valenselektroner', 'Lignende kjemiske egenskaper', 'Eksempel fra en gruppe'],
+    },
+    {
+      id: 'op-2b',
+      niva: 1,
+      type: 'forklaring',
+      mal: [5],
+      ove: true,
+      sporsmal: 'Hva er felles for grunnstoffer som er i **samme periode**?',
+      fagbegreper: ['elektronskall|skall', 'periode'],
+      modellsvar: 'Grunnstoffer i samme periode har **like mange elektronskall** (hovedenerginivåer). Periodenummeret er antall skall: Na og Cl står i periode 3 og har elektroner i tre skall (K, L og M). Valenselektronene ligger i det samme ytterste skallet.',
+      punkter: ['Like mange elektronskall', 'Periodenummer = antall skall', 'Eksempel fra en periode'],
+    },
+    {
       id: 'el-14',
       niva: 2,
       type: 'flervalg',
@@ -166,6 +182,7 @@ Valenselektroner i hovedgruppene: gruppe 1 → 1, gruppe 2 → 2, gruppe 13 → 
       tekst: 'Grunnstoff (navn eller symbol): ___',
       svar: [['svovel', 'S']],
       hint: 'Periode 3 har 3 skall. Gruppe 16 betyr 6 valenselektroner: 2, 8, 6.',
+      forklaring: 'Periode 3 betyr tre elektronskall, og gruppe 16 betyr seks valenselektroner: $[\\mathrm{Ne}]\\,3s^2\\,3p^4$, altså 16 elektroner. Det er **svovel (S)**.',
       modul: 'periodesystemet',
     },
     {
@@ -189,6 +206,7 @@ Valenselektroner i hovedgruppene: gruppe 1 → 1, gruppe 2 → 2, gruppe 13 → 
       kategorier: ['s', 'p', 'd', 'f'],
       elementer: [['Na', 0], ['Ca', 0], ['Fe', 2], ['Cu', 2], ['Cl', 1], ['C', 1], ['U', 3], ['Nd', 3]],
       hint: 'Blokken er det underskallet som fylles sist.',
+      forklaring: 'Blokken forteller hvilket underskall det siste elektronet havner i. Gruppe 1 og 2 (Na, Ca) er s-blokken. Gruppe 13–18 (C, Cl) er p-blokken. Innskuddsmetallene (Fe, Cu) er d-blokken. Lantanoidene og aktinoidene (Nd, U) er f-blokken.',
       modul: 'periodesystemet',
     },
     {
@@ -282,6 +300,34 @@ Valenselektroner i hovedgruppene: gruppe 1 → 1, gruppe 2 → 2, gruppe 13 → 
       sporsmal: 'Tilfeldig: hvem er jeg ut fra konfigurasjon og ladning?',
     },
     {
+      id: 'op-5c',
+      niva: 2,
+      type: 'fyllinn',
+      mal: [5, 3],
+      ove: true,
+      sporsmal: 'Hvilket **atom** har elektronkonfigurasjonen $1s^2\\,2s^2\\,2p^6\\,3s^2\\,3p^6\\,4s^2\\,3d^{10}\\,4p^3$?',
+      tekst: 'Grunnstoff (navn eller symbol): ___',
+      svar: [['As', 'arsen']],
+      steg: [
+        'Tell elektronene: 2 + 2 + 6 + 2 + 6 + 2 + 10 + 3 = **33**.',
+        'Et nøytralt atom har like mange elektroner som protoner, så atomnummeret er 33.',
+        'Atomnummer 33 er **arsen (As)**. Kontroll: 4p³ betyr periode 4 og gruppe 15 (2 + 3 = 5 valenselektroner).',
+      ],
+    },
+    {
+      id: 'op-5c2',
+      niva: 2,
+      type: 'fyllinn',
+      mal: [5, 3],
+      sporsmal: 'Hvilket **atom** har elektronkonfigurasjonen $1s^2\\,2s^2\\,2p^6\\,3s^2\\,3p^6\\,4s^2\\,3d^{10}\\,4p^5$?',
+      tekst: 'Grunnstoff (navn eller symbol): ___',
+      svar: [['Br', 'brom']],
+      steg: [
+        'Tell elektronene: 18 (til og med 3p) + 2 + 10 + 5 = **35**.',
+        'Atomnummer 35 er **brom (Br)**, i periode 4 og gruppe 17 (7 valenselektroner).',
+      ],
+    },
+    {
       id: 'el-26',
       niva: 3,
       type: 'fyllinn',
@@ -308,22 +354,6 @@ Gruppe: ___`,
         'Valenselektroner: $5s^2\\,5p^5$ = 7, altså gruppe 17 (halogenene).',
       ],
       modul: 'elektroner',
-    },
-    {
-      id: 'ps-25',
-      niva: 3,
-      type: 'fyllinn',
-      mal: [5, 1],
-      sporsmal: 'Et grunnstoff i periode 3 har ioniseringsenergiene 578, 1817, 2745 og 11 577 kJ/mol. Hvilket grunnstoff er det?',
-      tekst: 'Grunnstoff (navn eller symbol): ___',
-      svar: [['aluminium', 'Al']],
-      hint: ['Finn det store hoppet.', 'Antall elektroner før hoppet = antall valenselektroner.'],
-      steg: [
-        'Det store hoppet kommer mellom 3. (2745) og 4. (11 577) ioniseringsenergi.',
-        'Grunnstoffet har 3 valenselektroner → gruppe 13.',
-        'Gruppe 13, periode 3 = aluminium.',
-      ],
-      modul: 'periodesystemet',
     },
     {
       id: 'hv-13',
@@ -383,6 +413,7 @@ Ladning 2+: ___`,
         'Du trenger antall nøytroner',
       ],
       svar: 0,
+      forklaring: 'Ionene {{O^2-}}, {{F-}}, {{Na+}}, {{Mg^2+}} og {{Al^3+}} har alle 10 elektroner og konfigurasjonen $[\\mathrm{Ne}]$. De er isoelektroniske. Du trenger ladningen for å regne ut antall protoner: protoner = elektroner + ladning. For eksempel gir 2+ og 10 elektroner 12 protoner, altså Mg.',
     },
     {
       id: 'hv-18',
@@ -405,6 +436,20 @@ Ladning 2+: ___`,
       kilde: 'hvem',
       mal: [5, 4],
       sporsmal: 'Tilfeldig ion: hvem er jeg ut fra konfigurasjon og ladning?',
+    },
+    {
+      id: 'op-5c3',
+      niva: 3,
+      type: 'fyllinn',
+      mal: [5, 4],
+      sporsmal: 'Et **ion** med ladning 2+ har elektronkonfigurasjonen $1s^2\\,2s^2\\,2p^6\\,3s^2\\,3p^6\\,3d^{6}$. Hvilket grunnstoff er det?',
+      tekst: 'Grunnstoff (navn eller symbol): ___',
+      svar: [['Fe', 'jern']],
+      steg: [
+        'Tell elektronene: 18 + 6 = **24**.',
+        'Ladningen 2+ betyr at atomet har avgitt to elektroner: protoner = 24 + 2 = **26**.',
+        'Atomnummer 26 er **jern**, og ionet er {{Fe^2+}}. De to 4s-elektronene er avgitt.',
+      ],
     },
   ],
   flashcards: [

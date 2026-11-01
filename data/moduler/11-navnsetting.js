@@ -5,6 +5,7 @@
  * Hver oppgave har «mal» med nummeret på læringsmålet den øver på (se data/laeringsmal.js).
  * Se README.md for hvordan du legger til nye oppgaver.
  */
+
 KJ.modul({
   id: 'navnsetting',
   nr: 11,
@@ -177,6 +178,7 @@ Noen stoffer har innarbeidede trivialnavn: {{H2O}} vann, {{NH3}} ammoniakk, {{CH
       mal: [13],
       sporsmal: 'Koble prefikset med riktig tall.',
       par: [['mono', '1'], ['di', '2'], ['tri', '3'], ['tetra', '4'], ['penta', '5'], ['heksa', '6'], ['hepta', '7']],
+      forklaring: 'De greske tallprefiksene: mono 1, di 2, tri 3, tetra 4, penta 5, heksa 6, hepta 7 (og okta 8, nona 9, deka 10). De brukes bare i molekylforbindelser av ikke-metaller.',
       modul: 'navnsetting',
     },
     {
@@ -231,6 +233,7 @@ Noen stoffer har innarbeidede trivialnavn: {{H2O}} vann, {{NH3}} ammoniakk, {{CH
       mal: [12],
       sporsmal: 'Koble symbolet med navnet.',
       par: [['Cu', 'kobber'], ['Au', 'gull'], ['Zn', 'sink'], ['S', 'svovel'], ['Si', 'silisium'], ['I', 'jod']],
+      forklaring: 'Noen norske navn er ikke lette å gjette ut fra symbolet: Cu er kobber (latin cuprum), Au er gull (aurum), Zn er sink. S er svovel, Si er silisium og I er jod.',
     },
     {
       id: 'rp-01',
@@ -245,6 +248,7 @@ Noen stoffer har innarbeidede trivialnavn: {{H2O}} vann, {{NH3}} ammoniakk, {{CH
         'Bare når forbindelsen inneholder oksygen',
       ],
       svar: 0,
+      forklaring: 'Romertall brukes når metallet kan danne ioner med **ulik ladning**, som de fleste innskuddsmetallene (Fe²⁺/Fe³⁺, Cu⁺/Cu²⁺) og bly og tinn. Romertallet er ladningen til metallionet. Metaller med bare én ladning (Na, Mg, Al, Zn, Ag) får ikke romertall.',
     },
     {
       id: 'rp-02',
@@ -259,6 +263,7 @@ Noen stoffer har innarbeidede trivialnavn: {{H2O}} vann, {{NH3}} ammoniakk, {{CH
         'Bare når det er sammensatte ioner',
       ],
       svar: 0,
+      forklaring: 'Greske tallprefikser brukes i **molekylforbindelser** mellom ikke-metaller, der atomene deler elektroner og ikke danner ioner. Da kan vi ikke bruke ladningene til å finne formelen, så navnet må fortelle antallet: {{N2O4}} er dinitrogentetraoksid. Salter får aldri tallprefikser.',
     },
     {
       id: 'gen-grunnstoff-navn',
@@ -276,6 +281,12 @@ Noen stoffer har innarbeidede trivialnavn: {{H2O}} vann, {{NH3}} ammoniakk, {{CH
       mal: [12],
       sporsmal: 'Tilfeldig: symbolet for grunnstoffet',
     },
+    { id: 'op-n-mg', niva: 1, type: 'navn', mal: [12], ove: true, formel: 'Mg', svar: ['magnesium'] },
+    { id: 'op-n-sf6', niva: 1, type: 'navn', mal: [12, 13], ove: true, formel: 'SF6', svar: ['svovelheksafluorid'] },
+    { id: 'op-n-na2co3', niva: 1, type: 'navn', mal: [12, 14], ove: true, formel: 'Na2CO3', svar: ['natriumkarbonat'] },
+    { id: 'op-f-so2', niva: 1, type: 'formel', mal: [12, 13], ove: true, navn: 'svoveldioksid', svar: 'SO2' },
+    { id: 'op-f-pcl3', niva: 1, type: 'formel', mal: [12, 13], ove: true, navn: 'fosfortriklorid', svar: 'PCl3' },
+    { id: 'op-f-al', niva: 1, type: 'formel', mal: [12], ove: true, navn: 'aluminium', svar: 'Al' },
     {
       id: 'nv-12',
       niva: 2,
@@ -312,6 +323,7 @@ Noen stoffer har innarbeidede trivialnavn: {{H2O}} vann, {{NH3}} ammoniakk, {{CH
       niva: 2,
       type: 'navn',
       mal: [12, 13],
+      ove: true,
       formel: 'N2O4',
       svar: ['dinitrogentetraoksid'],
       hint: 'Begge grunnstoffene er ikke-metaller.',
@@ -331,6 +343,7 @@ Noen stoffer har innarbeidede trivialnavn: {{H2O}} vann, {{NH3}} ammoniakk, {{CH
       niva: 2,
       type: 'formel',
       mal: [12, 13],
+      ove: true,
       navn: 'dinitrogenpentaoksid',
       svar: 'N2O5',
       modul: 'navnsetting',
@@ -384,6 +397,7 @@ Noen stoffer har innarbeidede trivialnavn: {{H2O}} vann, {{NH3}} ammoniakk, {{CH
         'Klor kan ha flere ladninger',
       ],
       svar: 0,
+      forklaring: '{{FeCl3}} består av et metall og et ikke-metall, altså er det et salt. Salter får ikke greske prefikser. Jern kan være Fe²⁺ eller Fe³⁺, så ladningen skrives som romertall: tre Cl⁻ gir −3, så jern er Fe³⁺ → jern(III)klorid.',
       modul: 'navnsetting',
     },
     {
@@ -435,7 +449,15 @@ Noen stoffer har innarbeidede trivialnavn: {{H2O}} vann, {{NH3}} ammoniakk, {{CH
       hint: 'To {{Cu}} må til sammen oppveie {{O^2-}}.',
     },
     { id: 'rp-05', niva: 2, type: 'navn', mal: [12, 13], formel: 'FeO', svar: ['jern(II)oksid'] },
-    { id: 'rp-06', niva: 2, type: 'navn', mal: [12, 13], formel: 'CO', svar: ['karbonmonoksid', 'karbonmonooksid'] },
+    {
+      id: 'rp-06',
+      niva: 2,
+      type: 'navn',
+      mal: [12, 13],
+      ove: true,
+      formel: 'CO',
+      svar: ['karbonmonoksid', 'karbonmonooksid'],
+    },
     { id: 'rp-07', niva: 2, type: 'navn', mal: [12, 13], formel: 'PbCl2', svar: ['bly(II)klorid'] },
     {
       id: 'rp-08',
@@ -448,6 +470,36 @@ Noen stoffer har innarbeidede trivialnavn: {{H2O}} vann, {{NH3}} ammoniakk, {{CH
     },
     { id: 'rp-09', niva: 2, type: 'formel', mal: [12, 13], navn: 'tinn(IV)oksid', svar: 'SnO2' },
     { id: 'rp-10', niva: 2, type: 'formel', mal: [12, 13], navn: 'karbontetraklorid', svar: 'CCl4' },
+    {
+      id: 'op-n-ca3po42',
+      niva: 2,
+      type: 'navn',
+      mal: [12, 14],
+      ove: true,
+      formel: 'Ca3(PO4)2',
+      svar: ['kalsiumfosfat'],
+    },
+    { id: 'op-n-fecl2', niva: 2, type: 'navn', mal: [12, 13], ove: true, formel: 'FeCl2', svar: ['jern(II)klorid'] },
+    {
+      id: 'op-n-nh42so4',
+      niva: 2,
+      type: 'navn',
+      mal: [12, 14],
+      ove: true,
+      formel: '(NH4)2SO4',
+      svar: ['ammoniumsulfat'],
+    },
+    {
+      id: 'op-n-cuno32',
+      niva: 2,
+      type: 'navn',
+      mal: [12, 13, 14],
+      ove: true,
+      formel: 'Cu(NO3)2',
+      svar: ['kobber(II)nitrat'],
+    },
+    { id: 'op-n-fe2o3', niva: 2, type: 'navn', mal: [12, 13], ove: true, formel: 'Fe2O3', svar: ['jern(III)oksid'] },
+    { id: 'op-f-crcl3', niva: 2, type: 'formel', mal: [12, 13], ove: true, navn: 'krom(III)klorid', svar: 'CrCl3' },
     {
       id: 'nv-29',
       niva: 3,
@@ -532,6 +584,7 @@ Noen stoffer har innarbeidede trivialnavn: {{H2O}} vann, {{NH3}} ammoniakk, {{CH
         'Karbon har bare én ladning',
       ],
       svar: 0,
+      forklaring: 'Regelen er at «mono» aldri skrives foran det første grunnstoffet i navnet. CO heter derfor karbonmonoksid, ikke monokarbonmonoksid. Foran det andre grunnstoffet skrives mono når det bare er ett atom.',
     },
     {
       id: 'rp-12',

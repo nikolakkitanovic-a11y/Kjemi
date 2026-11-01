@@ -5,36 +5,42 @@
  * Hver oppgave har «mal» med nummeret på læringsmålet den øver på (se data/laeringsmal.js).
  * Se README.md for hvordan du legger til nye oppgaver.
  */
+
 KJ.modul({
   id: 'stoffegenskaper',
   nr: 15,
   tittel: 'Stoffegenskaper og stoffdetektiv',
-  beskrivelse: 'Sammenhengen mellom partikler, bindinger og smeltepunkt, løselighet og ledningsevne – og hvordan du skiller stoffer.',
+  beskrivelse: 'Sammenhengen mellom partikler, bindinger og smeltepunkt, løselighet og ledningsevne, og hvordan du skiller stoffer.',
   mal: [17, 19],
   farge: '#5458F2',
   bolge: 438,
   huskeliste: [
-    '**Ionisk:** høyt smeltepunkt, leder bare smeltet eller løst. **Molekylært:** lavt smeltepunkt, leder ikke. **Metall:** leder også fast. **Atomgitter:** svært høyt smeltepunkt.',
+    '**Salt (ionisk):** høyt smeltepunkt, leder strøm bare smeltet eller løst i vann. **Molekylært:** lavt smeltepunkt, leder ikke. **Metall:** leder strøm også i fast form, og kan formes.',
     'Strøm krever ladde partikler som kan bevege seg.',
-    'Stoffdetektiv: ledningsevne i fast form (metall?), løs i vann og mål ledningsevne (salt eller molekylært?), smeltepunkt, løselighet i vann og heksan.',
+    'Stoffdetektiv: leder det i fast form? → metall. Leder det bare smeltet eller løst? → salt. Leder det ikke? → molekylært: løses i vann = polart, løses i heksan = upolart.',
   ],
   teori: [
     {
-      h: 'Fire stofftyper',
+      h: 'Tre stofftyper',
       tekst: 'Egenskapene til et stoff kommer av hvilke partikler det består av, og hvilke bindinger som må brytes når det smelter eller løses.',
       tabell: {
-        hode: ['Stofftype', 'Partikler', 'Smeltepunkt', 'Løselighet i vann', 'Leder strøm'],
+        hode: ['Stofftype', 'Partikler og binding', 'Smeltepunkt', 'Løselighet i vann', 'Leder strøm'],
         rader: [
           [
-            'Ionisk (salt)',
-            'Kationer og anioner i gitter',
-            'Høyt (ionebindinger brytes)',
+            'Salt (ionisk)',
+            'Kationer og anioner i et gitter, ionebinding',
+            'Høyt',
             'Ofte god',
-            'Bare smeltet eller løst',
+            'Bare smeltet eller løst i vann',
           ],
-          ['Molekylært', 'Molekyler', 'Lavt (svake bindinger brytes)', 'Polare ja, upolare nei', 'Nei'],
-          ['Metall', 'Metallioner og frie elektroner', 'Varierer, ofte høyt', 'Nei', 'Ja, både fast og smeltet'],
-          ['Atomgitter', 'Atomer bundet kovalent i nettverk', 'Svært høyt', 'Nei', 'Nei (unntak: grafitt)'],
+          ['Molekylært', 'Molekyler med svake krefter mellom seg', 'Lavt', 'Polare ja, upolare nei', 'Nei'],
+          [
+            'Metall',
+            'Metallioner i en sjø av elektroner, metallbinding',
+            'Varierer, ofte høyt',
+            'Nei',
+            'Ja, også i fast form',
+          ],
         ],
       },
     },
@@ -43,7 +49,7 @@ KJ.modul({
       tekst: `Strøm krever **ladde partikler som kan bevege seg**.
 - Metaller har frie elektroner, både i fast og flytende form.
 - Salter har ioner, men de sitter fast i gitteret i fast form. Når saltet smelter eller løses i vann, kan ionene bevege seg, og stoffet leder strøm.
-- Molekylære stoffer har ingen frie ladde partikler. Unntak: noen molekyler, som HCl, reagerer med vann og danner ioner.`,
+- Molekylære stoffer har ingen frie ladde partikler og leder ikke.`,
     },
     {
       h: 'Ionebinding',
@@ -58,24 +64,21 @@ Ionene ordner seg i et regelmessig **ionegitter** (krystallgitter). Ioneforbinde
 Bindingen blir sterkere jo **høyere ladning** og jo **mindre** ionene er. Derfor har MgO (2852 °C) mye høyere smeltepunkt enn NaCl (801 °C).`,
     },
     {
-      h: 'Atomgitter (kovalente nettverk)',
-      tekst: `Noen stoffer består av ett stort nettverk der alle atomene er bundet sammen med kovalente bindinger. Eksempler er **diamant** (hvert C-atom bundet til fire andre), **grafitt** (lag av C-atomer) og **kvarts**, {{SiO2}}.
+      h: 'Stoffdetektiv: slik finner du stofftypen',
+      tekst: `Gå gjennom spørsmålene i denne rekkefølgen:
 
-For å smelte stoffet må sterke kovalente bindinger brytes. Atomgitter har derfor svært høye smeltepunkter, og diamant er det hardeste naturlige stoffet. Grafitt leder strøm, fordi ett elektron per C-atom er delokalisert i lagene.`,
-    },
-    {
-      h: 'Stoffdetektiv: slik skiller du stoffer',
-      tekst: `Velg undersøkelser som gir **ulike resultater** for stofftypene du vil skille:
-1. **Ledningsevne i fast form:** bare metaller (og grafitt) leder.
-2. **Løs i vann og mål ledningsevne:** salter gir ioner og leder, molekylære stoffer som sukker gjør det ikke.
-3. **Varm forsiktig:** molekylære stoffer smelter lett, salter og atomgitter har høyt smeltepunkt.
-4. **Løselighet i vann og i et upolart løsemiddel (heksan):** polare stoffer løses i vann, upolare i heksan.
+1. **Leder stoffet strøm i fast form?** Ja → **metall** (frie elektroner). Metaller kan også bøyes og hamres.
+2. **Leder det ikke i fast form, men når det er smeltet eller løst i vann?** → **salt** (ioner som kan bevege seg). Salter har høyt smeltepunkt.
+3. **Leder det ikke i det hele tatt?** → **molekylært stoff**. Molekylære stoffer har lavt smelte- og kokepunkt.
+   - Løses i vann → **polart** (for eksempel sukker og etanol).
+   - Løses ikke i vann, men i heksan → **upolart** (for eksempel jod, heksan og stearin).
 
-Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med en kjent prøve å sammenligne med. Bruk vernebriller og varm aldri ukjente stoffer kraftig.`,
+**Hva er bevis?** Alle observasjoner av egenskaper er bevis: smeltepunkt, kokepunkt, ledningsevne, løselighet, formbarhet og hardhet. Farge, lukt, utseende og hva stoffet brukes til, sier ikke noe om stofftypen.
+
+**Planlegg en undersøkelse:** Velg en undersøkelse som gir ulike resultater for stofftypene du vil skille, for eksempel ledningsevnen til en vannløsning (salt eller sukker?). Endre bare én ting om gangen, bruk like mengder, og ha med en kjent prøve å sammenligne med.`,
     },
   ],
   begreper: [
-    { term: 'Atomgitter', def: 'Nettverk av atomer bundet kovalent, f.eks. diamant og {{SiO2}}.' },
     {
       term: 'Ionebinding',
       def: 'Elektrostatisk tiltrekning mellom kationer og anioner. Metall + ikke-metall, $\\Delta EN > 1,7$.',
@@ -85,7 +88,7 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
   feller: [
     'Ioneforbindelser leder ikke strøm i fast form. Ionene må kunne bevege seg (smeltet eller løst).',
     'En saltløsning leder strøm fordi **ionene** beveger seg, ikke fordi elektronene vandrer gjennom vannet.',
-    'Høyt smeltepunkt betyr ikke alltid ionisk: metaller og atomgitter kan også ha svært høye smeltepunkter.',
+    'Høyt smeltepunkt betyr ikke alltid ionisk: metaller kan også ha svært høye smeltepunkter (jern smelter ved 1538 °C).',
     'Når et molekylært stoff smelter, brytes de svake bindingene mellom molekylene, ikke de kovalente bindingene.',
     'Én observasjon er sjelden nok. Kombiner flere egenskaper før du konkluderer.',
   ],
@@ -103,6 +106,7 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
         'De består av molekyler',
       ],
       svar: 0,
+      forklaring: 'Ioneforbindelser består av ioner bundet med sterke ionebindinger i et gitter, så de har høyt smeltepunkt. I fast form sitter ionene fast, men når saltet smelter eller løses i vann, kan ionene bevege seg og lede strøm. Myke stoffer som kan formes (C), er metaller.',
       modul: 'sterke-bindinger',
     },
     {
@@ -118,6 +122,7 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
         'Stoffer med lik masse løses i hverandre',
       ],
       svar: 0,
+      forklaring: '«Likt løser likt» betyr at polare stoffer løses i polare løsemidler (som vann), og upolare stoffer i upolare løsemidler (som heksan). Det skyldes at stoffet må kunne danne krefter til løsemiddelet som er omtrent like sterke som dem som brytes.',
       modul: 'svake-bindinger',
     },
     {
@@ -126,19 +131,20 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       type: 'sortering',
       mal: [17],
       sporsmal: 'Hvilken stofftype er det?',
-      kategorier: ['Ionisk', 'Molekylært', 'Metall', 'Atomgitter'],
+      kategorier: ['Ionisk', 'Molekylært', 'Metall'],
       elementer: [
         ['NaCl', 0],
         ['{{H2O}}', 1],
         ['Cu', 2],
-        ['diamant', 3],
         ['{{CO2}}', 1],
         ['KBr', 0],
         ['Fe', 2],
-        ['{{SiO2}} (kvarts)', 3],
         ['{{I2}}', 1],
         ['MgO', 0],
+        ['messing (legering av Cu og Zn)', 2],
+        ['{{CH4}}', 1],
       ],
+      forklaring: 'Metall + ikke-metall gir et salt (ionisk): NaCl, KBr, MgO. Bare ikke-metaller gir molekyler: {{H2O}}, {{CO2}}, {{I2}}, {{CH4}}. Rene metaller og legeringer har metallbinding: Cu, Fe og messing.',
     },
     {
       id: 'eg-02',
@@ -153,6 +159,7 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
         'De består av ioner',
       ],
       svar: 0,
+      forklaring: 'Når et molekylært stoff smelter, brytes bare de svake kreftene **mellom** molekylene (London, dipol-dipol eller hydrogenbindinger). De sterke kovalente bindingene inne i molekylene brytes ikke. Derfor trengs lite energi, og smeltepunktet er lavt.',
     },
     {
       id: 'eg-03',
@@ -167,19 +174,20 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
         'At stoffet løses i vann',
       ],
       svar: 0,
+      forklaring: 'Elektrisk strøm er ladde partikler som beveger seg. Det kan være elektroner (i metaller) eller ioner (i smeltede salter og saltløsninger). Det er ikke nok at stoffet er flytende eller løst: smeltet sukker og sukkerløsning leder ikke.',
     },
     {
       id: 'sd-01',
       niva: 1,
       type: 'detektiv',
       mal: [19],
-      sporsmal: '**Stoffdetektiv: det hvite krystallpulveret.** Les observasjonene. Kryss av for bevisene, og bestem hva slags stoff det er.',
+      sporsmal: '**Stoffdetektiv:** Du har fått et ukjent hvitt krystallpulver. Bruk observasjonene til å finne ut hva slags stoff det er.',
       obs: [
-        ['Smelter ved 801 °C', 'k'],
-        ['Leder ikke strøm i fast form', 'k'],
-        ['Leder strøm når det er smeltet', 'k'],
-        ['Hvite, sprø krystaller', 'n'],
-        ['Kan kjøpes i butikken', 'i'],
+        ['Smelter ved 801 °C', 'k', 'Høyt smeltepunkt: sterke bindinger må brytes (salt eller metall).'],
+        ['Leder ikke strøm i fast form', 'k', 'Ikke et metall. Ladde partikler kan ikke bevege seg i fast form.'],
+        ['Leder strøm når det er smeltet', 'k', 'Det finnes ioner som kan bevege seg når gitteret er brutt.'],
+        ['Hvite krystaller', 'i', 'Farge og utseende sier ikke noe om stofftypen.'],
+        ['Kan kjøpes i butikken', 'i', 'Bruk sier ikke noe om stofftypen.'],
       ],
       svar: 0,
       hint: 'Hva trengs for at et stoff skal lede strøm? Når kan partiklene bevege seg?',
@@ -190,13 +198,20 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       niva: 1,
       type: 'detektiv',
       mal: [19],
-      sporsmal: '**Stoffdetektiv: den skinnende staven.** Les observasjonene. Kryss av for bevisene, og bestem hva slags stoff det er.',
+      sporsmal: '**Stoffdetektiv:** Du har fått en grå stav. Bruk observasjonene til å finne ut hva slags stoff det er.',
       obs: [
-        ['Skinnende overflate', 'n'],
-        ['Leder strøm i fast form', 'k'],
-        ['Kan bøyes og hamres flat uten å sprekke', 'k'],
-        ['Smelter ved 660 °C', 'n'],
-        ['Er grå', 'i'],
+        [
+          'Leder strøm i fast form',
+          'k',
+          'Bare metaller leder strøm i fast form, fordi de har frie (delokaliserte) elektroner.',
+        ],
+        [
+          'Kan bøyes og hamres flat uten å sprekke',
+          'k',
+          'Formbar: lagene av metallioner kan gli forbi hverandre, fordi metallbindingen ikke er retningsbestemt.',
+        ],
+        ['Smelter ved 660 °C', 'k', 'Ganske høyt smeltepunkt passer med sterk metallbinding.'],
+        ['Er grå', 'i', 'Farge sier ikke noe om stofftypen.'],
       ],
       svar: 3,
       forklaring: 'Bare metaller leder strøm i fast form (frie elektroner) og kan formes uten å sprekke (ikke-retningsbestemt metallbinding). Det er aluminium.',
@@ -206,45 +221,33 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       niva: 1,
       type: 'detektiv',
       mal: [19],
-      sporsmal: '**Stoffdetektiv: den klare væsken som lukter bensin.** Les observasjonene. Kryss av for bevisene, og bestem hva slags stoff det er.',
+      sporsmal: '**Stoffdetektiv:** Du har fått en klar væske som lukter bensin. Bruk observasjonene til å finne ut hva slags stoff det er.',
       obs: [
-        ['Smelter ved −95 °C og koker ved 69 °C', 'k'],
-        ['Blander seg ikke med vann', 'k'],
-        ['Løser fett og olje', 'k'],
-        ['Leder ikke strøm', 'k'],
-        ['Er fargeløs', 'i'],
+        [
+          'Smelter ved −95 °C og koker ved 69 °C',
+          'k',
+          'Lavt kokepunkt: bare svake krefter mellom molekylene må brytes.',
+        ],
+        ['Blander seg ikke med vann', 'k', 'Upolare stoffer blander seg ikke med vann (likt løser likt).'],
+        ['Løser fett og olje', 'k', 'Fett er upolart, og upolare stoffer løses i upolare væsker.'],
+        ['Leder ikke strøm', 'k', 'Ingen ioner eller frie elektroner, altså et molekylært stoff.'],
+        ['Er fargeløs', 'i', 'Farge sier ikke noe om stofftypen.'],
       ],
       svar: 2,
       forklaring: 'Lavt kokepunkt betyr svake krefter mellom molekylene. At den ikke blander seg med vann, men løser fett, tyder på et upolart stoff. Det er heksan.',
-    },
-    {
-      id: 'sd-04',
-      niva: 1,
-      type: 'detektiv',
-      mal: [19],
-      sporsmal: '**Stoffdetektiv: den harde, klare krystallen.** Les observasjonene. Kryss av for bevisene, og bestem hva slags stoff det er.',
-      obs: [
-        ['Smelter først ved ca. 1700 °C', 'k'],
-        ['Svært hard, riper glass', 'k'],
-        ['Løses verken i vann eller i heksan', 'k'],
-        ['Leder ikke strøm, verken fast eller smeltet', 'k'],
-        ['Gjennomsiktig', 'i'],
-      ],
-      svar: 4,
-      forklaring: 'Svært høyt smeltepunkt og hardhet betyr sterke kovalente bindinger gjennom hele krystallen. At den aldri leder strøm, skiller den fra et salt. Det er kvarts, {{SiO2}}.',
     },
     {
       id: 'sd-05',
       niva: 1,
       type: 'detektiv',
       mal: [19],
-      sporsmal: '**Stoffdetektiv: stearinlyset.** Les observasjonene. Kryss av for bevisene, og bestem hva slags stoff det er.',
+      sporsmal: '**Stoffdetektiv:** Du har fått et hvitt stearinlys. Bruk observasjonene til å finne ut hva slags stoff det er.',
       obs: [
-        ['Smelter ved ca. 60 °C', 'k'],
-        ['Leder ikke strøm, verken fast eller smeltet', 'k'],
-        ['Løses ikke i vann', 'k'],
-        ['Er hvitt', 'i'],
-        ['Brenner med gul flamme', 'i'],
+        ['Smelter ved ca. 60 °C', 'k', 'Lavt smeltepunkt: svake krefter mellom molekylene.'],
+        ['Leder ikke strøm, verken fast eller smeltet', 'k', 'Ingen ioner eller frie elektroner, altså molekyler.'],
+        ['Løses ikke i vann', 'k', 'Upolare stoffer løses ikke i vann.'],
+        ['Er hvitt', 'i', 'Farge sier ikke noe om stofftypen.'],
+        ['Brenner med gul flamme', 'i', 'Hvordan stoffet brenner, sier ikke noe om stofftypen her.'],
       ],
       plan: {
         sporsmal: 'Hvilken undersøkelse vil bekrefte at stoffet er upolart?',
@@ -260,23 +263,30 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       forklaring: 'Lavt smeltepunkt og ingen ledningsevne betyr molekyler. At det ikke løses i vann, tyder på upolare molekyler (lange hydrokarbonkjeder).',
     },
     {
+      id: 'sd-14',
+      niva: 1,
+      type: 'detektiv',
+      mal: [19],
+      sporsmal: '**Stoffdetektiv:** Du har fått en rødbrun tråd fra en ledning. Bruk observasjonene til å finne ut hva slags stoff det er.',
+      obs: [
+        ['Leder strøm i fast form', 'k', 'Bare metaller leder strøm i fast form (frie elektroner).'],
+        ['Kan trekkes ut til tynne tråder og bøyes', 'k', 'Formbar: metallbindingen er ikke retningsbestemt.'],
+        ['Smelter ved 1085 °C', 'k', 'Høyt smeltepunkt: sterk metallbinding.'],
+        ['Er rødbrun', 'i', 'Farge sier ikke noe om stofftypen.'],
+        ['Brukes i ledninger', 'i', 'Bruk sier ikke noe om stofftypen.'],
+      ],
+      svar: 3,
+      forklaring: 'Ledningsevne i fast form og formbarhet viser at det er et metall. Det er kobber.',
+    },
+    {
       id: 'eg-04',
       niva: 2,
       type: 'sortering',
       mal: [17],
       sporsmal: 'Når leder stoffet strøm?',
       kategorier: ['Også i fast form', 'Bare smeltet eller løst', 'Ikke'],
-      elementer: [
-        ['Cu', 0],
-        ['NaCl', 1],
-        ['sukker', 2],
-        ['grafitt', 0],
-        ['{{KNO3}}', 1],
-        ['etanol', 2],
-        ['Al', 0],
-        ['diamant', 2],
-      ],
-      forklaring: 'Metaller og grafitt har frie elektroner. Salter har ioner som bare kan bevege seg når gitteret er brutt. Sukker, etanol og diamant har ingen frie ladde partikler.',
+      elementer: [['Cu', 0], ['NaCl', 1], ['sukker', 2], ['Fe', 0], ['{{KNO3}}', 1], ['etanol', 2], ['Al', 0], ['{{I2}}', 2]],
+      forklaring: 'Metaller (Cu, Fe, Al) har frie elektroner og leder også i fast form. Salter (NaCl, {{KNO3}}) har ioner som bare kan bevege seg når gitteret er brutt, altså smeltet eller løst i vann. Molekylære stoffer (sukker, etanol, {{I2}}) har ingen frie ladde partikler og leder ikke.',
     },
     {
       id: 'eg-05',
@@ -284,8 +294,9 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       type: 'flervalg',
       mal: [17, 19],
       sporsmal: 'Et hvitt stoff smelter ved 801 °C. Det leder ikke strøm i fast form, men leder når det er smeltet. Hva slags stoff er det mest sannsynlig?',
-      alternativer: ['Et salt (ionisk stoff)', 'Et metall', 'Et molekylært stoff', 'Et atomgitter'],
+      alternativer: ['Et salt (ionisk stoff)', 'Et metall', 'Et molekylært stoff', 'En legering'],
       svar: 0,
+      forklaring: 'Høyt smeltepunkt og ledningsevne bare i smeltet form betyr ioner som sitter fast i et gitter: et salt. Et metall eller en legering ville ledet strøm også i fast form. Et molekylært stoff ville hatt lavt smeltepunkt og ikke ledet strøm.',
     },
     {
       id: 'eg-06',
@@ -295,6 +306,7 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       sporsmal: 'En væske fryser ved −23 °C, blander seg ikke med vann og leder ikke strøm. Hva er det mest sannsynlig?',
       alternativer: ['Et upolart molekylært stoff', 'Et salt', 'Et metall', 'Et polart stoff med hydrogenbindinger'],
       svar: 0,
+      forklaring: 'Lavt frysepunkt betyr svake krefter mellom partiklene, altså et molekylært stoff. Det blander seg ikke med vann og leder ikke strøm, så det er upolart. Et salt ville hatt høyt smeltepunkt, og et metall ville ledet strøm.',
     },
     {
       id: 'eg-07',
@@ -309,6 +321,7 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
         'Sukker har kovalente bindinger som leder strøm',
       ],
       svar: 0,
+      forklaring: 'Når sukker løses, går hele, uladde sukkermolekyler ut i vannet. Når salt løses, går ionene fra hverandre og blir frie, ladde partikler som kan bevege seg og lede strøm. Det er ionene som leder, ikke frie elektroner (C er feil).',
     },
     {
       id: 'eg-08',
@@ -318,8 +331,8 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       sporsmal: 'Ranger stoffene etter økende smeltepunkt.',
       fra: 'Lavest',
       til: 'Høyest',
-      elementer: ['{{CH4}}', '{{H2O}}', 'NaCl', '{{SiO2}}'],
-      forklaring: '{{CH4}} (−182 °C, London) < {{H2O}} (0 °C, hydrogenbindinger) < NaCl (801 °C, ionebindinger) < {{SiO2}} (ca. 1700 °C, kovalent nettverk).',
+      elementer: ['{{CH4}}', '{{H2O}}', 'NaCl', 'MgO'],
+      forklaring: '{{CH4}} (−182 °C, bare London-krefter) < {{H2O}} (0 °C, hydrogenbindinger) < NaCl (801 °C, ionebindinger) < MgO (2852 °C, ionebindinger mellom ioner med ladning 2+ og 2−, som tiltrekker hverandre sterkere).',
     },
     {
       id: 'eg-09',
@@ -327,9 +340,9 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       type: 'flervalg',
       mal: [17],
       sporsmal: 'Hvilke stoffer gir en løsning som leder strøm når de løses i vann?',
-      alternativer: ['NaCl', 'HCl', 'KOH', 'sukker', 'etanol', '{{I2}}'],
+      alternativer: ['NaCl', '{{CaCl2}}', 'KOH', 'sukker', 'etanol', '{{I2}}'],
       svar: [0, 1, 2],
-      forklaring: 'NaCl og KOH er salter som gir frie ioner. HCl er et molekyl, men reagerer med vann og danner {{H3O+}} og {{Cl-}}.',
+      forklaring: 'NaCl, {{CaCl2}} og KOH er salter. Når de løses, blir ionene frie og kan bevege seg, så løsningen leder strøm. Sukker og etanol løses som hele, uladde molekyler. {{I2}} er upolart og løses nesten ikke i vann.',
     },
     {
       id: 'eg-10',
@@ -344,6 +357,7 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
         'Ionebindinger er svake',
       ],
       svar: 0,
+      forklaring: 'Ionebindingene i gitteret er sterke, så saltet er hardt. Men hvis et lag forskyves, kommer ioner med lik ladning ved siden av hverandre. De frastøter hverandre, og krystallen sprekker. Derfor er salter sprø, mens metaller kan formes.',
     },
     {
       id: 'eg-15',
@@ -370,12 +384,12 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       niva: 2,
       type: 'detektiv',
       mal: [19],
-      sporsmal: '**Stoffdetektiv: det hvite pulveret fra kjøkkenet.** Les observasjonene. Kryss av for bevisene, og bestem hva slags stoff det er.',
+      sporsmal: '**Stoffdetektiv:** Du har fått et hvitt pulver fra kjøkkenet. Bruk observasjonene til å finne ut hva slags stoff det er.',
       obs: [
-        ['Hvitt, krystallinsk pulver', 'i'],
-        ['Smelter og blir brunt ved ca. 186 °C', 'k'],
-        ['Løses godt i vann', 'k'],
-        ['Løses dårlig i heksan', 'k'],
+        ['Hvitt, krystallinsk pulver', 'i', 'Både salt og sukker er hvite krystaller. Utseendet sier ingenting.'],
+        ['Smelter og blir brunt ved ca. 186 °C', 'k', 'For lavt smeltepunkt for et salt: stoffet består av molekyler.'],
+        ['Løses godt i vann', 'k', 'Polart stoff som danner hydrogenbindinger med vann.'],
+        ['Løses dårlig i heksan', 'k', 'Polare stoffer løses dårlig i upolare væsker.'],
       ],
       plan: {
         sporsmal: 'Hvilken undersøkelse vil best bekrefte at dette ikke er et salt?',
@@ -395,12 +409,12 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       niva: 2,
       type: 'detektiv',
       mal: [19],
-      sporsmal: '**Stoffdetektiv: den klare væsken i flasken.** Les observasjonene. Kryss av for bevisene, og bestem hva slags stoff det er.',
+      sporsmal: '**Stoffdetektiv:** Du har fått en klar væske i en flaske. Bruk observasjonene til å finne ut hva slags stoff det er.',
       obs: [
-        ['Fargeløs væske', 'i'],
-        ['Koker ved 78 °C', 'k'],
-        ['Blander seg med vann i alle forhold', 'k'],
-        ['Brenner med blå flamme', 'i'],
+        ['Fargeløs væske', 'i', 'Farge sier ikke noe om stofftypen.'],
+        ['Koker ved 78 °C', 'k', 'Lavt kokepunkt: molekylært stoff.'],
+        ['Blander seg med vann i alle forhold', 'k', 'Polart stoff som danner hydrogenbindinger med vann.'],
+        ['Brenner med blå flamme', 'i', 'Hvordan stoffet brenner, sier ikke noe om stofftypen her.'],
       ],
       plan: {
         sporsmal: 'Hvordan kan du skille væsken fra saltvann, som også er fargeløst?',
@@ -420,13 +434,13 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       niva: 2,
       type: 'detektiv',
       mal: [19],
-      sporsmal: '**Stoffdetektiv: det gule pulveret.** Les observasjonene. Kryss av for bevisene, og bestem hva slags stoff det er.',
+      sporsmal: '**Stoffdetektiv:** Du har fått et gult pulver. Bruk observasjonene til å finne ut hva slags stoff det er.',
       obs: [
-        ['Gult pulver', 'i'],
-        ['Smelter ved 115 °C', 'k'],
-        ['Løses ikke i vann', 'k'],
-        ['Løses i karbondisulfid, {{CS2}}', 'k'],
-        ['Leder ikke strøm', 'k'],
+        ['Gult pulver', 'i', 'Farge sier ikke noe om stofftypen.'],
+        ['Smelter ved 115 °C', 'k', 'Lavt smeltepunkt: molekylært stoff.'],
+        ['Løses ikke i vann', 'k', 'Upolare stoffer løses ikke i vann.'],
+        ['Løses i karbondisulfid, {{CS2}}, som er upolart', 'k', 'Upolare stoffer løses i upolare løsemidler.'],
+        ['Leder ikke strøm', 'k', 'Ingen frie ladde partikler.'],
       ],
       svar: 2,
       forklaring: 'Lavt smeltepunkt og ingen ledningsevne betyr molekyler. Det løses i det upolare løsemiddelet {{CS2}}, men ikke i vann, og er derfor upolart. Det er svovel, {{S8}}.',
@@ -436,13 +450,17 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       niva: 2,
       type: 'detektiv',
       mal: [19],
-      sporsmal: '**Stoffdetektiv: de mørke krystallene.** Les observasjonene. Kryss av for bevisene, og bestem hva slags stoff det er.',
+      sporsmal: '**Stoffdetektiv:** Du har fått noen mørke krystaller. Bruk observasjonene til å finne ut hva slags stoff det er.',
       obs: [
-        ['Mørke, glinsende krystaller', 'i'],
-        ['Går over til fiolett gass ved svak oppvarming', 'k'],
-        ['Løses svært dårlig i vann', 'k'],
-        ['Løses godt i heksan', 'k'],
-        ['Leder ikke strøm', 'k'],
+        [
+          'Mørke, glinsende krystaller',
+          'i',
+          'Glans og farge sier ikke noe sikkert om stofftypen. Se på ledningsevnen.',
+        ],
+        ['Går over til fiolett gass ved svak oppvarming', 'k', 'Svake krefter mellom molekylene.'],
+        ['Løses svært dårlig i vann', 'k', 'Upolart stoff.'],
+        ['Løses godt i heksan', 'k', 'Upolare stoffer løses i upolare løsemidler.'],
+        ['Leder ikke strøm', 'k', 'Ikke et metall og ikke et salt.'],
       ],
       svar: 2,
       hint: 'Glinsende betyr ikke alltid metall. Se på ledningsevnen.',
@@ -453,18 +471,18 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       niva: 2,
       type: 'detektiv',
       mal: [19],
-      sporsmal: '**Stoffdetektiv: det hvite, ildfaste stoffet.** Les observasjonene. Kryss av for bevisene, og bestem hva slags stoff det er.',
+      sporsmal: '**Stoffdetektiv:** Du har fått et hvitt stoff som tåler svært høy temperatur. Bruk observasjonene til å finne ut hva slags stoff det er.',
       obs: [
-        ['Smelter først ved 2852 °C', 'k'],
-        ['Leder ikke strøm i fast form', 'n'],
-        ['Leder strøm når det er smeltet', 'k'],
-        ['Løses nesten ikke i vann', 'n'],
-        ['Brukes i ovner', 'i'],
+        ['Smelter først ved 2852 °C', 'k', 'Svært høyt smeltepunkt: sterke bindinger.'],
+        ['Leder ikke strøm i fast form', 'k', 'Ikke et metall.'],
+        ['Leder strøm når det er smeltet', 'k', 'Ioner som kan bevege seg når gitteret er brutt.'],
+        ['Løses nesten ikke i vann', 'k', 'Viser at ikke alle salter løses godt. Det avgjør ikke stofftypen alene.'],
+        ['Brukes i ovner', 'i', 'Bruk sier ikke noe om stofftypen.'],
       ],
       plan: {
-        sporsmal: 'Hvilken observasjon skiller dette stoffet fra et atomgitter som {{SiO2}}?',
+        sporsmal: 'Hvilken observasjon viser sikrest at stoffet består av ioner?',
         alternativer: [
-          'At det leder strøm når det er smeltet',
+          'At det leder strøm når det er smeltet, men ikke i fast form',
           'At det har høyt smeltepunkt',
           'At det ikke løses i vann',
           'At det er hvitt',
@@ -473,6 +491,32 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       },
       svar: 0,
       forklaring: 'Ledningsevne i smeltet form viser at det er ioner. Det svært høye smeltepunktet kommer av at ionene har store ladninger ({{Mg^2+}} og {{O^2-}}). Det er magnesiumoksid. Ikke alle salter løses godt i vann.',
+    },
+    {
+      id: 'sd-15',
+      niva: 2,
+      type: 'detektiv',
+      mal: [19],
+      sporsmal: '**Stoffdetektiv:** Du har fått et hvitt pulver som brukes på vinterveier. Bruk observasjonene til å finne ut hva slags stoff det er.',
+      obs: [
+        ['Smelter ved 772 °C', 'k', 'Høyt smeltepunkt: sterke bindinger.'],
+        ['Leder ikke strøm i fast form', 'k', 'Ikke et metall.'],
+        ['Løses godt i vann, og løsningen leder strøm', 'k', 'Frie ioner i løsningen.'],
+        ['Hvitt pulver', 'i', 'Utseende sier ikke noe om stofftypen.'],
+        ['Brukes på vinterveier', 'i', 'Bruk sier ikke noe om stofftypen.'],
+      ],
+      plan: {
+        sporsmal: 'Du vil vise at stoffet består av ioner uten å smelte det. Hvilken undersøkelse velger du?',
+        alternativer: [
+          'Løse det i vann og måle om løsningen leder strøm',
+          'Se på krystallene i lupe',
+          'Varme det forsiktig og se om det blir mykt',
+          'Prøve å løse det i heksan',
+        ],
+        svar: 0,
+      },
+      svar: 0,
+      forklaring: 'Høyt smeltepunkt, ingen ledningsevne i fast form og ledningsevne i løsning viser at stoffet består av ioner: et salt. Det er kalsiumklorid, {{CaCl2}}.',
     },
     {
       id: 'sb-20',
@@ -504,21 +548,6 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       modul: 'sterke-bindinger',
     },
     {
-      id: 'sb-24',
-      niva: 3,
-      type: 'flervalg',
-      mal: [17],
-      sporsmal: 'Diamant smelter ikke under ca. 3500 °C. Hvilken struktur forklarer dette?',
-      alternativer: [
-        'Et atomgitter der hvert C-atom er bundet kovalent til fire andre',
-        'Et ionegitter med {{C^4+}} og {{C^4-}}',
-        'Sterke London-krefter mellom C-molekyler',
-        'Metallbinding mellom karbonatomene',
-      ],
-      svar: 0,
-      modul: 'sterke-bindinger',
-    },
-    {
       id: 'sv-21',
       niva: 3,
       type: 'forklaring',
@@ -546,6 +575,7 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
         'Heksan er polart',
       ],
       svar: 0,
+      forklaring: '{{I2}} og heksan er begge upolare og holdes sammen av London-krefter, så jod kan blande seg med heksan. Vannmolekylene holder hardt sammen med hydrogenbindinger, og jod kan ikke danne like sterke krefter til vann. Derfor løses jod dårlig i vann (likt løser likt).',
     },
     {
       id: 'eg-12',
@@ -560,20 +590,6 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
         'Begge løses i vann (ion-dipol / hydrogenbindinger)',
         'NaCl leder bare smeltet/løst (frie ioner)',
         'Sukker leder ikke (uladde molekyler)',
-      ],
-    },
-    {
-      id: 'eg-13',
-      niva: 3,
-      type: 'forklaring',
-      mal: [17],
-      sporsmal: 'Grafitt leder strøm, men diamant gjør det ikke, selv om begge består av bare karbon. Forklar.',
-      modellsvar: 'Begge er atomgitter der karbonatomene er bundet sammen med kovalente bindinger. I diamant er hvert C-atom bundet til fire andre, så alle valenselektronene brukes i bindinger og sitter fast. Diamant har ingen frie ladde partikler og leder ikke strøm. I grafitt er hvert C-atom bundet til tre andre i flate lag. Det fjerde valenselektronet er delokalisert og kan bevege seg langs lagene. Derfor leder grafitt strøm.',
-      punkter: [
-        'Begge er atomgitter med kovalente bindinger',
-        'Diamant: hvert C bundet til fire, alle elektroner i bindinger',
-        'Grafitt: hvert C bundet til tre, ett delokalisert elektron',
-        'Frie elektroner gjør at grafitt leder',
       ],
     },
     {
@@ -595,10 +611,14 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       niva: 3,
       type: 'forklaring',
       mal: [19],
-      sporsmal: 'Du får tre hvite pulvere: natriumklorid, sukker og sand ({{SiO2}}). Planlegg en enkel undersøkelse som skiller dem. Beskriv hva du gjør, hva du forventer, og begrunn ut fra stofftype.',
-      modellsvar: 'Først tilsetter jeg like mye vann (for eksempel 20 mL) til like mye av hvert pulver og rører. Sand ({{SiO2}}) er et atomgitter med kovalente bindinger i et stort nettverk og løses ikke, så det blir liggende igjen. Sukker og salt løses begge: sukker fordi OH-gruppene danner hydrogenbindinger med vann, salt fordi ionene danner ion-dipol-bindinger. Deretter måler jeg ledningsevnen i de to løsningene med en ledningsevnemåler. Saltløsningen leder strøm fordi den inneholder frie ioner, mens sukkerløsningen ikke leder fordi sukker løses som uladde molekyler. Jeg bruker samme mengde stoff og vann og samme temperatur, og sammenligner med destillert vann som kontroll.',
+      sporsmal: 'Du får tre hvite stoffer: natriumklorid, sukker og stearin (voks). Planlegg en enkel undersøkelse som skiller dem. Beskriv hva du gjør, hva du forventer, og begrunn ut fra stofftype.',
+      modellsvar: `Først tilsetter jeg like mye vann (for eksempel 20 mL) til like mye av hvert stoff og rører. Stearin er et **upolart molekylært stoff** og løses ikke i vann, så det blir liggende igjen. Sukker og salt løses begge: sukker fordi OH-gruppene danner **hydrogenbindinger** med vann, salt fordi ionene danner **ion-dipol-bindinger** med vann.
+
+Deretter måler jeg **ledningsevnen** i de to løsningene. Saltløsningen leder strøm fordi den inneholder frie ioner. Sukkerløsningen leder ikke, fordi sukker løses som uladde molekyler.
+
+Jeg bruker samme mengde stoff og vann og samme temperatur, og sammenligner med rent vann som kontroll.`,
       punkter: [
-        'Løselighet i vann skiller ut sand (atomgitter løses ikke)',
+        'Løselighet i vann skiller ut stearin (upolart)',
         'Ledningsevne skiller salt (ioner) fra sukker (molekyler)',
         'Begrunner med stofftype og partikler',
         'Kontrollerer variabler (like mengder, kontrollprøve)',
@@ -609,13 +629,17 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       niva: 3,
       type: 'detektiv',
       mal: [19],
-      sporsmal: '**Stoffdetektiv: det myke, sølvgrå stoffet.** Les observasjonene. Kryss av for bevisene, og bestem hva slags stoff det er.',
+      sporsmal: '**Stoffdetektiv:** Du har fått et mykt, sølvgrått stoff. Bruk observasjonene til å finne ut hva slags stoff det er.',
       obs: [
-        ['Så mykt at det kan skjæres med kniv', 'n'],
-        ['Smelter ved 98 °C', 'n'],
-        ['Leder strøm i fast form', 'k'],
-        ['Blank overflate der det er skåret', 'n'],
-        ['Oppbevares under parafinolje', 'i'],
+        [
+          'Så mykt at det kan skjæres med kniv',
+          'k',
+          'Mykt metall: svak metallbinding (bare ett valenselektron og store ioner).',
+        ],
+        ['Smelter ved 98 °C', 'k', 'Lavt smeltepunkt, men det gjør det ikke molekylært. Se på ledningsevnen.'],
+        ['Leder strøm i fast form', 'k', 'Avgjørende: bare metaller leder strøm i fast form.'],
+        ['Blank overflate der det er skåret', 'i', 'Utseende sier ikke noe sikkert.'],
+        ['Oppbevares under parafinolje', 'i', 'Oppbevaring sier ikke noe om stofftypen.'],
       ],
       plan: {
         sporsmal: 'En medelev mener stoffet er molekylært fordi smeltepunktet er lavt. Hvilken undersøkelse avgjør saken?',
@@ -626,34 +650,21 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       forklaring: 'Ledningsevne i fast form er avgjørende: det har bare metaller. Lavt smeltepunkt og mykhet kommer av svak metallbinding, fordi natrium bare har ett valenselektron og store ioner. Det er natrium.',
     },
     {
-      id: 'sd-12',
-      niva: 3,
-      type: 'detektiv',
-      mal: [19],
-      sporsmal: '**Stoffdetektiv: det svarte stoffet fra blyanten.** Les observasjonene. Kryss av for bevisene, og bestem hva slags stoff det er.',
-      obs: [
-        ['Svart og glinsende', 'i'],
-        ['Leder strøm i fast form', 'n'],
-        ['Smelter ikke selv ved 3500 °C', 'k'],
-        ['Kan ikke bøyes eller hamres, men smuldrer og smører av seg', 'k'],
-        ['Løses verken i vann eller i heksan', 'k'],
-      ],
-      svar: 4,
-      hint: 'Et metall kan formes. Hva betyr det at stoffet smuldrer?',
-      forklaring: 'Det leder strøm, men kan ikke formes som et metall, og tåler ekstremt høye temperaturer. Det er grafitt: et atomgitter av karbon i lag, der hvert C-atom har ett elektron som kan bevege seg langs lagene. Ledningsevne alene beviser ikke at et stoff er et metall.',
-    },
-    {
       id: 'sd-13',
       niva: 3,
       type: 'detektiv',
       mal: [19],
-      sporsmal: '**Stoffdetektiv: gjødselsaltet.** Les observasjonene. Kryss av for bevisene, og bestem hva slags stoff det er.',
+      sporsmal: '**Stoffdetektiv:** Du har fått et hvitt gjødselsalt. Bruk observasjonene til å finne ut hva slags stoff det er.',
       obs: [
-        ['Hvite krystaller', 'i'],
-        ['Smelter ved 334 °C', 'n'],
-        ['Løses godt i vann, og løsningen leder strøm', 'k'],
-        ['Leder ikke strøm i fast form', 'k'],
-        ['Leder strøm når det er smeltet', 'k'],
+        ['Hvite krystaller', 'i', 'Utseende sier ikke noe om stofftypen.'],
+        [
+          'Smelter ved 334 °C',
+          'k',
+          'Høyere enn for molekylære stoffer, men lavere enn NaCl. Ikke alle salter smelter over 800 °C.',
+        ],
+        ['Løses godt i vann, og løsningen leder strøm', 'k', 'Frie ioner i løsningen.'],
+        ['Leder ikke strøm i fast form', 'k', 'Ikke et metall.'],
+        ['Leder strøm når det er smeltet', 'k', 'Ioner som kan bevege seg.'],
       ],
       svar: 0,
       forklaring: 'Ledningsevne i løsning og smelte, men ikke i fast form, viser at stoffet består av ioner. Smeltepunktet er lavere enn for NaCl fordi ionene er større og sammensatte. Det er kaliumnitrat, {{KNO3}}. Ikke alle salter har smeltepunkt over 800 °C.',
@@ -665,7 +676,6 @@ Endre bare én ting om gangen, bruk like mengder og samme temperatur, og ha med 
       f: 'Egenskaper til ioneforbindelser',
       b: 'Høyt smeltepunkt, harde og sprø, leder strøm smeltet/løst, ikke fast.',
     },
-    { f: 'Atomgitter', b: 'Nettverk av kovalent bundne atomer: diamant, grafitt, {{SiO2}}. Svært høyt smeltepunkt.' },
     {
       f: 'Hva kreves for at et stoff skal lede strøm?',
       b: 'Ladde partikler som kan bevege seg: frie elektroner (metall) eller frie ioner (smeltet/løst salt).',

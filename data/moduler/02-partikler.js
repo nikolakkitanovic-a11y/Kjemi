@@ -5,6 +5,7 @@
  * Hver oppgave har «mal» med nummeret på læringsmålet den øver på (se data/laeringsmal.js).
  * Se README.md for hvordan du legger til nye oppgaver.
  */
+
 KJ.modul({
   id: 'partikler',
   nr: 2,
@@ -167,6 +168,39 @@ Elektroner: ___`,
       sporsmal: 'Tilfeldig atom: finn protoner, nøytroner og elektroner',
     },
     {
+      id: 'op-1-1',
+      niva: 1,
+      type: 'flervalg',
+      mal: [2],
+      ove: true,
+      sporsmal: 'Velg riktig alternativ. Det nøytrale atomet med atomkjernen {{^{31}_{15}P}} består av',
+      alternativer: [
+        '15 protoner, 31 nøytroner og 15 elektroner',
+        '16 protoner, 15 nøytroner og 16 elektroner',
+        '15 protoner, 16 nøytroner og 15 elektroner',
+        '31 protoner, 15 nøytroner og 15 elektroner',
+      ],
+      svar: 2,
+      stokk: false,
+      forklaring: 'Det nederste tallet er atomnummeret: **15 protoner**. Det øverste er nukleontallet (protoner + nøytroner): 31 − 15 = **16 nøytroner**. Atomet er nøytralt, så det har like mange elektroner som protoner: **15 elektroner**. A blander nukleontall og nøytroner, B og D har feil antall protoner.',
+    },
+    {
+      id: 'op-1-1b',
+      niva: 1,
+      type: 'flervalg',
+      mal: [2],
+      sporsmal: 'Velg riktig alternativ. Det nøytrale atomet {{^{35}_{17}Cl}} består av',
+      alternativer: [
+        '17 protoner, 18 nøytroner og 17 elektroner',
+        '17 protoner, 35 nøytroner og 17 elektroner',
+        '18 protoner, 17 nøytroner og 18 elektroner',
+        '35 protoner, 17 nøytroner og 35 elektroner',
+      ],
+      svar: 0,
+      stokk: false,
+      forklaring: 'Atomnummer 17 gir **17 protoner**. Nøytroner = 35 − 17 = **18**. Nøytralt atom: elektroner = protoner = **17**.',
+    },
+    {
       id: 'at-10',
       niva: 2,
       type: 'fyllinn',
@@ -277,6 +311,22 @@ Nøytroner: ___
 Elektroner: ___`,
       svar: [['13'], ['14'], ['10']],
       steg: ['Protoner = 13', 'Nøytroner = $27 - 13 = 14$', 'Ladning 3+: elektroner = $13 - 3 = 10$'],
+    },
+    {
+      id: 'op-1-1c',
+      niva: 2,
+      type: 'flervalg',
+      mal: [2],
+      sporsmal: 'Velg riktig alternativ. Ionet {{^{32}_{16}S^2-}} består av',
+      alternativer: [
+        '16 protoner, 16 nøytroner og 16 elektroner',
+        '16 protoner, 16 nøytroner og 18 elektroner',
+        '16 protoner, 16 nøytroner og 14 elektroner',
+        '18 protoner, 14 nøytroner og 18 elektroner',
+      ],
+      svar: 1,
+      stokk: false,
+      forklaring: '**16 protoner** (atomnummer 16) og 32 − 16 = **16 nøytroner**. Ladningen 2− betyr at ionet har tatt opp to elektroner: 16 + 2 = **18 elektroner**. C er feil fordi et negativt ion har *flere* elektroner enn protoner.',
     },
     {
       id: 'at-23',
