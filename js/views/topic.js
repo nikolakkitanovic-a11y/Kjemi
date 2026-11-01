@@ -1,6 +1,6 @@
 /*
- * Temaside: teori (oppsummering, begreper, eksempler, vanlige feil) og
- * oppgaver med nivåfilter og oppgavenavigasjon.
+ * Modulside: læringsmål, vanlige feil, teori, begreper og eksempler, og
+ * oppgaver med filter for nivå og læringsmål.
  */
 (function (KJ) {
   'use strict';
@@ -21,14 +21,14 @@
       const f = KJ.store.temaFremdrift(t.id);
       head.innerHTML =
         '<div class="container">' +
-        '<nav class="crumb" aria-label="Brødsmuler"><a href="#/">Oversikt</a><span aria-hidden="true">/</span><span>Tema ' + t.nr + '</span></nav>' +
-        '<p class="lambda"><i></i>Tema ' + String(t.nr).padStart(2, '0') + ' · λ ' + esc(t.linje) + (t.kilde === 'tillegg' ? ' · tillegg' : '') + '</p>' +
+        '<nav class="crumb" aria-label="Brødsmuler"><a href="#/">Oversikt</a><span aria-hidden="true">/</span><span>Modul ' + t.nr + '</span></nav>' +
+        '<p class="lambda"><i></i>Modul ' + String(t.nr).padStart(2, '0') + ' · ' + t.mal.map((nr) => 'Mål ' + nr).join(' og ') + '</p>' +
         '<h1>' + esc(t.tittel) + '</h1>' +
         '<p class="desc">' + esc(t.beskrivelse) + '</p>' +
         '<div class="thead-meta"><div class="prog" aria-label="Fremdrift"><span>' + f.ok + ' av ' + f.totalt + ' oppgaver mestret</span><div class="bar"><i style="width:' + Math.round(f.andel * 100) + '%"></i></div></div></div>' +
-        '<nav class="tabs" aria-label="Deler av temaet">' +
-        '<a href="#/tema/' + t.id + '"' + (fane === 'teori' ? ' aria-current="page"' : '') + '>' + KJ.icon('book', 18) + 'Teori</a>' +
-        '<a href="#/tema/' + t.id + '/oppgaver"' + (fane === 'oppgaver' ? ' aria-current="page"' : '') + '>' + KJ.icon('pencil', 18) + 'Oppgaver <span class="muted mono">' + t.oppgaver.length + '</span></a>' +
+        '<nav class="tabs" aria-label="Deler av modulen">' +
+        '<a href="#/modul/' + t.id + '"' + (fane === 'teori' ? ' aria-current="page"' : '') + '>' + KJ.icon('book', 18) + 'Teori</a>' +
+        '<a href="#/modul/' + t.id + '/oppgaver"' + (fane === 'oppgaver' ? ' aria-current="page"' : '') + '>' + KJ.icon('pencil', 18) + 'Oppgaver <span class="muted mono">' + t.oppgaver.length + '</span></a>' +
         '<a href="#/kort/' + t.id + '">' + KJ.icon('layers', 18) + '<span class="lang-tekst">Flashcards</span><span class="kort-tekst">Kort</span> <span class="muted mono">' + t.flashcards.length + '</span></a>' +
         '</nav></div>';
     }
@@ -115,8 +115,29 @@
   }
   KJ.tabellHtml = tabell;
 
+  /** Boks med vanlige feil for modulen. */
+  function fellerHtml(t) {
+    return '<ul class="pitfalls">' + t.feller.map((f) => '<li>' + KJ.icon('alert', 18) + '<div>' + KJ.fmt(f) + '</div></li>').join('') + '</ul>';
+  }
+  KJ.fellerHtml = fellerHtml;
+
+  function malBoks(t) {
+    return (
+      '<ul class="goals goals-box">' +
+      t.mal
+        .map((nr) => {
+          const m = KJ.malInfo(nr);
+          return '<li><span class="goal-nr">' + nr + '</span><span>' + esc(m ? m.tekst : '') + '</span></li>';
+        })
+        .join('') +
+      '</ul>'
+    );
+  }
+
   function teori(t, body) {
     const seksjoner = [];
+    seksjoner.push({ id: 'mal', tittel: 'Læringsmål', html: '<p class="muted">Til prøven skal du kunne:</p>' + malBoks(t) });
+    if (t.feller.length) seksjoner.push({ id: 'feller', tittel: 'Vanlige feil', html: fellerHtml(t) });
     t.teori.forEach((b, i) => {
       seksjoner.push({
         id: 'del-' + (i + 1),
@@ -146,27 +167,13 @@
           )
           .join(''),
       });
-    if (t.feller.length)
-      seksjoner.push({
-        id: 'feller',
-        tittel: 'Vanlige feil',
-        html: '<ul class="pitfalls">' + t.feller.map((f) => '<li>' + KJ.icon('alert', 18) + '<div>' + KJ.fmt(f) + '</div></li>').join('') + '</ul>',
-      });
-    if (t.mal && t.mal.length)
-      seksjoner.push({
-        id: 'mal',
-        tittel: 'Hva du skal kunne',
-        html:
-          '<p class="muted">Knyttet til kompetansemålene i Kjemi 1. For høy måloppnåelse må du kunne forklare sammenhenger med fagbegreper, ikke bare gjengi fakta.</p>' +
-          '<ul class="goals">' + t.mal.map((m) => '<li>' + KJ.icon('check', 16) + '<span>' + esc(m) + '</span></li>').join('') + '</ul>',
-      });
 
     body.innerHTML =
       '<div class="theory"><aside class="toc" aria-label="Innhold"><p>Innhold</p><ol>' +
-      seksjoner.map((s) => '<li><a href="#/tema/' + t.id + '" data-mal="' + s.id + '">' + esc(s.tittel) + '</a></li>').join('') +
+      seksjoner.map((s) => '<li><a href="#/modul/' + t.id + '" data-mal="' + s.id + '">' + esc(s.tittel) + '</a></li>').join('') +
       '</ol></aside><article class="prose">' +
       seksjoner.map((s, i) => '<section id="' + s.id + '" aria-labelledby="' + s.id + '-h"><h2 id="' + s.id + '-h"><span class="n">' + String(i + 1).padStart(2, '0') + '</span>' + esc(s.tittel) + '</h2>' + s.html + '</section>').join('') +
-      '<div class="cta-band"><div><h3>Klar for å øve?</h3><p>' + t.oppgaver.length + ' oppgaver fra grunnleggende til høy måloppnåelse.</p></div><a class="btn btn-primary" href="#/tema/' + t.id + '/oppgaver">Start oppgavene ' + KJ.icon('arrow', 18) + '</a></div>' +
+      '<div class="cta-band"><div><h3>Klar for å øve?</h3><p>' + t.oppgaver.length + ' oppgaver fra grunnleggende til høy måloppnåelse.</p></div><a class="btn btn-primary" href="#/modul/' + t.id + '/oppgaver">Start oppgavene ' + KJ.icon('arrow', 18) + '</a></div>' +
       '</article></div>';
 
     const lenker = [...body.querySelectorAll('.toc a')];
@@ -199,6 +206,7 @@
   /* ---------- Oppgaver ---------- */
   function oppgaver(t, body, params) {
     let niva = parseInt(params.get('niva') || '0', 10) || 0;
+    let malNr = parseInt(params.get('mal') || '0', 10) || 0;
     const sortert = t.oppgaver.slice().sort((a, b) => a.niva - b.niva);
     let liste = [];
     let idx = 0;
@@ -206,6 +214,8 @@
 
     body.innerHTML =
       '<div class="practice">' +
+      (t.feller.length ? '<details class="feller-boks"><summary>' + KJ.icon('alert', 18) + 'Vanlige feil i denne modulen</summary>' + fellerHtml(t) + '</details>' : '') +
+      (t.mal.length > 1 ? '<div class="seg" role="group" aria-label="Læringsmål" data-malfilter></div>' : '') +
       '<div class="practice-bar"><div class="seg" role="group" aria-label="Nivå" data-niva></div>' +
       '<button type="button" class="btn btn-ghost btn-small" data-a="neste-uløst">' + KJ.icon('target', 16) + 'Neste ikke mestrede</button></div>' +
       '<div><nav class="qnav" aria-label="Oppgaver" data-qnav></nav>' +
@@ -219,6 +229,14 @@
     const navEl = body.querySelector('[data-qnav]');
     const kortEl = body.querySelector('[data-card]');
 
+    const malEl = body.querySelector('[data-malfilter]');
+    function tegnMal() {
+      if (!malEl) return;
+      malEl.innerHTML = [0]
+        .concat(t.mal)
+        .map((nr) => '<button type="button" data-m="' + nr + '" aria-pressed="' + (nr === malNr) + '"' + (nr ? ' title="' + esc(KJ.malInfo(nr).tekst) + '"' : '') + '>' + (nr ? 'Mål ' + nr + ': ' + esc(KJ.malInfo(nr).kort) : 'Alle mål') + ' <span class="count">' + (nr ? t.oppgaver.filter((q) => q.mal.includes(nr)).length : t.oppgaver.length) + '</span></button>')
+        .join('');
+    }
     function tegnNiva() {
       const ant = (n) => (n ? t.oppgaver.filter((q) => q.niva === n).length : t.oppgaver.length);
       segEl.innerHTML = [0, 1, 2, 3]
@@ -240,7 +258,7 @@
     }
 
     function velgListe(behold) {
-      liste = niva ? sortert.filter((q) => q.niva === niva) : sortert;
+      liste = sortert.filter((q) => (!niva || q.niva === niva) && (!malNr || q.mal.includes(malNr)));
       const qid = behold || params.get('q');
       const i = qid ? liste.findIndex((q) => q.id === qid) : -1;
       idx = i >= 0 ? i : 0;
@@ -249,7 +267,8 @@
     function vis(fokus) {
       const q = liste[idx];
       if (!q) {
-        kortEl.innerHTML = '<p class="muted">Ingen oppgaver på dette nivået.</p>';
+        kortEl.innerHTML = '<p class="muted">Ingen oppgaver med dette filteret.</p>';
+        navEl.innerHTML = '';
         return;
       }
       kort = new KJ.Oppgavekort(q, {
@@ -264,7 +283,7 @@
       body.querySelector('[data-a="forrige"]').disabled = idx === 0;
       const nb = body.querySelector('[data-a="neste"]');
       nb.disabled = idx >= liste.length - 1;
-      KJ.settUrl('/tema/' + t.id + '/oppgaver?niva=' + niva + '&q=' + q.id);
+      KJ.settUrl('/modul/' + t.id + '/oppgaver?niva=' + niva + (malNr ? '&mal=' + malNr : '') + '&q=' + q.id);
       KJ.store.settSist({ tema: t.id, niva, q: q.id });
       if (fokus) {
         const top = kortEl.getBoundingClientRect().top + window.scrollY - 80;
@@ -275,12 +294,22 @@
       }
     }
 
+    if (malEl)
+      malEl.addEventListener('click', (e) => {
+        const b = e.target.closest('button');
+        if (!b) return;
+        malNr = +b.dataset.m;
+        tegnMal();
+        velgListe(liste[idx] && (!malNr || liste[idx].mal.includes(malNr)) ? liste[idx].id : null);
+        vis();
+      });
     segEl.addEventListener('click', (e) => {
       const b = e.target.closest('button');
       if (!b) return;
       niva = +b.dataset.n;
       tegnNiva();
       velgListe(liste[idx] && (niva === 0 || liste[idx].niva === niva) ? liste[idx].id : null);
+      tegnMal();
       vis();
     });
     navEl.addEventListener('click', (e) => {
@@ -315,6 +344,7 @@
       KJ.toast('Du har mestret alle oppgavene på dette nivået!', 'ok');
     });
 
+    tegnMal();
     tegnNiva();
     velgListe();
     vis();

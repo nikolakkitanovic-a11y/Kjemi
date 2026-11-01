@@ -2,45 +2,72 @@
  * Kjemi 1 · Spektrum – felles navnerom.
  * Alle datafiler og moduler henger seg på window.KJ, slik at siden kan åpnes
  * direkte fra disk (file://) uten server eller byggesteg.
+ *
+ * Siden er organisert i moduler etter læringsmålene for prøven (data/laeringsmal.js).
+ * Internt heter modulene fortsatt «tema» enkelte steder (KJ.temaer, q.tema).
  */
 (function () {
   'use strict';
   const KJ = (window.KJ = window.KJ || {});
 
-  KJ.versjon = '1.0.0';
-  KJ.temaer = [];
-  KJ.temaMap = {};
+  KJ.versjon = '2.0.0';
+  KJ.moduler = [];
+  KJ.modulMap = {};
+  KJ.temaer = KJ.moduler; // eldre navn, samme liste
+  KJ.temaMap = KJ.modulMap;
   KJ.views = {};
 
-  /** Registrerer et tema fra en datafil i data/temaer/. */
-  KJ.tema = function (t) {
-    if (!t || !t.id) throw new Error('Tema mangler id');
-    if (KJ.temaMap[t.id]) throw new Error('Tema-id finnes fra før: ' + t.id);
-    t.oppgaver = t.oppgaver || [];
-    t.flashcards = t.flashcards || [];
-    t.teori = t.teori || [];
-    t.begreper = t.begreper || [];
-    t.eksempler = t.eksempler || [];
-    t.feller = t.feller || [];
-    t.oppgaver.forEach((q) => (q.tema = t.id));
-    KJ.temaer.push(t);
-    KJ.temaer.sort((a, b) => (a.nr || 99) - (b.nr || 99));
-    KJ.temaMap[t.id] = t;
+  /** Registrerer en modul fra en datafil i data/moduler/. */
+  KJ.modul = function (m) {
+    if (!m || !m.id) throw new Error('Modul mangler id');
+    if (KJ.modulMap[m.id]) throw new Error('Modul-id finnes fra før: ' + m.id);
+    m.oppgaver = m.oppgaver || [];
+    m.flashcards = m.flashcards || [];
+    m.teori = m.teori || [];
+    m.begreper = m.begreper || [];
+    m.eksempler = m.eksempler || [];
+    m.feller = m.feller || [];
+    m.mal = m.mal || [];
+    m.linje = m.linje || m.bolge + ' nm';
+    m.oppgaver.forEach((q) => {
+      q.tema = m.id;
+      q.modul = m.id;
+      if (!q.mal || !q.mal.length) q.mal = m.mal.slice(0, 1);
+    });
+    KJ.moduler.push(m);
+    KJ.moduler.sort((a, b) => (a.nr || 99) - (b.nr || 99));
+    KJ.modulMap[m.id] = m;
+    KJ._qIndex = null;
   };
+  KJ.tema = KJ.modul;
 
-  /** Slår opp en oppgave på id på tvers av alle temaer. */
+  /** Slår opp en oppgave på id på tvers av alle moduler. */
   KJ.oppgave = function (id) {
-    if (!KJ._qIndex || KJ._qIndexSize !== KJ.alleOppgaver().length) {
+    if (!KJ._qIndex) {
       KJ._qIndex = {};
       KJ.alleOppgaver().forEach((q) => (KJ._qIndex[q.id] = q));
-      KJ._qIndexSize = KJ.alleOppgaver().length;
     }
     return KJ._qIndex[id];
   };
 
   KJ.alleOppgaver = function () {
-    return KJ.temaer.reduce((acc, t) => acc.concat(t.oppgaver), []);
+    return KJ.moduler.reduce((acc, t) => acc.concat(t.oppgaver), []);
   };
+
+  /** Oppgaver som øver på læringsmål nr. */
+  KJ.malOppgaver = function (nr) {
+    return KJ.alleOppgaver().filter((q) => q.mal.includes(nr));
+  };
+
+  /** Modulen som har læringsmål nr som hovedmål. */
+  KJ.malModul = function (nr) {
+    return KJ.moduler.find((m) => m.mal.includes(nr));
+  };
+
+  KJ.malInfo = (nr) => (KJ.MAL || []).find((m) => m.nr === nr);
+
+  /** Id for et flashcard. Bygger på forsiden, så fremdriften følger kortet. */
+  KJ.kortId = (k) => 'k:' + KJ.hash(k.f);
 
   KJ.NIVA = {
     1: { kort: 'G', navn: 'Grunnleggende', poeng: 1 },

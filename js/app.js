@@ -2,11 +2,11 @@
  * App: navigasjon (hash-ruter), meny og fargetema.
  * Ruter:
  *   #/                          oversikt
- *   #/tema/<id>[/oppgaver]      teori eller oppgaver for et tema
+ *   #/modul/<id>[/oppgaver]     teori eller oppgaver for en modul (ett eller flere læringsmål)
  *   #/kort[/<id>]               flashcards
  *   #/prove                     prøvemodus
  *   #/feilbank                  feilbank
- *   #/verktoy[/<fane>]          periodesystem, formelark, kalkulator
+ *   #/verktoy[/<fane>]          periodesystem, formelark, balansering
  */
 (function (KJ) {
   'use strict';
@@ -21,7 +21,8 @@
 
   const RUTER = [
     [/^\/?$/, 'hjem', (m, p) => KJ.views.home(m, p)],
-    [/^\/tema\/([\w-]+)(?:\/(teori|oppgaver))?\/?$/, 'hjem', (m, p, id, fane) => KJ.views.topic(m, p, id, fane || 'teori')],
+    [/^\/modul\/([\w-]+)(?:\/(teori|oppgaver))?\/?$/, 'hjem', (m, p, id, fane) => KJ.views.topic(m, p, id, fane || 'teori')],
+    [/^\/tema\/.*$/, 'hjem', () => location.replace('#/')],
     [/^\/kort(?:\/([\w-]+))?\/?$/, 'kort', (m, p, id) => KJ.views.cards(m, p, id || 'alle')],
     [/^\/prove\/?$/, 'prove', (m, p) => KJ.views.exam(m, p)],
     [/^\/feilbank\/?$/, 'feilbank', (m, p) => KJ.views.errors(m, p)],

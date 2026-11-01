@@ -74,8 +74,8 @@ const logg = (ok, msg) => {
   /* ---------- Alle visninger ---------- */
   console.log('Visninger');
   const temaer = await page.evaluate(() => KJ.temaer.map((t) => t.id));
-  const ruter = ['#/', '#/kort', '#/prove', '#/feilbank', '#/verktoy/periodesystem', '#/verktoy/formelark', '#/verktoy/kalkulator'];
-  temaer.forEach((t) => ruter.push('#/tema/' + t, '#/tema/' + t + '/oppgaver', '#/kort/' + t));
+  const ruter = ['#/', '#/kort', '#/prove', '#/feilbank', '#/verktoy/periodesystem', '#/verktoy/formelark', '#/verktoy/balansering'];
+  temaer.forEach((t) => ruter.push('#/modul/' + t, '#/modul/' + t + '/oppgaver', '#/kort/' + t));
   for (const r of ruter) {
     await ga(r);
     const info = await page.evaluate(() => {
@@ -92,7 +92,7 @@ const logg = (ok, msg) => {
   }
   // Teorien: utvid alle eksempler og sjekk KaTeX
   for (const t of temaer) {
-    await ga('#/tema/' + t);
+    await ga('#/modul/' + t);
     const n = await page.evaluate(() => {
       document.querySelectorAll('details').forEach((d) => (d.open = true));
       return document.querySelectorAll('.katex-error').length;
@@ -101,7 +101,7 @@ const logg = (ok, msg) => {
   }
   await ga('#/');
   await skjerm('01-forside');
-  await ga('#/tema/elektroner');
+  await ga('#/modul/konfigurasjon');
   await skjerm('02-teori');
 
   /* ---------- Svar riktig på alle oppgaver via grensesnittet ---------- */
@@ -181,7 +181,7 @@ const logg = (ok, msg) => {
 
   let riktige = 0;
   for (const q of oppgaver) {
-    await ga('#/tema/' + q.tema + '/oppgaver?niva=0&q=' + q.id);
+    await ga('#/modul/' + q.tema + '/oppgaver?niva=0&q=' + q.id);
     await page.waitForSelector('.qcard[data-id="' + q.id + '"]');
     const vist = await page.evaluate(() => document.querySelector('.qcard .q-prompt') && location.hash);
     if (!vist || !vist.includes(q.id)) {
@@ -213,16 +213,17 @@ const logg = (ok, msg) => {
   }
   logg(riktige === oppgaver.length, riktige + ' av ' + oppgaver.length + ' oppgaver rettet som riktige via grensesnittet');
   logg(!temaer.includes('mol') && !oppgaver.some((q) => /^mo-/.test(q.id)), 'temaet om stoffmengde og mol er fjernet');
+  logg(oppgaver.every((q) => q.mal && q.mal.length), 'alle oppgavene har læringsmål');
   const mestret = await page.evaluate(() => KJ.temaer.reduce((a, t) => a + KJ.store.temaFremdrift(t.id).ok, 0));
   logg(mestret === oppgaver.length, 'fremdrift lagret for alle (' + mestret + ')');
-  await ga('#/tema/sterke-bindinger/oppgaver?niva=0&q=sb-12');
+  await ga('#/modul/polaritet/oppgaver?niva=0&q=sb-12');
   await skjerm('03-oppgave');
 
   /* ---------- Galt svar → feilbank ---------- */
   console.log('\nFeil svar og feilbank');
   await page.evaluate(() => KJ.store.nullstill());
   await page.reload();
-  await ga('#/tema/navnsetting/oppgaver?niva=0&q=nv-12');
+  await ga('#/modul/navnsetting/oppgaver?niva=0&q=nv-12');
   await page.waitForSelector('.qcard');
   await page.locator('.qcard .txt').fill('jernklorid');
   await page.locator('.qcard [data-a="sjekk"]').click();
@@ -232,27 +233,19 @@ const logg = (ok, msg) => {
   logg((await page.locator('.qcard .hint').count()) >= 1, 'hint vises');
   await page.locator('.qcard [data-a="losning"]').click();
   logg((await page.locator('.qcard .q-sol .sol-fasit').innerText()).includes('jern(III)klorid'), 'løsning viser fasit');
-  await ga('#/tema/reaksjonslikninger/oppgaver?niva=0&q=rl-11');
+  await ga('#/modul/balansering/oppgaver?niva=0&q=rl-11');
   await page.waitForSelector('.qcard .koef');
   await page.locator('.qcard .koef').nth(1).fill('4');
   await page.locator('.qcard [data-a="tell"]').click();
   logg((await page.locator('.qcard .atomtab tr.bad').count()) > 0, 'atomtelling viser ubalanse');
   await page.locator('.qcard [data-a="sjekk"]').click();
   logg((await page.locator('.qcard .q-fb.fb-bad').count()) === 1, 'ubalansert likning rettes som feil');
-  await ga('#/tema/atomet/oppgaver?niva=0&q=at-13');
-  await page.waitForSelector('.qcard .num');
-  await page.locator('.qcard .num').fill('10,81');
+  await ga('#/modul/innskuddsmetaller/oppgaver?niva=0&q=in-05');
+  await page.waitForSelector('.qcard[data-id="in-05"] .txt');
+  await page.locator('.qcard .txt').fill('[Ar] 4s2 3d4');
   await page.locator('.qcard [data-a="sjekk"]').click();
-  logg((await page.locator('.qcard .q-fb').innerText()).toLowerCase().includes('enhet'), 'manglende enhet gir melding om enhet');
-  await page.locator('.qcard .unit').fill('u');
-  await page.locator('.qcard [data-a="sjekk"]').click();
-  logg((await page.locator('.qcard .q-fb.fb-ok').count()) === 1, 'riktig etter å ha lagt til enhet');
-  await page.locator('.qcard .num').fill('10,8');
-  await page.locator('.qcard [data-a="sjekk"]').click();
-  logg((await page.locator('.qcard .q-fb.fb-ok').count()) === 1, 'rimelig avrunding (10,8) godtas');
-  await page.locator('.qcard .num').fill('10,51');
-  await page.locator('.qcard [data-a="sjekk"]').click();
-  logg((await page.locator('.qcard .q-fb.fb-bad').count()) === 1, 'vanlig gjennomsnitt uten vekting (10,51) avvises');
+  logg((await page.locator('.qcard .q-fb').innerText()).includes('4s-elektronene'), 'Fe²⁺ med 4s² 3d⁴ gir melding om at 4s avgis først');
+  logg((await page.locator('.qcard .q-mal').first().innerText()) === 'Mål 4', 'oppgaven har merkelapp «Mål 4»');
 
   await ga('#/feilbank');
   await page.waitForSelector('.err-item');
@@ -267,7 +260,35 @@ const logg = (ok, msg) => {
   await fyllRiktig(q1);
   await page.locator('.qcard [data-a="sjekk"]').click();
   await page.waitForTimeout(100);
-  logg((await page.evaluate(() => KJ.store.feilbank().length)) === 2, 'riktig på første forsøk fjerner fra feilbanken (' + qid + ')');
+  logg((await page.evaluate(() => KJ.store.feilbank().length)) === 3, 'ett riktig svar holder ikke for å forlate feilbanken (' + qid + ')');
+  logg((await page.locator('.qcard .q-fb').innerText()).includes('1 av 2'), 'tilbakemelding viser 1 av 2 på rad');
+  await ga('#/');
+  await ga('#/feilbank?ov=1&q=' + qid);
+  await page.waitForSelector('.qcard[data-id="' + qid + '"]');
+  await fyllRiktig(q1);
+  await page.locator('.qcard [data-a="sjekk"]').click();
+  await page.waitForTimeout(100);
+  logg((await page.evaluate(() => KJ.store.feilbank().length)) === 2, 'to riktige på rad fjerner oppgaven fra feilbanken');
+
+  /* ---------- Læringsmål og selvvurdering ---------- */
+  console.log('\nLæringsmål og selvvurdering');
+  await ga('#/');
+  await page.waitForSelector('.goal-list');
+  logg((await page.locator('.goal-row').count()) === 20, 'forsiden viser alle 20 læringsmålene');
+  await page.locator('.goal-row[data-nr="7"] [data-lys="rod"]').click();
+  logg((await page.evaluate(() => KJ.store.selv(7))).verdi === 'rod', 'selvvurdering rød lagres for mål 7');
+  logg((await page.locator('.goal-row[data-nr="7"] [data-lys="rod"]').getAttribute('aria-checked')) === 'true', 'rød knapp er markert');
+  const auto = await page.evaluate(() => {
+    KJ.malOppgaver(18).slice(0, 4).forEach((q) => KJ.store.registrer(q.id, true, true));
+    return KJ.store.selv(18);
+  });
+  logg(auto && auto.kilde === 'resultat' && auto.verdi === 'gul', 'mål 18 vurderes automatisk (gul) etter fire riktige svar');
+  await skjerm('04b-laeringsmal');
+  await ga('#/modul/krefter/oppgaver');
+  await page.waitForSelector('[data-malfilter]');
+  await page.locator('[data-malfilter] button[data-m="9"]').click();
+  logg(await page.evaluate(() => [...document.querySelectorAll('.qcard .q-mal')].some((e) => e.textContent === 'Mål 9')), 'filter på mål 9 i modulen Bindinger og krefter');
+  logg((await page.locator('.feller-boks').count()) === 1, 'boks med vanlige feil på oppgavesiden');
 
   /* ---------- Prøvemodus ---------- */
   console.log('\nPrøvemodus');
@@ -319,7 +340,7 @@ const logg = (ok, msg) => {
   logg((await page.evaluate(() => Object.values(JSON.parse(localStorage.getItem('kjemi1-spektrum-v1') || '{}').fc || {}).length)) >= 0, 'vurdering lagret');
   await page.keyboard.press('2');
   await page.keyboard.press('Space');
-  logg((await page.evaluate(() => KJ.temaMap.navnsetting.flashcards.filter((k) => KJ.store.kort('navnsetting:' + KJ.hash(k.f)) === 'kan').length)) === 2, 'to kort markert som «kan»');
+  logg((await page.evaluate(() => KJ.temaMap.navnsetting.flashcards.filter((k) => KJ.store.kort(KJ.kortId(k)) === 'kan').length)) === 2, 'to kort markert som «kan»');
 
   /* ---------- Verktøy ---------- */
   console.log('\nVerktøy');
@@ -336,12 +357,13 @@ const logg = (ok, msg) => {
   await page.locator('[data-sok]').fill('kobber');
   await page.waitForTimeout(50);
   logg((await page.locator('[data-detalj]').innerText()).includes('Kobber'), 'søk finner kobber');
-  await ga('#/verktoy/kalkulator?f=Al2(SO4)3');
-  await page.waitForSelector('.calc-big');
-  logg((await page.locator('.calc-big').innerText()).includes('342,14'), 'molar masse Al2(SO4)3 = 342,14');
+  await ga('#/verktoy/balansering');
+  await page.waitForSelector('[data-likn]');
   await page.locator('[data-likn]').fill('C3H8 + 5O2 -> 3CO2 + 4H2O');
   logg((await page.locator('[data-bal]').innerText()).includes('balansert'), 'balanseringssjekk');
-  await skjerm('10-kalkulator');
+  await page.locator('[data-likn]').fill('H2 + O2 -> H2O');
+  logg((await page.locator('[data-bal] .atomtab tr.bad').count()) === 1, 'balanseringssjekk viser at O ikke stemmer');
+  await skjerm('10-balansering');
   await ga('#/verktoy/formelark');
   logg((await page.locator('.sheet section').count()) >= 8, 'formelark vises');
 
@@ -353,7 +375,7 @@ const logg = (ok, msg) => {
   await page.locator('[data-theme-btn]').click();
   logg((await page.evaluate(() => document.documentElement.getAttribute('data-theme'))) === 'dark', 'mørkt tema');
   await skjerm('11-forside-mork');
-  await ga('#/tema/atomet/oppgaver?niva=0&q=at-20');
+  await ga('#/modul/innskuddsmetaller/oppgaver?niva=0&q=in-21');
   await skjerm('12-oppgave-mork');
   await page.locator('[data-theme-btn]').click();
 
@@ -364,9 +386,9 @@ const logg = (ok, msg) => {
   mp.on('console', (m) => m.type() === 'error' && konsollfeil.push('mobil: ' + m.text()));
   await mp.goto(URL);
   await mp.waitForSelector('.tcard');
-  const mobilRuter = ['#/', '#/kort', '#/prove', '#/feilbank', '#/verktoy/periodesystem', '#/verktoy/kalkulator?f=CuSO4*5H2O', '#/verktoy/formelark'];
-  temaer.forEach((t) => mobilRuter.push('#/tema/' + t));
-  oppgaver.forEach((q) => mobilRuter.push('#/tema/' + q.tema + '/oppgaver?niva=0&q=' + q.id));
+  const mobilRuter = ['#/', '#/kort', '#/prove', '#/feilbank', '#/verktoy/periodesystem', '#/verktoy/balansering', '#/verktoy/formelark'];
+  temaer.forEach((t) => mobilRuter.push('#/modul/' + t));
+  oppgaver.forEach((q) => mobilRuter.push('#/modul/' + q.tema + '/oppgaver?niva=0&q=' + q.id));
   let mobilFeil = 0;
   for (const r of mobilRuter) {
     await mp.evaluate((h) => (location.hash = h), r);
@@ -393,13 +415,13 @@ const logg = (ok, msg) => {
   await mp.evaluate((h) => (location.hash = h), '#/');
   await mp.waitForTimeout(100);
   if (BILDER) await mp.screenshot({ path: path.join(BILDER, '13-mobil-forside.png') });
-  await mp.evaluate((h) => (location.hash = h), '#/tema/reaksjonslikninger/oppgaver?q=rl-13');
+  await mp.evaluate((h) => (location.hash = h), '#/modul/balansering/oppgaver?q=rl-13');
   await mp.waitForTimeout(100);
   if (BILDER) await mp.screenshot({ path: path.join(BILDER, '14-mobil-oppgave.png') });
   await mp.evaluate((h) => (location.hash = h), '#/kort');
   await mp.waitForTimeout(100);
   if (BILDER) await mp.screenshot({ path: path.join(BILDER, '15-mobil-kort.png') });
-  await mp.evaluate((h) => (location.hash = h), '#/tema/elektroner');
+  await mp.evaluate((h) => (location.hash = h), '#/modul/konfigurasjon');
   await mp.waitForTimeout(100);
   if (BILDER) await mp.screenshot({ path: path.join(BILDER, '16-mobil-teori.png'), fullPage: false });
 

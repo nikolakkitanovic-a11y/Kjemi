@@ -88,7 +88,7 @@
 
     main.innerHTML =
       '<div class="view"><section class="container tools-head">' +
-      '<p class="eyebrow">Prøvemodus</p><h1>Tentamentrening</h1>' +
+      '<p class="eyebrow">Prøvemodus</p><h1>Prøvesimulering</h1>' +
       '<p class="lead">En blandet prøve på tvers av temaene, med tidtaker. Du får ikke vite om svarene er riktige før du leverer, akkurat som på en ekte prøve.</p>' +
       (aktiv
         ? '<div class="continue" style="margin-top:18px"><p><strong>Du har en påbegynt prøve.</strong> <span class="muted">' + Object.keys(aktiv.svar).length + ' av ' + aktiv.ids.length + ' besvart · ' + tidIgjenTekst(aktiv) + '</span></p>' +
@@ -96,7 +96,7 @@
         : '') +
       '</section>' +
       '<section class="container exam-setup"><div class="panel">' +
-      '<div class="form-block"><h3>Temaer</h3><div class="chips" data-tema>' +
+      '<div class="form-block"><h3>Moduler</h3><div class="chips" data-tema>' +
       KJ.temaer.map((t) => '<button type="button" class="chip" aria-pressed="true" data-id="' + t.id + '" style="--tc:' + t.farge + '"><span class="dot"></span>' + esc(t.tittel) + '</button>').join('') +
       '</div><div class="btn-row"><button type="button" class="btn btn-quiet btn-small" data-a="alle">Velg alle</button><button type="button" class="btn btn-quiet btn-small" data-a="ingen">Fjern alle</button></div></div>' +
       '<div class="form-block"><h3>Antall oppgaver</h3><div class="seg" role="group" aria-label="Antall oppgaver" data-antall>' +
@@ -126,7 +126,7 @@
       const ids = velgOppgaver(innst);
       const min = innst.tid === 'auto' ? Math.max(10, Math.ceil(Math.min(innst.antall, ids.length) * 2)) : innst.tid;
       tidhint.textContent = innst.tid === 'auto' ? 'Auto gir 2 minutter per oppgave: ' + min + ' minutter.' : '';
-      info.textContent = innst.tema.length ? ids.length + ' oppgaver · ' + min + ' min' : 'Velg minst ett tema';
+      info.textContent = innst.tema.length ? ids.length + ' oppgaver · ' + min + ' min' : 'Velg minst én modul';
       main.querySelector('[data-a="start"]').disabled = !ids.length;
     }
     const seg = (sel, key, tall) =>

@@ -33,6 +33,24 @@
   }
   KJ.nivaHtml = nivaHtml;
 
+  /** Merkelapp som viser hvilke læringsmål oppgaven øver på. */
+  function malHtml(q) {
+    return (q.mal || [])
+      .map((nr) => {
+        const m = KJ.malInfo(nr);
+        return '<span class="q-mal" title="' + KJ.esc(m ? 'Læringsmål ' + nr + ': ' + m.tekst : 'Læringsmål ' + nr) + '">Mål ' + nr + '</span>';
+      })
+      .join('');
+  }
+  KJ.malHtml = malHtml;
+
+  function feilbankTekst(r, riktig, forste) {
+    if (r.fjernetFraFeilbank) return 'Oppgaven er fjernet fra feilbanken (' + KJ.RAD_KRAV + ' riktige på rad).';
+    if (riktig && r.iFeilbank && forste) return 'Riktig ' + r.rad + ' av ' + KJ.RAD_KRAV + ' ganger på rad. Oppgaven blir i feilbanken til du har klart den ' + KJ.RAD_KRAV + ' ganger på rad.';
+    if (!riktig && forste) return 'Oppgaven er lagt i feilbanken.';
+    return '';
+  }
+
   /** Kort tekst (uten HTML) for lister og forhåndsvisning. */
   KJ.oppgaveTittel = function (q) {
     if (q.sporsmal && q.type !== 'balanser') return q.sporsmal;
@@ -91,7 +109,7 @@
       const nr = this.o.nummer ? '<span class="q-nr">Oppgave ' + this.o.nummer + (this.o.totalt ? ' av ' + this.o.totalt : '') + '</span>' : '';
       const tema = this.o.visTema && KJ.temaMap[q.tema] ? '<span class="q-tema" style="--tc:' + KJ.temaMap[q.tema].farge + '">' + esc(KJ.temaMap[q.tema].tittel) + '</span>' : '';
       this.el.innerHTML =
-        '<header class="q-head">' + nr + nivaHtml(q.niva) + '<span class="q-type">' + KJ.TYPENAVN[q.type] + '</span>' + tema +
+        '<header class="q-head">' + nr + nivaHtml(q.niva) + malHtml(q) + '<span class="q-type">' + KJ.TYPENAVN[q.type] + '</span>' + tema +
         '<span class="q-status" aria-hidden="true"></span></header>' +
         '<div class="q-prompt" id="' + this.id + '-p">' + KJ.fmtBlock(standardSporsmal(q)) + '</div>' +
         '<div class="q-body">' + this.kropp() + '</div>' +
@@ -445,8 +463,7 @@
           tillegg = 'Du så løsningen først, så oppgaven telles ikke som mestret ennå.';
         } else {
           const r = KJ.store.registrer(q.id, res.riktig, this.forsok === 1);
-          if (r.fjernetFraFeilbank) tillegg = 'Oppgaven er fjernet fra feilbanken.';
-          if (!res.riktig && this.forsok === 1) tillegg = 'Oppgaven er lagt i feilbanken.';
+          tillegg = feilbankTekst(r, res.riktig, this.forsok === 1);
         }
       }
       this.tilbakemelding(res.riktig ? 'ok' : 'bad', res.melding, [res.merknad, tillegg].filter(Boolean).join(' '));
@@ -589,9 +606,7 @@
       this.forsok++;
       if (this.o.modus === 'ovelse') {
         const r = KJ.store.registrer(q.id, res.riktig, this.forsok === 1);
-        let tillegg = '';
-        if (r.fjernetFraFeilbank) tillegg = 'Oppgaven er fjernet fra feilbanken.';
-        else if (!res.riktig) tillegg = 'Oppgaven er lagt i feilbanken, så du kan øve på den igjen.';
+        const tillegg = feilbankTekst(r, res.riktig, this.forsok === 1);
         this.tilbakemelding(res.riktig ? 'ok' : 'bad', res.melding, tillegg);
       } else {
         this.tilbakemelding(res.riktig ? 'ok' : 'bad', res.melding);

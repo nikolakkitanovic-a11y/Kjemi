@@ -20,7 +20,7 @@
       main.innerHTML =
         '<div class="view"><section class="container tools-head"><p class="eyebrow">Feilbank</p><h1>Feilbanken er tom</h1></section>' +
         '<section class="container section"><div class="empty">' + KJ.icon('target', 40) + '<h2>Ingen feil å øve på</h2>' +
-        '<p>Når du svarer feil på en oppgave, havner den her. Svarer du riktig på første forsøk senere, forsvinner den igjen.</p>' +
+        '<p>Når du svarer feil på en oppgave, havner den her. Den forsvinner når du har klart den ' + KJ.RAD_KRAV + ' ganger på rad.</p>' +
         '<a class="btn btn-primary" href="#/">Gå til temaene</a></div></section></div>';
       return;
     }
@@ -31,7 +31,7 @@
     });
     main.innerHTML =
       '<div class="view"><section class="container tools-head"><p class="eyebrow">Feilbank</p><h1>' + feil.length + ' oppgave' + (feil.length > 1 ? 'r' : '') + ' å øve på</h1>' +
-      '<p class="lead">Her samles oppgavene du har svart feil på. Svarer du riktig på første forsøk, fjernes oppgaven fra feilbanken.</p>' +
+      '<p class="lead">Her samles oppgavene du har svart feil på. En oppgave forsvinner når du har svart riktig på første forsøk ' + KJ.RAD_KRAV + ' ganger på rad.</p>' +
       '<div class="btn-row" style="margin-top:18px"><a class="btn btn-primary btn-lg" href="#/feilbank?ov=1">' + KJ.icon('play', 18) + 'Øv på alle</a>' +
       '<button type="button" class="btn btn-danger" data-a="tom">' + KJ.icon('trash', 18) + 'Tøm feilbanken</button></div></section>' +
       '<section class="container section">' +
@@ -43,7 +43,7 @@
             grupper[t.id]
               .map(
                 ({ q, f }) =>
-                  '<div class="err-item" data-id="' + q.id + '"><div class="t"><div class="meta">' + KJ.nivaHtml(q.niva) + '<span class="mono">' + KJ.TYPENAVN[q.type] + '</span><span>Feil ' + f.n + ' gang' + (f.n > 1 ? 'er' : '') + '</span></div><p>' + KJ.fmt(KJ.oppgaveTittel(q)) + '</p></div>' +
+                  '<div class="err-item" data-id="' + q.id + '"><div class="t"><div class="meta">' + KJ.nivaHtml(q.niva) + '<span class="mono">' + KJ.TYPENAVN[q.type] + '</span><span>Feil ' + f.n + ' gang' + (f.n > 1 ? 'er' : '') + '</span><span>Riktig på rad: ' + (f.rad || 0) + ' av ' + KJ.RAD_KRAV + '</span>' + KJ.malHtml(q) + '</div><p>' + KJ.fmt(KJ.oppgaveTittel(q)) + '</p></div>' +
                   '<a class="btn btn-ghost btn-small" href="#/feilbank?ov=1&q=' + q.id + '">Øv</a>' +
                   '<button type="button" class="ibtn" data-fjern="' + q.id + '" aria-label="Fjern fra feilbanken">' + KJ.icon('x', 18) + '</button></div>'
               )
@@ -105,7 +105,7 @@
     }
     function oppdaterStatus() {
       const igjen = S.feilbank().length;
-      status.textContent = 'Oppgave ' + (idx + 1) + ' av ' + ider.length + ' · ' + igjen + ' igjen i feilbanken. Riktig på første forsøk fjerner oppgaven.';
+      status.textContent = 'Oppgave ' + (idx + 1) + ' av ' + ider.length + ' · ' + igjen + ' igjen i feilbanken. En oppgave forsvinner etter ' + KJ.RAD_KRAV + ' riktige svar på rad.';
     }
     main.querySelector('[data-a="forrige"]').addEventListener('click', () => {
       if (idx > 0) {

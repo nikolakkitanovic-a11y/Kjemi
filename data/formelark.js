@@ -1,27 +1,48 @@
 /*
  * Formelark – vises under Verktøy. Hver seksjon har en tittel og enten
- * formler (tex + forklaring) eller en tabell.
+ * formler (tex + forklaring), en tabell, eller «ioner: true» (tabell fra data/ioner.js).
  */
 KJ.formelark = [
   {
-    tittel: 'Atomet',
+    tittel: 'Atomer og ioner',
     formler: [
-      { tex: 'N = A - Z', tekst: 'Antall nøytroner = nukleontall − atomnummer' },
-      { tex: '\\text{elektroner} = Z - \\text{ladning}', tekst: 'Antall elektroner i et ion' },
-      { tex: '\\bar{m} = \\sum m_i \\cdot \\text{andel}_i', tekst: 'Gjennomsnittlig atommasse (vektet gjennomsnitt av isotopene)' },
-      { tex: '1\\ \\mathrm{u} = 1{,}661 \\cdot 10^{-27}\\ \\mathrm{kg}', tekst: 'Atommasseenheten: 1/12 av massen til et C-12-atom' },
+      { tex: 'N = A - Z', tekst: 'Antall nøytroner = massetall (nukleontall) − atomnummer' },
+      { tex: '\\text{elektroner} = Z - \\text{ladning}', tekst: 'Antall elektroner i et ion. {{Mg^2+}}: 12 − 2 = 10' },
+      { tex: 'Z = \\text{elektroner} + \\text{ladning}', tekst: '«Hvem er jeg?»: finn atomnummeret ut fra elektroner og ladning' },
     ],
   },
   {
-    tittel: 'Elektronstruktur',
+    tittel: 'Elektronkonfigurasjon',
     formler: [
-      { tex: '2n^2', tekst: 'Maks antall elektroner i skall nummer $n$ (K = 2, L = 8, M = 18, N = 32)' },
+      { tex: '2n^2', tekst: 'Maks antall elektroner i skall $n$ (K = 2, L = 8, M = 18, N = 32)' },
       { tex: 's:2 \\quad p:6 \\quad d:10 \\quad f:14', tekst: 'Maks elektroner i underskallene (1, 3, 5 og 7 orbitaler)' },
-      { tex: '1s\\,2s\\,2p\\,3s\\,3p\\,4s\\,3d\\,4p\\,5s\\,4d\\,5p\\,6s\\,4f\\,5d\\,6p', tekst: 'Fyllingsrekkefølge' },
+      { tex: '1s\\,2s\\,2p\\,3s\\,3p\\,4s\\,3d\\,4p\\,5s\\,4d\\,5p', tekst: 'Fyllingsrekkefølge (oppbyggingsprinsippet)' },
+      { tex: '\\uparrow\\downarrow', tekst: 'Pauli: maks to elektroner per orbital, med motsatt spinn' },
+      { tex: '\\uparrow\;\\uparrow\;\\uparrow', tekst: 'Hund: ett elektron i hver orbital før de pares' },
     ],
+    tabell: {
+      hode: ['Regel', 'Eksempel'],
+      rader: [
+        ['Innskuddsmetaller avgir **4s før 3d**', '{{Fe^2+}}: $[\\mathrm{Ar}]\\,3d^6$'],
+        ['Unntak: krom', '$[\\mathrm{Ar}]\\,4s^1\\,3d^5$'],
+        ['Unntak: kobber', '$[\\mathrm{Ar}]\\,4s^1\\,3d^{10}$'],
+      ],
+    },
   },
   {
-    tittel: 'Bindinger',
+    tittel: 'Periodiske trender',
+    tabell: {
+      hode: ['Egenskap', 'Bortover en periode', 'Nedover en gruppe', 'Hvorfor'],
+      rader: [
+        ['Atomradius', 'minker', 'øker', 'Kjerneladning øker bortover, flere skall nedover'],
+        ['Ioniseringsenergi', 'øker', 'minker', 'Sterkere tiltrekning bortover, mer skjerming nedover'],
+        ['Elektronegativitet', 'øker', 'minker', 'Samme som ioniseringsenergi'],
+        ['Ioneradius', 'kation < atom < anion', '', 'Isoelektroniske: flest protoner = minst'],
+      ],
+    },
+  },
+  {
+    tittel: 'Bindinger og polaritet',
     formler: [{ tex: '\\Delta EN = |EN_1 - EN_2|', tekst: 'Forskjell i elektronegativitet' }],
     tabell: {
       hode: ['$\\Delta EN$', 'Bindingstype'],
@@ -46,6 +67,18 @@ KJ.formelark = [
     },
   },
   {
+    tittel: 'Krefter mellom partikler',
+    tabell: {
+      hode: ['Kraft', 'Mellom', 'Eksempel'],
+      rader: [
+        ['London-krefter', 'alle molekyler (midlertidige dipoler)', '{{CH4}}, {{I2}}'],
+        ['Dipol-dipol', 'dipolmolekyler', 'HCl'],
+        ['Hydrogenbinding', 'H på N, O, F og ledig par på N, O, F', '{{H2O}}, {{NH3}}'],
+        ['Ion-dipol', 'ion og dipolmolekyl', '{{Na+}} i vann'],
+      ],
+    },
+  },
+  {
     tittel: 'Greske tallprefikser',
     tabell: {
       hode: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
@@ -53,20 +86,17 @@ KJ.formelark = [
     },
   },
   {
-    tittel: 'Sammensatte ioner',
+    tittel: 'Romertall eller prefikser?',
     tabell: {
-      hode: ['Ion', 'Navn', 'Ion', 'Navn'],
+      hode: ['Forbindelse', 'Bruk', 'Eksempel'],
       rader: [
-        ['{{NH4+}}', 'ammonium', '{{SO4^2-}}', 'sulfat'],
-        ['{{OH-}}', 'hydroksid', '{{SO3^2-}}', 'sulfitt'],
-        ['{{NO3-}}', 'nitrat', '{{CO3^2-}}', 'karbonat'],
-        ['{{NO2-}}', 'nitritt', '{{HCO3-}}', 'hydrogenkarbonat'],
-        ['{{CN-}}', 'cyanid', '{{PO4^3-}}', 'fosfat'],
-        ['{{MnO4-}}', 'permanganat', '{{ClO3-}}', 'klorat'],
-        ['{{CH3COO-}}', 'acetat', '{{ClO-}}', 'hypokloritt'],
+        ['Salt, metall med én ladning', 'ingen', '{{CaCl2}} kalsiumklorid'],
+        ['Salt, metall med flere ladninger', 'romertall = ladning', '{{FeCl3}} jern(III)klorid'],
+        ['Molekylforbindelse', 'prefikser = antall atomer', '{{N2O4}} dinitrogentetraoksid'],
       ],
     },
   },
+  { tittel: 'Sammensatte ioner (fra tavla)', ioner: true },
   {
     tittel: 'Vanlige ioneladninger',
     tabell: {
@@ -75,10 +105,13 @@ KJ.formelark = [
     },
   },
   {
-    tittel: 'Tilstandssymboler',
+    tittel: 'Balansering',
     tabell: {
-      hode: ['(s)', '(l)', '(g)', '(aq)'],
-      rader: [['fast stoff', 'væske', 'gass', 'løst i vann']],
+      hode: ['', 'Hva det er', 'Kan endres?'],
+      rader: [
+        ['Koeffisient', 'Tallet foran: antall partikler', 'Ja'],
+        ['Indeks', 'Det lille tallet: del av formelen', 'Nei – da blir det et annet stoff'],
+      ],
     },
   },
 ];

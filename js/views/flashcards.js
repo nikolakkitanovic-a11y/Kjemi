@@ -8,7 +8,7 @@
 
   function alleKort(temaId) {
     const temaer = temaId === 'alle' ? KJ.temaer : [KJ.temaMap[temaId]].filter(Boolean);
-    return temaer.reduce((acc, t) => acc.concat(t.flashcards.map((k) => ({ id: t.id + ':' + KJ.hash(k.f), f: k.f, b: k.b, tema: t }))), []);
+    return temaer.reduce((acc, t) => acc.concat(t.flashcards.map((k) => ({ id: KJ.kortId(k), f: k.f, b: k.b, tema: t }))), []);
   }
 
   KJ.views.cards = function (main, params, temaId) {
@@ -23,7 +23,7 @@
 
     main.innerHTML =
       '<div class="view"><section class="container tools-head">' +
-      '<p class="eyebrow">Flashcards</p><h1>Begreper og definisjoner</h1>' +
+      '<p class="eyebrow">Flashcards</p><h1>Begreper og sammensatte ioner</h1>' +
       '<p class="lead">Les forsiden, prøv å svare i hodet, og snu kortet. Vær ærlig når du vurderer deg selv.</p>' +
       '<div class="chips chips-scroll" style="margin-top:18px" role="group" aria-label="Velg bunke" data-bunker></div>' +
       '<div class="btn-row" style="margin-top:12px">' +

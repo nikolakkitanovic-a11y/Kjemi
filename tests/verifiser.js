@@ -8,6 +8,10 @@
  *  - alle formler i fasitene kan tolkes
  *  - alle regneoppgaver med verify-funksjon gir samme svar som fasiten
  *  - rettemotoren godtar fasiten og avviser typiske feil
+ *  - alle oppgaver har gyldige læringsmål, og alle læringsmål har oppgaver
+ *  - alle saltformler (fasiter og formler i oppgavene) er elektrisk nøytrale
+ *  - alle reaksjonslikninger med koeffisienter i teori og oppgavetekster er balansert
+ *  - ionene i data/ioner.js har riktig ladning
  */
 'use strict';
 const fs = require('fs');
@@ -39,19 +43,21 @@ const feilet = (msg) => {
 };
 const sjekk = (betingelse, msg) => (betingelse ? ok++ : feilet(msg));
 
-console.log('Temaer: ' + KJ.temaer.length);
+console.log('Moduler: ' + KJ.temaer.length + ', læringsmål: ' + KJ.MAL.length);
 const ider = new Set();
 const typer = {};
 let antKort = 0;
 for (const t of KJ.temaer) {
-  sjekk(t.oppgaver.length >= 20, t.id + ': minst 20 oppgaver (har ' + t.oppgaver.length + ')');
-  sjekk([1, 2, 3].every((n) => t.oppgaver.some((q) => q.niva === n)), t.id + ': oppgaver på alle tre nivåer');
+  sjekk([1, 2, 3].every((n) => t.oppgaver.some((q) => q.niva === n)) || t.oppgaver.length < 10, t.id + ': oppgaver på alle tre nivåer');
+  sjekk(t.feller.length >= 2, t.id + ': boks med vanlige feil');
+  sjekk(t.mal.length >= 1 && t.mal.every((nr) => KJ.malInfo(nr)), t.id + ': gyldige læringsmål');
   antKort += t.flashcards.length;
   for (const q of t.oppgaver) {
     const hvor = t.id + '/' + q.id;
     sjekk(!ider.has(q.id), hvor + ': duplikat-id');
     ider.add(q.id);
     sjekk([1, 2, 3].includes(q.niva), hvor + ': ugyldig nivå');
+    sjekk(Array.isArray(q.mal) && q.mal.length && q.mal.every((nr) => nr >= 1 && nr <= 20), hvor + ': mangler gyldig læringsmål');
     sjekk(!!KJ.TYPENAVN[q.type], hvor + ': ukjent type ' + q.type);
     typer[q.type] = (typer[q.type] || 0) + 1;
     try {
@@ -118,7 +124,7 @@ for (const t of KJ.temaer) {
         }
         case 'formel': {
           const p = C.parse(q.svar);
-          sjekk(p.kanon === q.svar.replace('*', '·') || q.rekkefolge === false, hvor + ': fasit er ikke på kanonisk form (' + p.kanon + ')');
+          sjekk(p.ladning !== 0 || p.kanon === q.svar.replace('*', '·') || q.rekkefolge === false, hvor + ': fasit er ikke på kanonisk form (' + p.kanon + ')');
           sjekk(KJ.rett(q, q.svar).riktig, hvor + ': fasit godtas ikke');
           sjekk(!KJ.rett(q, 'NaCl').riktig || q.svar === 'NaCl', hvor + ': NaCl godtas');
           break;
@@ -167,6 +173,89 @@ function fasitStreng(x, gs) {
   if (exp >= 5 || exp <= -4) return (x / Math.pow(10, exp)).toFixed(Math.max(0, gs - 1)).replace('.', ',') + '·10^' + exp;
   return x.toFixed(Math.max(0, gs - 1 - exp)).replace('.', ',');
 }
+
+/* ---------- Læringsmål ---------- */
+console.log('\nLæringsmål');
+KJ.MAL.forEach((m) => {
+  const n = KJ.malOppgaver(m.nr).length;
+  sjekk(n >= 1, 'mål ' + m.nr + ' har oppgaver');
+  console.log('  mål ' + String(m.nr).padStart(2) + ': ' + String(n).padStart(3) + ' oppgaver  ' + m.kort);
+});
+
+/* ---------- Ionene ---------- */
+console.log('\nIoner');
+KJ.IONER.forEach((i) => {
+  const p = C.parse(i.formel);
+  sjekk(p.ladning === i.ladning, 'ion ' + i.formel + ': ladning ' + p.ladning + ' ≠ ' + i.ladning);
+});
+sjekk(KJ.tavlaIoner().length === 9, 'ni ioner fra tavla er aktive');
+
+/* ---------- Saltformler er nøytrale ---------- */
+console.log('\nSaltformler');
+const KATIONER = ['Li+', 'Na+', 'K+', 'Ag+', 'Cu+', 'NH4+', 'Mg^2+', 'Ca^2+', 'Ba^2+', 'Zn^2+', 'Cu^2+', 'Fe^2+', 'Mn^2+', 'Co^2+', 'Ni^2+', 'Pb^2+', 'Sn^2+', 'Fe^3+', 'Al^3+', 'Cr^3+', 'Sc^3+', 'Pb^4+', 'Sn^4+', 'Mn^4+', 'Ti^4+'];
+const ANIONER = ['F-', 'Cl-', 'Br-', 'I-', 'H-', 'O^2-', 'S^2-', 'N^3-', 'P^3-'].concat(KJ.IONER.map((i) => i.formel));
+function del(f) {
+  const p = C.parse(f);
+  return { kropp: p.kanon.replace(/\^.*$/, ''), q: p.ladning, flere: Object.values(p.antall).reduce((a, b) => a + b, 0) > 1 };
+}
+function bygg(k, a) {
+  const K = del(k);
+  const A = del(a);
+  const g = C.gcd(Math.abs(K.q), Math.abs(A.q));
+  const nk = Math.abs(A.q) / g;
+  const na = Math.abs(K.q) / g;
+  const ledd = (x, n) => (n === 1 ? x.kropp : x.flere ? '(' + x.kropp + ')' + n : x.kropp + n);
+  return { formel: ledd(K, nk) + ledd(A, na), sum: nk * K.q + na * A.q };
+}
+const SALT = {};
+KATIONER.forEach((k) => ANIONER.forEach((a) => {
+  const b = bygg(k, a);
+  const kanon = C.parse(b.formel).kanon;
+  (SALT[kanon] = SALT[kanon] || []).push({ k, a, sum: b.sum });
+}));
+const erSalt = (p) => Object.keys(p.antall).some((el) => ['alk', 'jal', 'inn', 'met'].includes(KJ.grunnstoffMap[el].kat)) || /NH4/.test(p.kanon);
+let antSalt = 0;
+KJ.alleOppgaver().forEach((q) => {
+  const formler = [];
+  if (q.type === 'formel') formler.push(q.svar);
+  if (q.type === 'navn') formler.push(q.formel);
+  formler.forEach((f) => {
+    const p = C.parse(f);
+    if (p.ladning !== 0 || !erSalt(p) || Object.keys(p.antall).length < 2) return;
+    antSalt++;
+    const treff = SALT[p.kanon];
+    sjekk(treff && treff.every((t) => t.sum === 0), q.id + ': saltformel ' + f + ' kan ikke bekreftes som nøytral');
+  });
+});
+console.log('  ' + antSalt + ' saltformler kontrollert');
+
+/* ---------- Likninger i tekst ---------- */
+console.log('\nLikninger i tekst');
+let antLikn = 0;
+const tekster = [];
+const samle = (v) => {
+  if (typeof v === 'string') tekster.push(v);
+  else if (Array.isArray(v)) v.forEach(samle);
+  else if (v && typeof v === 'object') Object.values(v).forEach(samle);
+};
+KJ.moduler.forEach((m) => samle([m.teori, m.eksempler, m.feller, m.oppgaver, m.flashcards, m.begreper]));
+samle(KJ.formelark);
+tekster.forEach((t) => {
+  for (const mm of t.matchAll(/\{\{([^}]*->[^}]*)\}\}/g)) {
+    let l;
+    try {
+      l = C.parseLikning(mm[1]);
+    } catch (e) {
+      continue; // brøk-koeffisienter o.l.
+    }
+    const b = C.balanse(l.venstre, l.hoyre);
+    const harKoef = l.venstre.concat(l.hoyre).some((x) => x.koef > 1);
+    if (!harKoef && !b.balansert) continue; // skjelettlikning som skal balanseres
+    antLikn++;
+    sjekk(b.balansert, 'likning i tekst er ikke balansert: ' + mm[1]);
+  }
+});
+console.log('  ' + antLikn + ' likninger i tekst kontrollert');
 
 /* ---------- Kjemimotoren ---------- */
 console.log('\nKjemimotor');

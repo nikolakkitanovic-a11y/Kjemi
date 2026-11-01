@@ -1,5 +1,5 @@
 /*
- * Verktøy: interaktivt periodesystem, formelark og molar masse-kalkulator.
+ * Verktøy: interaktivt periodesystem, formelark og balanseringssjekk.
  */
 (function (KJ) {
   'use strict';
@@ -9,7 +9,7 @@
   const FANER = [
     ['periodesystem', 'Periodesystem', 'grid'],
     ['formelark', 'Formelark', 'file'],
-    ['kalkulator', 'Molar masse', 'calc'],
+    ['balansering', 'Balansering', 'scale'],
   ];
 
   KJ.views.tools = function (main, params, fane) {
@@ -22,7 +22,7 @@
       '</nav></section><section class="container" data-tool></section></div>';
     const el = main.querySelector('[data-tool]');
     if (fane === 'formelark') return formelark(el);
-    if (fane === 'kalkulator') return kalkulator(el, params);
+    if (fane === 'balansering') return balansering(el);
     return periodesystem(el, params);
   };
 
@@ -113,7 +113,7 @@
         '</dl>' +
         '<p style="margin-bottom:4px"><span class="muted">Elektronkonfigurasjon:</span> ' + KJ.tex(C.konfigTex(k, true)) + '</p>' +
         '<p class="muted" style="font-size:.88rem">' + KJ.tex(C.konfigTex(k, false)) + (e.z > 103 ? ' (forutsagt)' : '') + '</p>' +
-        '<div class="btn-row"><a class="btn btn-ghost btn-small" href="#/verktoy/kalkulator?f=' + e.sym + '">' + KJ.icon('calc', 16) + 'Bruk i kalkulatoren</a></div></div>';
+        '</div>';
       KJ.settUrl('/verktoy/periodesystem?el=' + e.sym + (modus !== 'kategori' ? '&vis=' + modus : ''));
       if (rull && window.innerWidth < 900) el.querySelector('[data-detalj]').scrollIntoView({ behavior: KJ.reducedMotion() ? 'auto' : 'smooth', block: 'start' });
     }
@@ -171,6 +171,7 @@
             '<section><h3>' + esc(s.tittel) + '</h3>' +
             (s.formler || []).map((f) => '<div class="frm"><div>' + KJ.tex(f.tex, false) + '</div><div class="t">' + KJ.fmt(f.tekst) + '</div></div>').join('') +
             (s.tabell ? KJ.tabellHtml(s.tabell) : '') +
+            (s.ioner ? KJ.tabellHtml({ hode: ['Formel', 'Navn', 'Ladning'], rader: KJ.tavlaIoner().map((i) => ['{{' + i.formel + '}}', i.navn, KJ.ladningTekst(i.ladning)]) }) : '') +
             '</section>'
         )
         .join('') +
@@ -179,62 +180,22 @@
     return null;
   }
 
-  /* ---------- Kalkulator ---------- */
-  function kalkulator(el, params) {
-    const eksempler = ['H2O', 'NaCl', 'CO2', 'CaCO3', 'H2SO4', 'Ca(OH)2', 'Al2(SO4)3', 'C6H12O6', 'CuSO4*5H2O'];
+  /* ---------- Balanseringssjekk ---------- */
+  function balansering(el) {
     el.innerHTML =
       '<div class="calc">' +
-      '<div class="panel"><h2 style="font-size:1.3rem;margin-bottom:6px">Molar masse</h2><p class="muted" style="font-size:.92rem">Skriv en formel. Tall blir indekser, parenteser og krystallvann (med * eller ·) fungerer.</p>' +
-      '<div class="calc-in"><label class="fld"><span class="fld-l">Formel</span><input class="inp" data-f autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="f.eks. Al2(SO4)3"></label></div>' +
-      '<div class="calc-quick">' + eksempler.map((f) => '<button type="button" class="btn btn-ghost btn-small" data-ex="' + f + '">' + KJ.ce(f) + '</button>').join('') + '</div>' +
-      '<div class="calc-res" data-res aria-live="polite"></div></div>' +
-
-      '<div class="panel"><h2 style="font-size:1.3rem;margin-bottom:6px">Sjekk balansering</h2><p class="muted" style="font-size:.92rem">Skriv likningen med pil (->). Bruk mellomrom rundt +.</p>' +
+      '<div class="panel"><h2 style="font-size:1.3rem;margin-bottom:6px">Sjekk balansering</h2><p class="muted" style="font-size:.92rem">Skriv likningen med pil (->) og mellomrom rundt +. Tabellen viser antall atomer av hvert grunnstoff på hver side.</p>' +
       '<label class="fld fld-wide"><span class="fld-l">Likning</span><input class="inp mono" data-likn autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="2H2 + O2 -> 2H2O"></label>' +
+      '<div class="calc-quick">' + ['H2 + O2 -> H2O', 'CH4 + 2O2 -> CO2 + 2H2O', 'Al + O2 -> Al2O3', '2Al(OH)3 + 3H2SO4 -> Al2(SO4)3 + 6H2O'].map((f) => '<button type="button" class="btn btn-ghost btn-small" data-ex="' + esc(f) + '">' + KJ.ce(f) + '</button>').join('') + '</div>' +
       '<div data-bal aria-live="polite" style="margin-top:12px"></div></div>' +
-      '</div>';
-
-    const fIn = el.querySelector('[data-f]');
-    const res = el.querySelector('[data-res]');
-
-    function regn() {
-      const f = fIn.value.trim();
-      if (!f) {
-        res.innerHTML = '';
-        return;
-      }
-      let p;
-      try {
-        p = C.parse(f);
-      } catch (e) {
-        res.innerHTML = '<p class="muted">' + esc(e.kjemi ? e.message : 'Ugyldig formel') + '</p>';
-        return;
-      }
-      const M = C.M(p);
-      const rader = Object.keys(p.antall).map((sym) => {
-        const e = KJ.grunnstoffMap[sym];
-        const bidrag = e.M * p.antall[sym];
-        return '<tr><th scope="row">' + sym + ' <span class="muted">' + esc(e.navn) + '</span></th><td>' + p.antall[sym] + '</td><td>' + massetekst(e) + '</td><td>' + KJ.tall(bidrag, 3) + '</td><td>' + KJ.tall((100 * bidrag) / M, 1) + ' %</td></tr>';
-      });
-      res.innerHTML =
-        '<div style="font-size:1.4rem">' + KJ.ce(p.ce) + '</div>' +
-        '<div class="calc-big">' + KJ.tex('M = ' + KJ.tall(M, 2).replace(',', '{,}') + '\\enhet{g/mol}') + '</div>' +
-        '<div class="tbl-wrap"><table class="tbl"><thead><tr><th scope="col">Grunnstoff</th><th scope="col">Antall</th><th scope="col">Atommasse</th><th scope="col">Bidrag (g/mol)</th><th scope="col">Masse-%</th></tr></thead><tbody>' + rader.join('') + '</tbody></table></div>' +
-        '<p class="muted" style="font-size:.86rem">Utregning: ' + KJ.tex(Object.keys(p.antall).map((s) => (p.antall[s] > 1 ? p.antall[s] + '\\cdot ' : '') + massetekst(KJ.grunnstoffMap[s]).replace(',', '{,}')).join(' + ') + ' = ' + KJ.tall(M, 2).replace(',', '{,}')) + '</p>';
-      KJ.settUrl('/verktoy/kalkulator?f=' + encodeURIComponent(f));
-    }
-
-    fIn.addEventListener('input', regn);
-    el.querySelector('.calc-quick').addEventListener('click', (e) => {
-      const b = e.target.closest('[data-ex]');
-      if (!b) return;
-      fIn.value = b.dataset.ex;
-      regn();
-    });
-
+      '<div class="panel"><h2 style="font-size:1.3rem;margin-bottom:6px">Koeffisient eller indeks?</h2>' +
+      KJ.fmtBlock(`- **Koeffisienten** (tallet foran formelen) sier hvor mange partikler det er. Den kan du endre når du balanserer.
+- **Indeksen** (det lille tallet i formelen) er en del av stoffet. Endrer du den, får du et annet stoff: {{H2O}} er vann, {{H2O2}} er hydrogenperoksid.
+- Koeffisienten ganges med alle atomene i formelen: $3\\,\\ce{H2SO4}$ har 6 H, 3 S og 12 O.`) +
+      '</div></div>';
     const lIn = el.querySelector('[data-likn]');
     const bal = el.querySelector('[data-bal]');
-    lIn.addEventListener('input', () => {
+    function sjekk() {
       const s = lIn.value.trim();
       if (!s) return (bal.innerHTML = '');
       try {
@@ -251,13 +212,14 @@
       } catch (e) {
         bal.innerHTML = '<p class="muted">' + esc(e.kjemi ? e.message : 'Klarte ikke å lese likningen.') + '</p>';
       }
-    });
-
-    const start = params.get('f');
-    if (start) {
-      fIn.value = start;
-      regn();
     }
+    lIn.addEventListener('input', sjekk);
+    el.querySelector('.calc-quick').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-ex]');
+      if (!b) return;
+      lIn.value = b.dataset.ex;
+      sjekk();
+    });
     return null;
   }
 })(window.KJ);
