@@ -161,6 +161,56 @@ for (const t of KJ.temaer) {
           saltFormler.push([hvor, b.formel]);
           break;
         }
+        case 'detektiv': {
+          sjekk(q.svar >= 0 && q.svar < KJ.STOFFTYPER.length, hvor + ': ugyldig stofftype');
+          sjekk(q.obs.some((o) => o[1] === 'k') && q.obs.every((o) => ['k', 'n', 'i'].includes(o[1])), hvor + ': observasjonene mangler bevis eller har ukjent rolle');
+          if (q.plan) sjekk(q.plan.svar >= 0 && q.plan.svar < q.plan.alternativer.length, hvor + ': ugyldig plansvar');
+          const bevis = q.obs.map((o, i) => (o[1] === 'k' ? i : -1)).filter((i) => i >= 0);
+          const fasit = { type: q.svar, bevis, plan: q.plan ? q.plan.svar : null };
+          sjekk(KJ.rett(q, fasit).riktig, hvor + ': fasit godtas ikke');
+          const n = q.obs.findIndex((o) => o[1] === 'n');
+          if (n >= 0) sjekk(KJ.rett(q, Object.assign({}, fasit, { bevis: bevis.concat(n) })).riktig, hvor + ': nøytral observasjon gir feil');
+          const ir = q.obs.findIndex((o) => o[1] === 'i');
+          if (ir >= 0) sjekk(!KJ.rett(q, Object.assign({}, fasit, { bevis: bevis.concat(ir) })).riktig, hvor + ': irrelevant observasjon godtas som bevis');
+          sjekk(!KJ.rett(q, Object.assign({}, fasit, { type: (q.svar + 1) % 5 })).riktig, hvor + ': feil stofftype godtas');
+          break;
+        }
+        case 'markering': {
+          const S = KJ.STRUKTURER[q.struktur];
+          sjekk(!!S, hvor + ': ukjent struktur ' + q.struktur);
+          sjekk(q.typer.every((t) => KJ.KRAFTTYPER[t] && S.soner.some((z) => z.type === t)), hvor + ': type uten sone i tegningen');
+          const soner = KJ.markeringSoner(q);
+          const fasit = { m: soner.map((z) => ({ x: z.x, y: z.y, t: z.type })) };
+          sjekk(KJ.rett(q, fasit).riktig, hvor + ': markører midt i alle sonene godtas ikke');
+          const ekstra = { m: fasit.m.concat([{ x: 5, y: 5, t: q.typer[0] }]) };
+          sjekk(!KJ.rett(q, ekstra).riktig, hvor + ': en ekstra markør utenfor sonene godtas');
+          if (soner.length > 1) sjekk(!KJ.rett(q, { m: fasit.m.slice(1) }).riktig, hvor + ': manglende markør godtas');
+          if (q.typer.length > 1) {
+            const byttet = { m: fasit.m.map((m) => Object.assign({}, m, { t: q.typer.find((t) => t !== m.t) })) };
+            sjekk(!KJ.rett(q, byttet).riktig, hvor + ': feil type godtas');
+          }
+          break;
+        }
+        case 'lewis': {
+          const kf = KJ.lewisKontroll(q);
+          sjekk(!kf.length, hvor + ': ugyldig elektronprikkformel: ' + kf.join('; '));
+          const D = KJ.lewisData(q);
+          sjekk(C.parse(q.formel).ladning === (q.ladning || 0), hvor + ': ladningen i formelen stemmer ikke med «ladning»');
+          const telt = {};
+          D.atomer.forEach((x) => (telt[x] = (telt[x] || 0) + 1));
+          const iFormel = C.parse(q.formel).antall;
+          sjekk(Object.keys(telt).length === Object.keys(iFormel).length && Object.keys(telt).every((x) => iFormel[x] === telt[x]), hvor + ': atomene i strukturen stemmer ikke med formelen ' + q.formel);
+          sjekk(KJ.LEWIS_FORMER.includes(D.form), hvor + ': ukjent form ' + D.form);
+          const steg = KJ.lewisSteg(q);
+          const svar = {};
+          steg.forEach((st) => (svar[st.k] = st.type === 'janei' ? (st.svar ? 'ja' : 'nei') : String(st.svar)));
+          sjekk(KJ.rett(q, svar).riktig, hvor + ': fasit godtas ikke');
+          const galt = Object.assign({}, svar, { valens: String(D.valens + 2) });
+          const rg = KJ.rett(q, galt);
+          sjekk(!rg.riktig && Math.abs(rg.andel - (steg.length - 1) / steg.length) < 1e-9, hvor + ': ett galt steg gir feil delpoeng');
+          sjekk(/<svg[\s\S]*<\/svg>/.test(KJ.lewisSvg(q, { delta: true })), hvor + ': SVG mangler');
+          break;
+        }
         case 'orbital': {
           const L = KJ.orbitalOppsett(q);
           const bokser = {};
@@ -328,6 +378,50 @@ console.log('  ' + antLikn + ' likninger i tekst kontrollert');
 }
 
 /* ---------- Kjemimotoren ---------- */
+console.log('\nStrukturtegninger');
+Object.keys(KJ.STRUKTURER).forEach((id) => {
+  const S = KJ.STRUKTURER[id];
+  S.soner.forEach((a, i) =>
+    S.soner.forEach((b, j) => {
+      if (j <= i) return;
+      sjekk(Math.hypot(a.x - b.x, a.y - b.y) > a.r + b.r, id + ': sone ' + (i + 1) + ' og ' + (j + 1) + ' overlapper');
+    })
+  );
+  S.bindinger.forEach(([a, b]) => sjekk(S.atomer[a] && S.atomer[b], id + ': binding til ukjent atom'));
+  S.soner.forEach((z) => sjekk(z.x - z.r >= 0 && z.y - z.r >= 0 && z.x + z.r <= S.w && z.y + z.r <= S.h, id + ': sone utenfor tegningen'));
+  console.log('  ' + id + ': ' + S.atomer.length + ' atomer/grupper, ' + S.soner.length + ' soner');
+});
+
+console.log('\nElektronprikkformler');
+{
+  // Uavhengig fasit for noen kjente molekyler: [valens, bindende par, ledige par, form, polare bindinger, dipol]
+  const KJENT = {
+    'lw-h2o': [8, 2, 2, 'vinklet', true, true],
+    'lw-nh3': [8, 3, 1, 'trigonal pyramide', true, true],
+    'lw-ch4': [8, 4, 0, 'tetraedrisk', false, false],
+    'lw-co2': [16, 4, 4, 'lineær', true, false],
+    'lw-ccl4': [32, 4, 12, 'tetraedrisk', true, false],
+    'lw-ch3cl': [14, 4, 3, 'tetraedrisk', true, true],
+    'lw-n2': [10, 3, 2, 'lineær', false, false],
+    'lw-nh4': [8, 4, 0, 'tetraedrisk', true, false],
+    'lw-oh': [8, 1, 3, 'lineær', true, false],
+    'lw-hcn': [10, 4, 1, 'lineær', true, true],
+    'lw-ch2o': [12, 4, 2, 'trigonal plan', true, true],
+    'lw-cs2': [16, 4, 4, 'lineær', false, false],
+    'lw-pcl3': [26, 3, 10, 'trigonal pyramide', true, true],
+  };
+  let n = 0;
+  Object.keys(KJENT).forEach((id) => {
+    const q = KJ.oppgave(id);
+    if (!q) return feilet('mangler ' + id);
+    const D = KJ.lewisData(q);
+    const [v, b, l, f, p, d] = KJENT[id];
+    sjekk(D.valens === v && D.bindingspar === b && D.ledigeTot === l && D.form === f && D.polare === p && D.dipol === d, id + ': avvik fra kjent fasit ' + JSON.stringify([D.valens, D.bindingspar, D.ledigeTot, D.form, D.polare, D.dipol]));
+    n++;
+  });
+  console.log('  ' + KJ.alleOppgaver().filter((q) => q.type === 'lewis').length + ' elektronprikkformler, ' + n + ' sjekket mot uavhengig fasit');
+}
+
 console.log('\nKjemimotor');
 const mm = [
   ['H2O', 18.016], ['NaCl', 58.44], ['Al2(SO4)3', 342.14], ['CuSO4*5H2O', 249.686], ['Ca(OH)2', 74.096], ['(NH4)2SO4', 132.134],

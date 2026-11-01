@@ -267,8 +267,8 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       niva: 2,
       type: 'konfig',
       mal: [3],
-      grunnstoff: 'S',
       ladning: -2,
+      grunnstoff: 'S',
       hint: 'Sulfidionet har tatt opp 2 elektroner: 16 + 2 = 18.',
       steg: [
         '{{S^2-}} har $16 + 2 = 18$ elektroner.',
@@ -372,8 +372,8 @@ Legg merke til at **4s fylles før 3d**, fordi 4s har litt lavere energi. Derfor
       type: 'orbital',
       mal: [3, 5],
       konfig: true,
-      grunnstoff: 'Cl',
       ladning: -1,
+      grunnstoff: 'Cl',
       hint: 'Kloridionet har ett elektron mer enn kloratomet.',
     },
     {

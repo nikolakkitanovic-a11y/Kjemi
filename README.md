@@ -4,6 +4,7 @@
 
 - **Forside med læringsmålene som sjekkliste.** Hvert mål vurderes rødt, gult eller grønt. Du kan sette vurderingen selv, og den oppdateres også ut fra resultatene dine.
 - **17 moduler, én per læringsmål** (noen tett beslektede mål er slått sammen). Hver modul har læringsmål, en boks med vanlige feil, teori, begreper, eksempler og oppgaver i tre nivåer.
+- **Interaktive oppgavetyper:** orbitaldiagram med kontroll av Pauli og Hund, saltbygger med ladningsregnskap, balansering med atomtabell, elektronprikkformler steg for steg med SVG-fasit, markering av krefter i strukturtegninger, stoffdetektiv og langsvar med fagbegreper og kriterier for lav, middels og høy.
 - **Merkelapp på hver oppgave** («Mål 4») som viser hvilket læringsmål den øver på. I moduler med flere mål kan du filtrere på mål.
 - **Hint før fasit**, og løsningsforslag steg for steg.
 - **Flashcards** for begrepene og de sammensatte ionene.
@@ -81,16 +82,40 @@ tests/                     automatiske tester
 { id: 'eg-30', niva: 1, type: 'sortering', mal: [17], sporsmal: 'Hvilken stofftype?',
   kategorier: ['Ionisk', 'Molekylært'], elementer: [['NaCl', 0], ['{{CO2}}', 1]] },
 
-// Forklaringsoppgave (du sammenligner med modellsvaret og krysser av punkter)
+// Forklaringsoppgave / langsvar (du sammenligner med modellsvaret og krysser av punkter).
+// fagbegreper og kriterier er valgfrie. Fagbegrepene markeres når de står i svaret ditt (varianter skilles med |).
 { id: 'an-30', niva: 3, type: 'forklaring', mal: [20], sporsmal: 'Forklar …',
-  modellsvar: 'Fullstendig svar …', punkter: ['Punkt 1', 'Punkt 2', 'Punkt 3'] },
+  modellsvar: 'Fullstendig svar …', punkter: ['Punkt 1', 'Punkt 2', 'Punkt 3'],
+  fagbegreper: ['hydrogenbinding', 'London', 'ledig elektronpar|ledige elektronpar'],
+  kriterier: { lav: '…', middels: '…', hoy: '…' } },
+
+// Elektronprikkformel steg for steg. a = atom, b = bindingsorden, l = ledige elektronpar.
+// Valenselektroner, form, polare bindinger og dipol regnes ut automatisk, og fasiten tegnes som SVG.
+{ id: 'lw-30', niva: 2, type: 'lewis', mal: [7, 8], formel: 'NH3', navn: 'ammoniakk',
+  sporsmal: 'Tegn elektronprikkformelen for ammoniakk …',
+  s: { a: 'N', l: 1, n: [{ a: 'H', b: 1, l: 0 }, { a: 'H', b: 1, l: 0 }, { a: 'H', b: 1, l: 0 }] } },
+// Ioner får ladning: { …, formel: 'NH4+', ladning: 1 }
+
+// Marker krefter i en strukturtegning fra data/strukturer.js
+{ id: 'mk-30', niva: 2, type: 'markering', mal: [10], struktur: 'salt-vann',
+  typer: ['ion-dipol'], sporsmal: 'Marker alle ion-dipol-bindingene.' },
+
+// Stoffdetektiv. Rolle: 'k' = bevis, 'n' = nøytral, 'i' = sier ikke noe om stofftypen.
+// svar er indeksen i KJ.STOFFTYPER: 0 ionisk, 1 polart molekylært, 2 upolart molekylært, 3 metall, 4 atomgitter.
+{ id: 'sd-30', niva: 2, type: 'detektiv', mal: [19], sporsmal: 'Stoffdetektiv …',
+  obs: [['Smelter ved 801 °C', 'k'], ['Er hvitt', 'i']], svar: 0,
+  plan: { sporsmal: 'Hvilken undersøkelse …?', alternativer: ['…', '…'], svar: 0 } },
 ```
+
+### Nye strukturtegninger
+
+Tegningene til markeringsoppgavene ligger i `data/strukturer.js`. Hver tegning har atomer (`[x, y, 'O']`), bindinger (`[fra, til]`) og soner (`{ type, x, y, r, tekst }`) som markerer hvor kreftene virker. Testen sjekker at sonene ikke overlapper.
 
 Flashcards legges i listen `flashcards` i samme fil: `{ f: 'Forside', b: 'Bakside' }`.
 
 ## Testene
 
-Testene sjekker at alle fasiter stemmer, at alle reaksjonslikninger er balansert, at alle saltformler er elektrisk nøytrale, at alle oppgaver har læringsmål, og at alle oppgavene rettes riktig i nettleseren.
+Testene sjekker at alle fasiter stemmer, at alle reaksjonslikninger er balansert, at alle saltformler er elektrisk nøytrale, at alle elektronprikkformler har riktig antall elektroner og oktett, at sonene i strukturtegningene ikke overlapper, at alle oppgaver har læringsmål, og at alle oppgavene rettes riktig i nettleseren.
 
 ```bash
 node tests/verifiser.js

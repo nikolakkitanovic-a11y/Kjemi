@@ -141,6 +141,12 @@
       }
       case 'orbital':
         return KJ.orbitalFasitHtml(q);
+      case 'lewis':
+        return KJ.lewisFasitHtml(q);
+      case 'markering':
+        return KJ.markeringFasitHtml(q);
+      case 'detektiv':
+        return KJ.detektivFasitHtml(q);
       case 'sortering':
         return (
           '<ul class="fasit-liste">' +
@@ -434,6 +440,10 @@
       melding: ant === q.punkter.length ? 'Flott, du fikk med alle hovedpunktene.' : 'Du fikk med ' + ant + ' av ' + q.punkter.length + ' hovedpunkter.',
     };
   };
+
+  R.lewis = (q, svar) => KJ.rettLewis(q, svar);
+  R.markering = (q, svar) => KJ.rettMarkering(q, svar);
+  R.detektiv = (q, svar) => KJ.rettDetektiv(q, svar);
 
   KJ.rett = function (q, svar) {
     if (q.type === 'gen') return { riktig: false, andel: 0, tomt: true, melding: 'Ikke besvart.' };

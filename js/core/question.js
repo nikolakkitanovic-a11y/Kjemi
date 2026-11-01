@@ -110,6 +110,10 @@
       if (q.type === 'rekkefolge') this.orden = KJ.shuffleUlik(q.elementer.map((_, i) => i));
       if (q.type === 'sortering') this.itemRek = KJ.shuffle(q.elementer.map((_, i) => i));
       if (q.type === 'salt') this.antall = { nk: 1, na: 1 };
+      if (q.type === 'markering') {
+        this.markorer = [];
+        this.mType = q.typer[0];
+      }
       if (q.type === 'orbital') {
         this.oppsett = KJ.orbitalOppsett(q);
         this.bokser = {};
@@ -269,6 +273,55 @@
             '<p class="preview" aria-live="polite"><span class="muted">Forhåndsvisning:</span> <span class="pv"></span></p>'
           );
         }
+        case 'detektiv': {
+          const n = this.id;
+          return (
+            '<div class="det-obs"><p class="fld-l">Observasjoner</p><ul>' +
+            q.obs.map((o, i) => '<li><label class="chk"><input type="checkbox" data-bevis="' + i + '"><span>' + fmt(o[0]) + '</span></label></li>').join('') +
+            '</ul><p class="q-note">Kryss av for observasjonene som er bevis for stofftypen.</p></div>' +
+            '<fieldset class="opts det-type"><legend class="fld-l" style="margin-bottom:6px">Hva slags stoff er dette?</legend>' +
+            KJ.STOFFTYPER.map((t, i) => '<label class="opt" data-i="' + i + '"><input type="radio" name="' + n + '-t" data-dtype value="' + i + '"><span class="opt-key" aria-hidden="true">' + String.fromCharCode(65 + i) + '</span><span class="opt-text">' + t + '</span></label>').join('') +
+            '</fieldset>' +
+            (q.plan
+              ? '<fieldset class="opts det-plan"><legend class="fld-l" style="margin-bottom:6px">' + fmt(q.plan.sporsmal) + '</legend>' +
+                (this.planRek || (this.planRek = KJ.shuffle(q.plan.alternativer.map((_, i) => i))))
+                  .map((i, k) => '<label class="opt" data-i="' + i + '"><input type="radio" name="' + n + '-p" data-dplan value="' + i + '"><span class="opt-key" aria-hidden="true">' + String.fromCharCode(65 + k) + '</span><span class="opt-text">' + fmt(q.plan.alternativer[i]) + '</span></label>')
+                  .join('') +
+                '</fieldset>'
+              : '')
+          );
+        }
+        case 'markering': {
+          const S = KJ.STRUKTURER[q.struktur];
+          const flere = q.typer.length > 1;
+          return (
+            (flere
+              ? '<div class="mk-palett"><span class="fld-l">Velg kraft, og trykk i tegningen:</span><div class="seg" role="radiogroup" aria-label="Type kraft">' +
+                q.typer.map((t, i) => '<label class="seg-opt"><input type="radio" name="' + this.id + '-mt" data-mtype="' + t + '" value="' + t + '"' + (i === 0 ? ' checked' : '') + '><span><i class="mk-prikk mk-' + t + '">' + KJ.KRAFTTYPER[t].kort + '</i>' + KJ.KRAFTTYPER[t].navn + '</span></label>').join('') +
+                '</div></div>'
+              : '') +
+            '<div class="mk-wrap">' + KJ.strukturSvg(S, '<g class="mk-lag"></g>', 'mk-aktiv') + '</div>' +
+            '<p class="q-note">Trykk i tegningen for å sette en markør der kraften virker. Trykk på en markør for å fjerne den. <span class="mk-teller"></span></p>'
+          );
+        }
+        case 'lewis': {
+          const steg = KJ.lewisSteg(q);
+          const felt = (st) => {
+            if (st.type === 'tall') return '<input class="inp lw-num mono" data-lw="' + st.k + '" inputmode="numeric" autocomplete="off" aria-label="' + esc(st.tekst) + '">';
+            if (st.type === 'valg')
+              return '<select class="inp lw-sel" data-lw="' + st.k + '" aria-label="' + esc(st.tekst) + '"><option value="">Velg form</option>' + st.valg.map((v) => '<option value="' + v + '">' + v + '</option>').join('') + '</select>';
+            return (
+              '<div class="seg seg-sm" role="radiogroup" aria-label="' + esc(st.tekst) + '">' +
+              ['ja', 'nei'].map((v) => '<label class="seg-opt"><input type="radio" name="' + this.id + '-' + st.k + '" data-lw="' + st.k + '" value="' + v + '"><span>' + (v === 'ja' ? 'Ja' : 'Nei') + '</span></label>').join('') +
+              '</div>'
+            );
+          };
+          return (
+            '<ol class="lewis-steg">' +
+            steg.map((st, i) => '<li data-k="' + st.k + '"><span class="lw-n">' + (i + 1) + '</span><span class="lw-t">' + fmt(st.tekst) + '</span>' + felt(st) + '</li>').join('') +
+            '</ol>'
+          );
+        }
         case 'orbital': {
           const L = this.oppsett;
           return (
@@ -383,15 +436,43 @@
           el.querySelector('.cnt').textContent = t ? t.split(/\s+/).length : 0;
         }
         if (e.target.classList.contains('inp')) e.target.classList.remove('is-wrong', 'is-right');
+        const lwLi = e.target.closest('.lewis-steg li');
+        if (lwLi) lwLi.classList.remove('is-right', 'is-wrong');
         this.endret();
       });
       el.addEventListener('change', (e) => {
         if (e.target.matches('input[type=radio], input[type=checkbox], select')) {
+          const lw = e.target.closest('.lewis-steg li, .det-obs li');
+          if (lw) lw.classList.remove('is-right', 'is-wrong', 'is-missed');
           const opt = e.target.closest('.opt');
           if (opt) el.querySelectorAll('.opt').forEach((o) => o.classList.remove('is-wrong', 'is-right'));
           this.endret();
         }
       });
+      if (q.type === 'markering') {
+        const svg = el.querySelector('.mk-svg');
+        svg.addEventListener('click', (e) => {
+          if (this.last) return;
+          const g = e.target.closest('.mk-m');
+          if (g) {
+            this.markorer = this.markorer.filter((m) => m.i !== +g.dataset.mi);
+          } else {
+            if (this.markorer.length >= 15) return KJ.toast('Maks 15 markører.');
+            const pt = svg.createSVGPoint();
+            pt.x = e.clientX;
+            pt.y = e.clientY;
+            const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+            this.mNr = (this.mNr || 0) + 1;
+            this.markorer.push({ x: Math.round(p.x), y: Math.round(p.y), t: this.mType, i: 1000 + this.mNr });
+          }
+          this.tegnMarkorer();
+          this.endret();
+        });
+        el.addEventListener('change', (e) => {
+          if (e.target.dataset.mtype) this.mType = e.target.value;
+        });
+        this.tegnMarkorer();
+      }
       if (q.type === 'balanser') this.tell();
       if (q.type === 'salt') this.oppdaterSalt();
       if (q.type === 'orbital') this.oppdaterOrbital();
@@ -410,6 +491,15 @@
 
     endret() {
       if (this.o.onEndring) this.o.onEndring(this);
+    }
+
+    tegnMarkorer(status) {
+      const lag = this.el.querySelector('.mk-lag');
+      if (!lag) return;
+      this.markorer.forEach((m, k) => m.i == null && (m.i = k));
+      lag.innerHTML = this.markorer.map((m, k) => KJ.markorSvg(m, status && status[k])).join('');
+      const t = this.el.querySelector('.mk-teller');
+      if (t) t.textContent = this.markorer.length ? this.markorer.length + ' markør' + (this.markorer.length > 1 ? 'er' : '') + ' satt.' : '';
     }
 
     /** Har eleven svart noe? (Rangering teller først når noe er flyttet.) */
@@ -595,6 +685,22 @@
           const la = el.querySelector('[data-lad="la"]');
           return { nk: this.antall.nk, na: this.antall.na, lk: lk ? lk.value : null, la: la ? la.value : null, formel: el.querySelector('[data-salt]').value };
         }
+        case 'markering':
+          return { m: this.markorer.map((m) => ({ x: m.x, y: m.y, t: m.t })) };
+        case 'detektiv': {
+          const t = el.querySelector('[data-dtype]:checked');
+          const p = el.querySelector('[data-dplan]:checked');
+          return { type: t ? +t.value : null, bevis: [...el.querySelectorAll('[data-bevis]:checked')].map((i) => +i.dataset.bevis), plan: p ? +p.value : null };
+        }
+        case 'lewis': {
+          const ut = {};
+          el.querySelectorAll('[data-lw]').forEach((i) => {
+            if (i.type === 'radio') {
+              if (i.checked) ut[i.dataset.lw] = i.value;
+            } else ut[i.dataset.lw] = i.value;
+          });
+          return ut;
+        }
         case 'orbital': {
           const ut = { bokser: JSON.parse(JSON.stringify(this.bokser)) };
           if (el.querySelector('.kfull')) ut.full = el.querySelector('.kfull').value;
@@ -662,6 +768,22 @@
           if (el.querySelector('[data-lad="la"]')) el.querySelector('[data-lad="la"]').value = svar.la || '';
           el.querySelector('[data-salt]').value = svar.formel || '';
           this.oppdaterSalt();
+          break;
+        case 'detektiv':
+          el.querySelectorAll('[data-dtype]').forEach((r) => (r.checked = +r.value === svar.type));
+          el.querySelectorAll('[data-dplan]').forEach((r) => (r.checked = +r.value === svar.plan));
+          el.querySelectorAll('[data-bevis]').forEach((c) => (c.checked = (svar.bevis || []).includes(+c.dataset.bevis)));
+          break;
+        case 'markering':
+          this.markorer = (svar.m || []).map((m, i) => ({ x: m.x, y: m.y, t: m.t, i }));
+          this.tegnMarkorer();
+          break;
+        case 'lewis':
+          el.querySelectorAll('[data-lw]').forEach((i) => {
+            const v = svar[i.dataset.lw];
+            if (i.type === 'radio') i.checked = v === i.value;
+            else i.value = v == null ? '' : v;
+          });
           break;
         case 'orbital':
           if (svar.bokser) Object.keys(this.bokser).forEach((r) => svar.bokser[r] && (this.bokser[r] = svar.bokser[r].slice()));
@@ -762,6 +884,33 @@
             i.classList.add(res.konfDeler[k] ? 'is-right' : 'is-wrong');
           }
         });
+      } else if (q.type === 'detektiv' && res && res.detektivDeler) {
+        const merkOpt = (sel, fasit) =>
+          el.querySelectorAll(sel + ' .opt').forEach((o) => {
+            const i = +o.dataset.i;
+            const valgt = o.querySelector('input').checked;
+            o.classList.remove('is-right', 'is-wrong', 'is-missed');
+            if (valgt && i === fasit) o.classList.add('is-right');
+            else if (valgt) o.classList.add('is-wrong');
+            else if (visFasit && i === fasit) o.classList.add('is-missed');
+          });
+        merkOpt('.det-type', q.svar);
+        if (q.plan) merkOpt('.det-plan', q.plan.svar);
+        el.querySelectorAll('[data-bevis]').forEach((c) => {
+          const rolle = q.obs[+c.dataset.bevis][1];
+          const li = c.closest('li');
+          li.classList.remove('is-right', 'is-wrong', 'is-missed');
+          if (c.checked && rolle === 'k') li.classList.add('is-right');
+          else if (c.checked && rolle === 'i') li.classList.add('is-wrong');
+          else if (!c.checked && rolle === 'k' && visFasit) li.classList.add('is-missed');
+        });
+      } else if (q.type === 'markering' && res && res.markorStatus) {
+        this.tegnMarkorer(res.markorStatus);
+      } else if (q.type === 'lewis' && res && res.lewisDeler) {
+        el.querySelectorAll('.lewis-steg li').forEach((li) => {
+          li.classList.remove('is-right', 'is-wrong');
+          li.classList.add(res.lewisDeler[li.dataset.k] ? 'is-right' : 'is-wrong');
+        });
       } else if (q.type === 'salt' && res && res.saltDeler) {
         const d = res.saltDeler;
         el.querySelectorAll('.lad').forEach((i) => i.classList.toggle('is-wrong', !d.ladning));
@@ -849,8 +998,11 @@
       if (!box) return;
       if (!this.kryss) this.kryss = q.punkter.map(() => false);
       box.hidden = false;
+      const tekst = (this.el.querySelector('.area') || {}).value || '';
       box.innerHTML =
-        '<div class="model"><h3 class="sol-h">Modellsvar</h3>' + KJ.fmtBlock(q.modellsvar) + '</div>' +
+        (q.fagbegreper ? KJ.fagbegrepHtml(q, tekst) : '') +
+        '<div class="model"><h3 class="sol-h">Modellsvar' + (q.kriterier ? ' (høy måloppnåelse)' : '') + '</h3>' + KJ.fmtBlock(q.modellsvar) + '</div>' +
+        (q.kriterier ? KJ.kriterierHtml(q) : '') +
         '<fieldset class="checklist"><legend>Kryss av for hovedpunktene du fikk med i ditt svar</legend>' +
         q.punkter
           .map((p, i) => '<label class="chk"><input type="checkbox" data-k="' + i + '"' + (this.kryss[i] ? ' checked' : '') + (lest ? ' disabled' : '') + '><span>' + fmt(p) + '</span></label>')
@@ -928,6 +1080,29 @@
   KJ.stripFmt = stripFmt;
   KJ.prettyFormel = prettyFormel;
 
+  /** Hvilke fagbegreper er brukt i teksten? Varianter skilles med |. */
+  KJ.fagbegrepTreff = function (q, tekst) {
+    const t = String(tekst || '').toLowerCase();
+    return (q.fagbegreper || []).map((b) => b.split('|').some((v) => t.includes(v.toLowerCase())));
+  };
+  KJ.fagbegrepHtml = function (q, tekst) {
+    const treff = KJ.fagbegrepTreff(q, tekst);
+    const ant = treff.filter(Boolean).length;
+    return (
+      '<div class="fagbegrep"><h3 class="sol-h">Fagbegreper' + (String(tekst || '').trim() ? ' i svaret ditt: ' + ant + ' av ' + treff.length : '') + '</h3><ul>' +
+      q.fagbegreper.map((b, i) => '<li class="' + (treff[i] ? 'fb-ja' : 'fb-nei') + '">' + KJ.icon(treff[i] ? 'check' : 'x', 14) + esc(b.split('|')[0]) + '</li>').join('') +
+      '</ul>' + (String(tekst || '').trim() ? '' : '<p class="q-note">Skriv svaret ditt først, så ser du hvilke begreper du har brukt.</p>') + '</div>'
+    );
+  };
+  KJ.kriterierHtml = function (q) {
+    const K = q.kriterier;
+    return (
+      '<div class="kriterier"><h3 class="sol-h">Kriterier</h3><dl>' +
+      [['lav', 'Lav'], ['middels', 'Middels'], ['hoy', 'Høy']].map(([k, n]) => '<div class="krit-' + k + '"><dt>' + n + '</dt><dd>' + KJ.fmt(K[k]) + '</dd></div>').join('') +
+      '</dl></div>'
+    );
+  };
+
   KJ.harSvar = function (q, svar) {
     if (svar == null) return false;
     switch (q.type) {
@@ -949,6 +1124,12 @@
         return !!String(svar.formel || '').trim();
       case 'orbital':
         return Object.values(svar.bokser || {}).some((b) => b.some((x) => x)) || !!String(svar.full || '').trim();
+      case 'lewis':
+        return Object.values(svar).some((v) => String(v || '').trim());
+      case 'markering':
+        return !!(svar.m && svar.m.length);
+      case 'detektiv':
+        return svar.type != null || (svar.bevis && svar.bevis.length > 0) || svar.plan != null;
       default:
         return !!String(svar || '').trim();
     }

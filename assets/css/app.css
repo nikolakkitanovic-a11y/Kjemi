@@ -1064,3 +1064,103 @@ ol.order { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
 }
 .chip-mal .dot { background: transparent; box-shadow: inset 0 0 0 2px currentColor; opacity: .7; }
 .chip-mal[class*="lys-"] .dot { opacity: 1; }
+
+/* ---------- Elektronprikkformler steg for steg (steg 4) ---------- */
+.lewis-steg { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.lewis-steg li { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 8px 12px; align-items: center; margin: 0; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface-2); transition: background-color .15s, border-color .15s; }
+.lewis-steg li.is-right { background: var(--ok-bg); border-color: var(--ok-line); }
+.lewis-steg li.is-wrong { background: var(--bad-bg); border-color: var(--bad-line); }
+.lw-n { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-mono); font-size: .78rem; background: var(--sunken); color: var(--ink-2); }
+.lewis-steg li.is-right .lw-n { background: var(--ok); color: var(--surface); }
+.lewis-steg li.is-wrong .lw-n { background: var(--bad); color: var(--surface); }
+.lw-t { font-size: .95rem; line-height: 1.4; }
+.lw-num { width: 84px; text-align: center; }
+.lw-sel { min-width: 170px; }
+@media (max-width: 560px) {
+  .lewis-steg li { grid-template-columns: 26px minmax(0, 1fr); }
+  .lewis-steg li > :last-child { grid-column: 2; justify-self: start; }
+  .lw-sel { min-width: 0; width: 100%; }
+}
+.lewis { display: block; max-width: 100%; height: auto; overflow: visible; }
+.lewis .lw-atom { font-family: var(--font-body); font-size: 22px; font-weight: 600; fill: var(--ink); }
+.lewis .lw-b { stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; }
+.lewis .lw-e { fill: var(--ink); }
+.lewis .lw-d { font-family: var(--font-body); font-size: 12px; font-style: italic; fill: var(--info); }
+.lewis .lw-k { fill: none; stroke: var(--ink-2); stroke-width: 1.8; }
+.lewis .lw-lad { font-family: var(--font-body); font-size: 15px; font-weight: 600; fill: var(--ink); }
+.lewis-fasit { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; }
+.lewis-fasit figure { margin: 0; padding: 12px 16px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); }
+.lewis-fasit figcaption { font-size: .8rem; color: var(--ink-3); margin-top: 4px; text-align: center; }
+.lewis-svar { margin: 0; padding-left: 20px; display: grid; gap: 2px; font-size: .9rem; min-width: 0; flex: 1 1 260px; }
+.lewis-svar b { font-family: var(--font-mono); font-weight: 500; }
+
+/* ---------- Markering av krefter i strukturtegninger (steg 4) ---------- */
+:root { --k-hb: #2D6CDF; --k-id: #B4237A; --k-l: #5E7A1F; --k-ib: #C2410C; --k-dd: #7C3AED; }
+.mk-wrap { border-radius: 12px; border: 1px solid var(--line); background: var(--surface); overflow: hidden; }
+.mk-svg { display: block; width: 100%; height: auto; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+.mk-aktiv { cursor: crosshair; }
+.mk-bg { fill: var(--surface); }
+.mk-rygg { fill: none; stroke: var(--line-2); stroke-width: 14; stroke-linecap: round; stroke-linejoin: round; }
+.mk-b { stroke: var(--ink-2); stroke-width: 2.4; stroke-linecap: round; }
+.mk-a { stroke-width: 1.6; }
+.mk-a.el { fill: var(--sunken); stroke: var(--ink-3); }
+.mk-a.el-O { fill: color-mix(in oklab, #E5484D 26%, var(--surface)); stroke: #D93A40; }
+.mk-a.el-N { fill: color-mix(in oklab, #2D6CDF 24%, var(--surface)); stroke: #2D6CDF; }
+.mk-a.el-H { fill: var(--surface); stroke: var(--ink-3); }
+.mk-a.el-C { fill: color-mix(in oklab, var(--ink) 14%, var(--surface)); stroke: var(--ink-2); }
+.mk-a.el-Na { fill: color-mix(in oklab, #8B3CF0 24%, var(--surface)); stroke: #8B3CF0; }
+.mk-a.el-Cl { fill: color-mix(in oklab, #23934F 24%, var(--surface)); stroke: #23934F; }
+.mk-a.gr { fill: color-mix(in oklab, var(--ink) 9%, var(--surface)); stroke: var(--ink-3); }
+.mk-a.gr-ion { stroke-width: 2.2; stroke-dasharray: 0; fill: color-mix(in oklab, #E8A400 22%, var(--surface)); stroke: #B7791F; }
+.mk-t { font-family: var(--font-body); font-size: 14px; font-weight: 600; fill: var(--ink); pointer-events: none; }
+.mk-t.mk-h { font-size: 12px; }
+.mk-svg text { pointer-events: none; }
+.mk-m { cursor: pointer; }
+.mk-m circle { stroke-width: 2.5; fill: var(--surface); }
+.mk-m text { font-family: var(--font-mono); font-size: 11px; font-weight: 700; }
+.mk-m.mk-hydrogenbinding circle { stroke: var(--k-hb); } .mk-m.mk-hydrogenbinding text { fill: var(--k-hb); }
+.mk-m.mk-ion-dipol circle { stroke: var(--k-id); } .mk-m.mk-ion-dipol text { fill: var(--k-id); }
+.mk-m.mk-london circle { stroke: var(--k-l); } .mk-m.mk-london text { fill: var(--k-l); }
+.mk-m.mk-ionebinding circle { stroke: var(--k-ib); } .mk-m.mk-ionebinding text { fill: var(--k-ib); }
+.mk-m.mk-dipol-dipol circle { stroke: var(--k-dd); } .mk-m.mk-dipol-dipol text { fill: var(--k-dd); }
+.mk-m.mk-treff circle, .mk-m.mk-dobbel circle { fill: var(--ok-bg); stroke: var(--ok); stroke-width: 3; }
+.mk-m.mk-treff text, .mk-m.mk-dobbel text { fill: var(--ok); }
+.mk-m.mk-bom circle, .mk-m.mk-type circle, .mk-m.mk-utenfor circle { fill: var(--bad-bg); stroke: var(--bad); stroke-width: 3; stroke-dasharray: 4 3; }
+.mk-m.mk-bom text, .mk-m.mk-type text, .mk-m.mk-utenfor text { fill: var(--bad); }
+.mk-sone circle { fill: color-mix(in oklab, var(--ok) 14%, transparent); stroke: var(--ok); stroke-width: 2; stroke-dasharray: 5 4; }
+.mk-sone text { font-family: var(--font-mono); font-size: 13px; font-weight: 700; fill: var(--ok); }
+.mk-palett { display: grid; gap: 8px; margin-bottom: 12px; }
+.mk-prikk { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 4px; margin-right: 6px; border-radius: 999px; border: 2px solid currentColor; font-style: normal; font-family: var(--font-mono); font-size: .68rem; font-weight: 700; }
+.mk-prikk.mk-hydrogenbinding { color: var(--k-hb); } .mk-prikk.mk-ion-dipol { color: var(--k-id); } .mk-prikk.mk-london { color: var(--k-l); }
+.mk-prikk.mk-ionebinding { color: var(--k-ib); } .mk-prikk.mk-dipol-dipol { color: var(--k-dd); }
+.mk-palett .seg-opt span { display: inline-flex; align-items: center; }
+.mk-fasit { display: grid; gap: 12px; }
+.mk-liste { margin: 0; padding-left: 22px; display: grid; gap: 4px; font-size: .92rem; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --k-hb: #7EA2FF; --k-id: #F27AC0; --k-l: #A8C66C; --k-ib: #F28C38; --k-dd: #B794F6; } }
+:root[data-theme="dark"] { --k-hb: #7EA2FF; --k-id: #F27AC0; --k-l: #A8C66C; --k-ib: #F28C38; --k-dd: #B794F6; }
+.mk-wrap { max-width: 640px; }
+
+/* ---------- Stoffdetektiv (steg 4) ---------- */
+.det-obs { padding: 14px 16px; border-radius: 12px; background: var(--surface-2); border: 1px dashed var(--line-2); margin-bottom: 14px; }
+.det-obs ul { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 4px; }
+.det-obs li { margin: 0; border-radius: 10px; padding: 2px 8px; border: 1px solid transparent; }
+.det-obs li.is-right { background: var(--ok-bg); border-color: var(--ok-line); }
+.det-obs li.is-wrong { background: var(--bad-bg); border-color: var(--bad-line); }
+.det-obs li.is-missed { border: 1px dashed var(--ok); }
+.det-obs .chk { min-height: 40px; }
+.det-obs .q-note { margin: 8px 0 0; }
+.det-plan { margin-top: 14px; }
+
+/* ---------- Langsvar: fagbegreper og kriterier (steg 4) ---------- */
+.fagbegrep { margin-bottom: 14px; }
+.fagbegrep ul { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.fagbegrep li { margin: 0; display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px; font-size: .85rem; border: 1px solid var(--line); }
+.fagbegrep li.fb-ja { background: var(--ok-bg); border-color: var(--ok-line); color: var(--ok); }
+.fagbegrep li.fb-nei { background: var(--surface); color: var(--ink-3); }
+.kriterier { margin: 14px 0; }
+.kriterier dl { margin: 6px 0 0; display: grid; gap: 8px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 760px) { .kriterier dl { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.kriterier dl > div { padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); }
+.kriterier dt { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 4px; }
+.kriterier dd { margin: 0; font-size: .9rem; line-height: 1.45; }
+.kriterier .krit-hoy { border-color: var(--ok-line); background: var(--ok-bg); }

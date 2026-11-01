@@ -51,6 +51,30 @@
 
   /* ---------- Teori ---------- */
   function figur(f) {
+    if (f.type === 'lewis') {
+      return (
+        '<figure class="figure"><div class="fig-row">' +
+        f.oppgaver
+          .map((id) => {
+            const q = KJ.oppgave(id);
+            if (!q) return '';
+            const D = KJ.lewisData(q);
+            return '<div class="fig-item">' + KJ.lewisSvg(q, { delta: true }) + '<span class="lbl">' + KJ.ce(KJ.kjemi.parse(q.formel).ce) + ' · ' + D.form + (D.ion ? '' : D.dipol ? ' · dipol' : ' · ikke dipol') + '</span></div>';
+          })
+          .join('') +
+        '</div><figcaption>' + KJ.esc(f.tekst || 'Elektronprikkformler. δ+ og δ− viser delladningene i polare bindinger.') + '</figcaption></figure>'
+      );
+    }
+    if (f.type === 'struktur') {
+      const S = KJ.STRUKTURER[f.id];
+      const ekstra = S.soner
+        .map((z, i) => '<g class="mk-sone mk-' + z.type + '"><circle cx="' + z.x + '" cy="' + z.y + '" r="' + z.r + '"/><text x="' + z.x + '" y="' + z.y + '" text-anchor="middle" dominant-baseline="central">' + (i + 1) + '</text></g>')
+        .join('');
+      return (
+        '<figure class="figure"><div class="mk-wrap" style="margin-inline:auto">' + KJ.strukturSvg(S, ekstra, 'mk-statisk') + '</div>' +
+        '<figcaption><ol class="mk-liste" style="text-align:left">' + S.soner.map((z) => '<li><b>' + KJ.KRAFTTYPER[z.type].navn + ':</b> ' + KJ.fmt(z.tekst) + '</li>').join('') + '</ol></figcaption></figure>'
+      );
+    }
     if (f.type === 'skall') {
       return (
         '<figure class="figure"><div class="fig-row">' +

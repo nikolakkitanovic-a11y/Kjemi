@@ -89,6 +89,21 @@ Vurder også hvor stor den upolare delen av molekylet er, og om molekylet blir s
       svar: 0,
     },
     {
+      id: 'hs-11',
+      niva: 1,
+      type: 'flervalg',
+      mal: [11],
+      sporsmal: 'Etanol, {{C2H5OH}}, koker ved 78 °C. Hva skjer med kokepunktet hvis OH-gruppen byttes med et H-atom, slik at vi får etan, {{C2H6}}?',
+      alternativer: [
+        'Kokepunktet synker kraftig, fordi hydrogenbindingene forsvinner',
+        'Kokepunktet øker, fordi molekylet får flere H-atomer',
+        'Kokepunktet blir omtrent det samme',
+        'Kokepunktet øker, fordi etan er upolart',
+      ],
+      svar: 0,
+      forklaring: 'Etan er upolart og har bare London-krefter mellom molekylene. Etan koker ved −89 °C.',
+    },
+    {
       id: 'sv-13',
       niva: 2,
       type: 'flervalg',
@@ -191,6 +206,51 @@ Vurder også hvor stor den upolare delen av molekylet er, og om molekylet blir s
       svar: 0,
     },
     {
+      id: 'hs-12',
+      niva: 2,
+      type: 'flervalg',
+      mal: [11, 8],
+      sporsmal: '{{CCl4}} er upolart. Hva skjer hvis ett Cl-atom byttes med et H-atom, slik at vi får {{CHCl3}}?',
+      alternativer: [
+        'Molekylet blir en dipol, fordi det ikke lenger er symmetrisk',
+        'Molekylet forblir upolart, fordi formen fortsatt er tetraedrisk',
+        'Molekylet blir et ion',
+        'Molekylet får hydrogenbindinger',
+      ],
+      svar: 0,
+      forklaring: 'Formen er fortsatt tetraedrisk, men atomene rundt C er ikke lenger like. De polare C–Cl-bindingene opphever ikke hverandre, og molekylet blir en dipol. Det får ikke hydrogenbindinger, fordi H er bundet til C.',
+    },
+    {
+      id: 'hs-13',
+      niva: 2,
+      type: 'flervalg',
+      mal: [11],
+      sporsmal: 'Etan, {{CH3CH3}}, løses svært dårlig i vann. Hva skjer med løseligheten hvis én {{CH3}}-gruppe byttes med en {{NH2}}-gruppe, slik at vi får metylamin, {{CH3NH2}}?',
+      alternativer: [
+        'Løseligheten øker, fordi {{NH2}} kan danne hydrogenbindinger med vann',
+        'Løseligheten minker, fordi N er tyngre enn C',
+        'Ingen endring, fordi begge er gasser',
+        'Løseligheten øker, fordi molekylet blir upolart',
+      ],
+      svar: 0,
+      forklaring: 'N–H er polar, og N har et ledig elektronpar. Metylamin danner hydrogenbindinger med vann og løses svært godt.',
+    },
+    {
+      id: 'hs-14',
+      niva: 2,
+      type: 'flervalg',
+      mal: [11],
+      sporsmal: 'En {{NH2}}-gruppe på et stort molekyl tar opp et hydrogenion og blir til {{NH3+}}. Hva skjer med samspillet mellom denne delen av molekylet og vann?',
+      alternativer: [
+        'Det blir sterkere: hydrogenbindinger erstattes av ion-dipol-bindinger',
+        'Det blir svakere, fordi gruppen får flere H-atomer',
+        'Det blir uendret',
+        'Gruppen blir hydrofob',
+      ],
+      svar: 0,
+      forklaring: 'En gruppe med hel ladning trekker sterkere på vannmolekylene (ion-dipol) enn en polar gruppe uten ladning. Derfor øker løseligheten i vann.',
+    },
+    {
       id: 'sv-23',
       niva: 3,
       type: 'flervalg',
@@ -258,6 +318,30 @@ Vurder også hvor stor den upolare delen av molekylet er, og om molekylet blir s
         'Heksan er upolart med bare London-krefter',
         'Likt løser likt',
         'CH₃ i stedet for OH gir mindre polart molekyl og lavere løselighet',
+      ],
+    },
+    {
+      id: 'hs-15',
+      niva: 3,
+      type: 'forklaring',
+      mal: [11, 9],
+      sporsmal: 'Dietyleter, {{CH3CH2OCH2CH3}}, og butan-1-ol, {{CH3CH2CH2CH2OH}}, har samme molekylformel, {{C4H10O}}. Den ene koker ved 35 °C og den andre ved 118 °C. Forutsi hvilken som har høyest kokepunkt, og forklar.',
+      fagbegreper: ['hydrogenbinding', 'London', 'dipol-dipol', 'kokepunkt'],
+      modellsvar: `**Butan-1-ol** har høyest kokepunkt (118 °C), og dietyleter koker ved 35 °C.
+
+Begge har like mange elektroner og omtrent like store **London-krefter**.
+
+I butan-1-ol er H bundet direkte til O i en OH-gruppe. Molekylene kan derfor danne **hydrogenbindinger** til hverandre.
+
+I dietyleter sitter O mellom to karbonatomer. Ingen H er bundet til O, så etermolekylene kan ikke danne hydrogenbindinger til hverandre. Det blir bare svake **dipol-dipol-krefter** i tillegg til London-kreftene.
+
+Hydrogenbindingene krever mer energi å bryte, så butan-1-ol koker ved høyere temperatur. Det viser at det er **hvordan** atomene er bundet, ikke bare hvilke atomer molekylet har, som avgjør egenskapene.`,
+      punkter: [
+        'Butan-1-ol har høyest kokepunkt',
+        'Like London-krefter (samme antall elektroner)',
+        'Butan-1-ol: H på O → hydrogenbindinger',
+        'Eter: ingen H på O → ingen hydrogenbindinger mellom molekylene',
+        'Strukturen avgjør, ikke bare formelen',
       ],
     },
   ],

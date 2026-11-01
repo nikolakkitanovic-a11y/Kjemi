@@ -88,7 +88,7 @@
     konfig: 'Elektronkonfigurasjon',
     forklaring: 'Forklaring',
     salt: 'Saltbygger',
-    orbital: 'Orbitaldiagram',
+    orbital: 'Orbitaldiagram', lewis: 'Elektronprikkformel', markering: 'Marker i tegningen', detektiv: 'Stoffdetektiv',
     gen: 'Tilfeldig',
   };
 })();

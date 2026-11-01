@@ -133,6 +133,37 @@ const logg = (ok, msg) => {
     if (q.type === 'gen') q = await hentInstans(q.id);
     const kort = page.locator('.qcard[data-id="' + q.id + '"]');
     switch (q.type) {
+      case 'detektiv': {
+        for (let i = 0; i < q.obs.length; i++) if (q.obs[i][1] === 'k') await kort.locator('[data-bevis="' + i + '"]').check();
+        await kort.locator('[data-dtype][value="' + q.svar + '"]').check({ force: true });
+        if (q.plan) await kort.locator('[data-dplan][value="' + q.plan.svar + '"]').check({ force: true });
+        break;
+      }
+      case 'markering': {
+        const soner = await page.evaluate((q) => KJ.markeringSoner(q).map((z) => ({ x: z.x, y: z.y, t: z.type })), q);
+        for (const z of soner) {
+          if (q.typer.length > 1) await kort.locator('[data-mtype="' + z.t + '"]').check({ force: true });
+          const pt = await page.evaluate(([id, x, y]) => {
+            const svg = document.querySelector('.qcard[data-id="' + id + '"] .mk-svg');
+            svg.scrollIntoView({ block: 'center' });
+            return Promise.all(document.getAnimations().map((a) => a.finished.catch(() => {}))).then(() => {
+              const m = svg.getScreenCTM();
+              return { x: m.a * x + m.e, y: m.d * y + m.f };
+            });
+          }, [q.id, z.x, z.y]);
+          await page.mouse.click(pt.x, pt.y);
+        }
+        break;
+      }
+      case 'lewis': {
+        const steg = await page.evaluate((q) => KJ.lewisSteg(q), q);
+        for (const st of steg) {
+          if (st.type === 'tall') await kort.locator('[data-lw="' + st.k + '"]').fill(String(st.svar));
+          else if (st.type === 'valg') await kort.locator('[data-lw="' + st.k + '"]').selectOption(st.svar);
+          else await kort.locator('[data-lw="' + st.k + '"][value="' + (st.svar ? 'ja' : 'nei') + '"]').check({ force: true });
+        }
+        break;
+      }
       case 'salt': {
         const fasit = await page.evaluate((q) => KJ.byggSalt(q.kation, q.anion), q);
         for (let i = 1; i < fasit.nk; i++) await kort.locator('[data-step="nk"][data-d="1"]').click();
@@ -350,6 +381,90 @@ const logg = (ok, msg) => {
   await skjerm('03c-saltbygger');
 
   /* ---------- Læringsmål og selvvurdering ---------- */
+  // Elektronprikkformel: ett galt steg gir delpoeng og markering av steget
+  await ga('#/modul/elektronprikk/oppgaver?niva=0&q=lw-ccl4');
+  await page.waitForSelector('.qcard[data-id="lw-ccl4"] .lewis-steg');
+  {
+    const k = page.locator('.qcard[data-id="lw-ccl4"]');
+    await k.locator('[data-lw="valens"]').fill('32');
+    await k.locator('[data-lw="bindingspar"]').fill('4');
+    await k.locator('[data-lw="ledigeTot"]').fill('12');
+    await k.locator('[data-lw="ledigeSentral"]').fill('0');
+    await k.locator('[data-lw="form"]').selectOption('tetraedrisk');
+    await k.locator('[data-lw="polare"][value="ja"]').check({ force: true });
+    await k.locator('[data-lw="dipol"][value="ja"]').check({ force: true });
+    await k.locator('[data-a="sjekk"]').click();
+    const r = await page.evaluate(() => ({
+      feil: [...document.querySelectorAll('.lewis-steg li.is-wrong')].map((l) => l.dataset.k),
+      riktige: document.querySelectorAll('.lewis-steg li.is-right').length,
+      fb: document.querySelector('.qcard .q-fb').innerText,
+    }));
+    logg(r.feil.join() === 'dipol' && r.riktige === 6 && /6 av 7/.test(r.fb) && /symmetrisk/.test(r.fb), 'elektronprikkformel: galt svar på dipol markeres, 6 av 7 steg riktig');
+    await k.locator('[data-a="losning"]').click();
+    logg((await k.locator('.lewis-fasit svg.lewis text').count()) >= 5, 'fasit vises som SVG-tegning');
+    await skjerm('04c-elektronprikk');
+  }
+
+  // Markering: en markør på feil sted blir bom, og et klikk på markøren fjerner den
+  await ga('#/modul/krefter/oppgaver?niva=0&q=mk-salt-hb');
+  await page.waitForSelector('.qcard[data-id="mk-salt-hb"] .mk-svg');
+  {
+    const klikk = async (x, y) => {
+      const pt = await page.evaluate(([x, y]) => {
+        const svg = document.querySelector('.qcard .mk-svg');
+        svg.scrollIntoView({ block: 'center' });
+        return Promise.all(document.getAnimations().map((a) => a.finished.catch(() => {}))).then(() => {
+          const m = svg.getScreenCTM();
+          return { x: m.a * x + m.e, y: m.d * y + m.f };
+        });
+      }, [x, y]);
+      await page.mouse.click(pt.x, pt.y);
+    };
+    await klikk(300, 290);
+    await klikk(206, 44);
+    logg((await page.locator('.qcard .mk-m').count()) === 2, 'markering: to markører settes ved klikk');
+    await page.locator('.qcard [data-a="sjekk"]').click();
+    const r = await page.evaluate(() => ({ treff: document.querySelectorAll('.mk-m.mk-treff').length, bom: document.querySelectorAll('.mk-m.mk-bom').length, fb: document.querySelector('.qcard .q-fb').innerText }));
+    logg(r.treff === 1 && r.bom === 1 && /1 av 1 treff, 1 bom/.test(r.fb), 'markering: treff vises grønt og bom rødt');
+    await klikk(300, 290);
+    logg((await page.locator('.qcard .mk-m').count()) === 1, 'markering: klikk på en markør fjerner den');
+    await page.locator('.qcard [data-a="sjekk"]').click();
+    logg((await page.locator('.qcard .q-fb.fb-ok').count()) === 1, 'markering: riktig etter at bommen er fjernet');
+    await page.locator('.qcard [data-a="losning"]').click();
+    logg((await page.locator('.qcard .mk-fasit .mk-sone').count()) === 1, 'markering: løsningen viser sonen i tegningen');
+    await skjerm('04d-markering');
+  }
+
+  // Stoffdetektiv: riktig type, men et irrelevant bevis gir delpoeng
+  await ga('#/modul/stoffegenskaper/oppgaver?niva=0&q=sd-06');
+  await page.waitForSelector('.qcard[data-id="sd-06"] .det-obs');
+  {
+    const k = page.locator('.qcard[data-id="sd-06"]');
+    const q = await page.evaluate(() => KJ.oppgave('sd-06'));
+    for (let i = 0; i < q.obs.length; i++) await k.locator('[data-bevis="' + i + '"]').check();
+    await k.locator('[data-dtype][value="1"]').check({ force: true });
+    await k.locator('[data-dplan][value="0"]').check({ force: true });
+    await k.locator('[data-a="sjekk"]').click();
+    const r = await page.evaluate(() => ({ fb: document.querySelector('.qcard .q-fb').innerText, feil: document.querySelectorAll('.det-obs li.is-wrong').length, typeOk: !!document.querySelector('.det-type .opt.is-right') }));
+    logg(/2 av 3/.test(r.fb) && r.feil === 1 && r.typeOk, 'stoffdetektiv: «hvitt pulver» som bevis gir 2 av 3 deler riktig');
+    await k.locator('[data-bevis="0"]').uncheck();
+    await k.locator('[data-a="sjekk"]').click();
+    logg((await k.locator('.q-fb.fb-ok').count()) === 1, 'stoffdetektiv: riktig når bare bevisene er krysset av');
+    await skjerm('04e-stoffdetektiv');
+  }
+
+  // Langsvar: fagbegrepene i teksten markeres, og kriteriene vises
+  await ga('#/modul/anvendelse/oppgaver?niva=0&q=an-09');
+  await page.waitForSelector('.qcard[data-id="an-09"] .area');
+  {
+    const k = page.locator('.qcard[data-id="an-09"]');
+    await k.locator('.area').fill('Vann har hydrogenbindinger mellom molekylene, mens metan bare har London-krefter.');
+    await k.locator('[data-a="sjekk"]').click();
+    const r = await page.evaluate(() => ({ ja: document.querySelectorAll('.fagbegrep li.fb-ja').length, nei: document.querySelectorAll('.fagbegrep li.fb-nei').length, krit: document.querySelectorAll('.kriterier dl > div').length }));
+    logg(r.ja === 3 && r.nei === 3 && r.krit === 3, 'langsvar: 3 av 6 fagbegreper funnet i teksten, og kriterier for lav, middels og høy vises');
+    await skjerm('04f-langsvar');
+  }
+
   console.log('\nLæringsmål og selvvurdering');
   await ga('#/');
   await page.waitForSelector('.goal-list');
