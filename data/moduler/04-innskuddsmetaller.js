@@ -13,6 +13,11 @@ KJ.modul({
   mal: [4],
   farge: '#F2801A',
   bolge: 608,
+  huskeliste: [
+    'Innskuddsmetaller avgir **4s-elektronene før 3d**, fordi 4s har høyest $n$ og er svakest bundet.',
+    '{{Fe^2+}} $[\\mathrm{Ar}]\\,3d^6$ · {{Fe^3+}} $[\\mathrm{Ar}]\\,3d^5$ · {{Cu+}} $[\\mathrm{Ar}]\\,3d^{10}$ · {{Cu^2+}} $[\\mathrm{Ar}]\\,3d^9$ · {{Zn^2+}} $[\\mathrm{Ar}]\\,3d^{10}$',
+    'Fordi også 3d-elektroner kan avgis, får mange innskuddsmetaller flere ladninger. Derfor romertall.',
+  ],
   teori: [
     {
       h: 'Elektronkonfigurasjon for ioner',

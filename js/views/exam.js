@@ -1,5 +1,6 @@
 /*
- * Prøvemodus: blandet prøve på tvers av temaer med tidtaker og poengsum.
+ * Prøvesimulering: blandet prøve på tvers av læringsmålene, med tidtaker og poengsum.
+ * Hvert valgt mål får minst én oppgave så langt antallet rekker.
  * Ingen retting underveis. Etter levering: poeng, veiledende karakter,
  * gjennomgang med løsningsforslag og egenvurdering av forklaringsoppgaver.
  * En påbegynt prøve lagres, så du kan fortsette etter å ha lukket siden.
@@ -19,20 +20,73 @@
   ];
   const karakter = (p) => SKALA.find((s) => p >= s[0])[1];
 
+  /* Andel oppgaver per nivå i en blandet prøve, omtrent som på en vanlig prøve. */
+  const NIVAANDEL = { 1: 0.35, 2: 0.4, 3: 0.25 };
+
+  function trekk(pott, brukt, blandet) {
+    const fri = pott.filter((q) => !brukt.has(q.id));
+    if (!fri.length) return null;
+    if (!blandet) return fri[Math.floor(Math.random() * fri.length)];
+    const nivaer = [1, 2, 3].filter((n) => fri.some((q) => q.niva === n));
+    const sum = nivaer.reduce((a, n) => a + NIVAANDEL[n], 0);
+    let x = Math.random() * sum;
+    let niva = nivaer[nivaer.length - 1];
+    for (const n of nivaer) {
+      x -= NIVAANDEL[n];
+      if (x <= 0) {
+        niva = n;
+        break;
+      }
+    }
+    const kand = fri.filter((q) => q.niva === niva);
+    return kand[Math.floor(Math.random() * kand.length)];
+  }
+
   function velgOppgaver(innst) {
-    const temaer = innst.tema.map((id) => KJ.temaMap[id]).filter(Boolean);
     const nivaOk = (n) => (innst.niva === 'mh' ? n >= 2 : innst.niva === 'h' ? n === 3 : true);
-    const potter = temaer.map((t) => KJ.shuffle(t.oppgaver.filter((q) => nivaOk(q.niva) && (innst.forklaring || q.type !== 'forklaring'))));
+    const ok = (q) => nivaOk(q.niva) && (innst.forklaring || q.type !== 'forklaring');
+    const mal = KJ.shuffle(innst.mal.slice());
+    const potter = {};
+    mal.forEach((nr) => (potter[nr] = KJ.malOppgaver(nr).filter(ok)));
     const valgt = [];
+    const brukt = new Set();
+    const dekket = new Set();
     let runde = 0;
-    while (valgt.length < innst.antall && potter.some((p) => p.length)) {
-      const p = potter[runde % potter.length];
-      if (p.length) valgt.push(p.pop());
+    let fikk = true;
+    while (valgt.length < innst.antall && fikk) {
+      fikk = false;
+      for (const nr of mal) {
+        if (valgt.length >= innst.antall) break;
+        // Første runde: hopp over mål som allerede er dekket av en oppgave med flere mål.
+        if (runde === 0 && dekket.has(nr)) continue;
+        const q = trekk(potter[nr], brukt, innst.niva === 'blandet');
+        if (!q) continue;
+        valgt.push(q);
+        brukt.add(q.id);
+        q.mal.forEach((m) => dekket.add(m));
+        fikk = true;
+      }
       runde++;
     }
-    // Lett → vanskelig, men temaene blandet innenfor hvert nivå.
+    // Lett → vanskelig, men målene blandet innenfor hvert nivå.
     return KJ.shuffle(valgt).sort((a, b) => a.niva - b.niva).map((q) => q.id);
   }
+  KJ.velgProveOppgaver = velgOppgaver;
+
+  /** Poeng per læringsmål. En oppgave med flere mål teller på hvert av dem. */
+  function perMal(rader) {
+    const ut = {};
+    rader.forEach(({ q, res, p }) => {
+      (q.mal || []).forEach((nr) => {
+        const t = (ut[nr] = ut[nr] || { p: 0, m: 0, n: 0 });
+        t.p += res.andel * p;
+        t.m += p;
+        t.n++;
+      });
+    });
+    return ut;
+  }
+  KJ.provePerMal = perMal;
 
   function beregn(P) {
     let poeng = 0;
@@ -71,7 +125,7 @@
 
   /* ---------- Oppsett ---------- */
   function oppsett(main, settRydd) {
-    const innst = { tema: KJ.temaer.map((t) => t.id), antall: 20, niva: 'blandet', tid: 'auto', forklaring: true };
+    const innst = { mal: KJ.MAL.map((m) => m.nr), antall: 20, niva: 'blandet', tid: 'auto', forklaring: true };
     let aktiv = S.aktivProve();
     if (aktiv) {
       // Oppgaver som er fjernet fra datafilene, tas ut av en påbegynt prøve.
@@ -89,18 +143,22 @@
     main.innerHTML =
       '<div class="view"><section class="container tools-head">' +
       '<p class="eyebrow">Prøvemodus</p><h1>Prøvesimulering</h1>' +
-      '<p class="lead">En blandet prøve på tvers av temaene, med tidtaker. Du får ikke vite om svarene er riktige før du leverer, akkurat som på en ekte prøve.</p>' +
+      '<p class="lead">En blandet prøve på tvers av læringsmålene, med tidtaker. Med 20 oppgaver får hvert av de ' + KJ.MAL.length + ' målene minst én oppgave. Du får ikke vite om svarene er riktige før du leverer, akkurat som på en ekte prøve. Etterpå ser du hvilke mål du bør øve mer på.</p>' +
       (aktiv
         ? '<div class="continue" style="margin-top:18px"><p><strong>Du har en påbegynt prøve.</strong> <span class="muted">' + Object.keys(aktiv.svar).length + ' av ' + aktiv.ids.length + ' besvart · ' + tidIgjenTekst(aktiv) + '</span></p>' +
           '<div class="btn-row"><button type="button" class="btn btn-ghost btn-small" data-a="forkast">Forkast</button><button type="button" class="btn btn-primary btn-small" data-a="fortsett">Fortsett prøven ' + KJ.icon('arrow', 16) + '</button></div></div>'
         : '') +
       '</section>' +
       '<section class="container exam-setup"><div class="panel">' +
-      '<div class="form-block"><h3>Moduler</h3><div class="chips" data-tema>' +
-      KJ.temaer.map((t) => '<button type="button" class="chip" aria-pressed="true" data-id="' + t.id + '" style="--tc:' + t.farge + '"><span class="dot"></span>' + esc(t.tittel) + '</button>').join('') +
-      '</div><div class="btn-row"><button type="button" class="btn btn-quiet btn-small" data-a="alle">Velg alle</button><button type="button" class="btn btn-quiet btn-small" data-a="ingen">Fjern alle</button></div></div>' +
+      '<div class="form-block"><h3>Læringsmål</h3><div class="chips" data-tema>' +
+      KJ.MAL.map((m) => {
+        const modul = KJ.malModul(m.nr);
+        const sv = S.selv(m.nr);
+        return '<button type="button" class="chip chip-mal' + (sv ? ' lys-' + sv.verdi : '') + '" aria-pressed="true" data-id="' + m.nr + '" title="' + esc(m.tekst) + '" style="--tc:' + (modul ? modul.farge : 'var(--ink-3)') + '"><span class="dot"></span>' + m.nr + ' ' + esc(m.kort) + '</button>';
+      }).join('') +
+      '</div><div class="btn-row"><button type="button" class="btn btn-quiet btn-small" data-a="alle">Alle mål</button><button type="button" class="btn btn-quiet btn-small" data-a="svake">Røde og gule</button><button type="button" class="btn btn-quiet btn-small" data-a="ingen">Fjern alle</button></div></div>' +
       '<div class="form-block"><h3>Antall oppgaver</h3><div class="seg" role="group" aria-label="Antall oppgaver" data-antall>' +
-      [10, 15, 20, 30].map((n) => '<button type="button" data-v="' + n + '" aria-pressed="' + (n === 20) + '">' + n + '</button>').join('') +
+      [10, 20, 30, 40].map((n) => '<button type="button" data-v="' + n + '" aria-pressed="' + (n === 20) + '">' + n + '</button>').join('') +
       '</div></div>' +
       '<div class="form-block"><h3>Nivå</h3><div class="seg" role="group" aria-label="Nivå" data-niva>' +
       [['blandet', 'Blandet'], ['mh', 'Middels og høy'], ['h', 'Bare høy']].map(([v, n]) => '<button type="button" data-v="' + v + '" aria-pressed="' + (v === 'blandet') + '">' + n + '</button>').join('') +
@@ -126,7 +184,9 @@
       const ids = velgOppgaver(innst);
       const min = innst.tid === 'auto' ? Math.max(10, Math.ceil(Math.min(innst.antall, ids.length) * 2)) : innst.tid;
       tidhint.textContent = innst.tid === 'auto' ? 'Auto gir 2 minutter per oppgave: ' + min + ' minutter.' : '';
-      info.textContent = innst.tema.length ? ids.length + ' oppgaver · ' + min + ' min' : 'Velg minst én modul';
+      const dekker = new Set();
+      ids.forEach((id) => KJ.oppgave(id).mal.forEach((nr) => innst.mal.includes(nr) && dekker.add(nr)));
+      info.textContent = innst.mal.length ? ids.length + ' oppgaver · ' + min + ' min · dekker ' + dekker.size + ' av ' + innst.mal.length + ' mål' : 'Velg minst ett mål';
       main.querySelector('[data-a="start"]').disabled = !ids.length;
     }
     const seg = (sel, key, tall) =>
@@ -145,16 +205,24 @@
       if (!b) return;
       const på = b.getAttribute('aria-pressed') !== 'true';
       b.setAttribute('aria-pressed', String(på));
-      innst.tema = [...main.querySelectorAll('[data-tema] button[aria-pressed="true"]')].map((x) => x.dataset.id);
+      innst.mal = [...main.querySelectorAll('[data-tema] button[aria-pressed="true"]')].map((x) => +x.dataset.id);
       oppdater();
     });
-    const alleTema = (på) => {
-      main.querySelectorAll('[data-tema] button').forEach((x) => x.setAttribute('aria-pressed', String(på)));
-      innst.tema = på ? KJ.temaer.map((t) => t.id) : [];
+    const velgMal = (filter) => {
+      main.querySelectorAll('[data-tema] button').forEach((x) => x.setAttribute('aria-pressed', String(filter(+x.dataset.id))));
+      innst.mal = KJ.MAL.map((m) => m.nr).filter(filter);
       oppdater();
     };
-    main.querySelector('[data-a="alle"]').addEventListener('click', () => alleTema(true));
-    main.querySelector('[data-a="ingen"]').addEventListener('click', () => alleTema(false));
+    main.querySelector('[data-a="alle"]').addEventListener('click', () => velgMal(() => true));
+    main.querySelector('[data-a="ingen"]').addEventListener('click', () => velgMal(() => false));
+    main.querySelector('[data-a="svake"]').addEventListener('click', () => {
+      const svake = (nr) => {
+        const sv = S.selv(nr);
+        return !sv || sv.verdi !== 'gronn';
+      };
+      if (!KJ.MAL.some((m) => svake(m.nr))) KJ.toast('Alle målene er grønne. Bra!', 'ok');
+      else velgMal(svake);
+    });
     main.querySelector('[data-forklaring]').addEventListener('change', (e) => {
       innst.forklaring = e.target.checked;
       oppdater();
@@ -350,29 +418,21 @@
       KJ.store.registrer(q.id, res.riktig, true);
       registrert.add(q.id);
     });
-    S.lagreResultat({ id: P.id, dato: Date.now(), poeng: R.poeng, maks: R.maks, prosent: R.prosent, karakter: R.karakter, antall: P.ids.length, tid: brukt });
-
-    const perTema = {};
-    R.rader.forEach(({ q, res, p }) => {
-      const t = (perTema[q.tema] = perTema[q.tema] || { p: 0, m: 0 });
-      t.p += res.andel * p;
-      t.m += p;
-    });
+    const malProsent = (pm) => {
+      const ut = {};
+      Object.keys(pm).forEach((nr) => (ut[nr] = Math.round((100 * pm[nr].p) / pm[nr].m)));
+      return ut;
+    };
+    S.lagreResultat({ id: P.id, dato: Date.now(), poeng: R.poeng, maks: R.maks, prosent: R.prosent, karakter: R.karakter, antall: P.ids.length, tid: brukt, mal: malProsent(perMal(R.rader)) });
 
     main.innerHTML =
       '<div class="view"><section class="container">' +
       '<div class="result-hero"><div><p class="eyebrow" style="color:#9C998F">Resultat</p><div class="result-score" data-score></div><div class="result-grade" data-grade></div>' +
       '<p style="margin:10px 0 0;color:#B9B6AF;font-size:.9rem">' + P.ids.length + ' oppgaver · brukt ' + KJ.tid(brukt) + ' av ' + KJ.tid(P.varighet) + '</p><p data-venter style="margin:6px 0 0;color:#F2C14E;font-size:.9rem"></p></div>' +
-      '<div class="bars">' +
-      Object.keys(perTema)
-        .map((id) => {
-          const t = KJ.temaMap[id];
-          const v = perTema[id];
-          return '<div class="rbar" style="--tc:' + t.farge + '" data-tema="' + id + '"><span>' + esc(t.tittel) + '</span><div class="bar"><i style="width:' + (100 * v.p) / v.m + '%"></i></div><span>' + fmtP(v.p) + '/' + v.m + '</span></div>';
-        })
-        .join('') +
-      '</div></div>' +
-      '<div class="btn-row" style="margin-top:16px"><a class="btn btn-primary" href="#/prove" data-a="ny">' + KJ.icon('rotate', 18) + 'Ny prøve</a><a class="btn btn-ghost" href="#/feilbank">' + KJ.icon('target', 18) + 'Øv på feilbanken</a></div>' +
+      '<div class="ovmer" data-ovmer></div></div>' +
+      '<div class="btn-row" style="margin-top:16px"><a class="btn btn-primary" href="#/ov" data-a="ovsvake">' + KJ.icon('zap', 18) + 'Øv på de svake målene</a><a class="btn btn-ghost" href="#/prove" data-a="ny">' + KJ.icon('rotate', 18) + 'Ny prøve</a><a class="btn btn-ghost" href="#/feilbank">' + KJ.icon('target', 18) + 'Feilbanken</a></div>' +
+      '<div class="section-head" style="margin-top:32px"><div><h2>Resultat per læringsmål</h2><p>Under 60 % betyr at du bør øve mer på målet. Selvvurderingen på oversikten er oppdatert.</p></div></div>' +
+      '<div class="malres" data-malres></div>' +
       '<div class="section-head" style="margin-top:32px"><div><h2>Gjennomgang</h2><p>Åpne en oppgave for å se svaret ditt, fasit og løsningsforslag.</p></div></div>' +
       '<div class="review" data-review></div></section></div>';
 
@@ -381,20 +441,38 @@
       main.querySelector('[data-score]').innerHTML = r.prosent + '<small> %</small>';
       main.querySelector('[data-grade]').innerHTML = fmtP(r.poeng) + ' av ' + r.maks + ' poeng · veiledende karakter <b>' + r.karakter + '</b>';
       main.querySelector('[data-venter]').textContent = r.venter ? r.venter + ' forklaringsoppgave' + (r.venter > 1 ? 'r' : '') + ' venter på egenvurdering (se gjennomgangen under).' : '';
-      S.oppdaterResultat(P.id, { poeng: r.poeng, prosent: r.prosent, karakter: r.karakter });
-      const pt = {};
-      r.rader.forEach(({ q, res, p }) => {
-        const t = (pt[q.tema] = pt[q.tema] || { p: 0, m: 0 });
-        t.p += res.andel * p;
-        t.m += p;
-      });
-      main.querySelectorAll('.rbar').forEach((el) => {
-        const v = pt[el.dataset.tema];
-        el.querySelector('i').style.width = (100 * v.p) / v.m + '%';
-        el.lastElementChild.textContent = fmtP(v.p) + '/' + v.m;
-      });
+      const pm = perMal(r.rader);
+      S.oppdaterResultat(P.id, { poeng: r.poeng, prosent: r.prosent, karakter: r.karakter, mal: malProsent(pm) });
+      tegnMal(pm);
       return r;
     }
+    function tegnMal(pm) {
+      const nrs = Object.keys(pm).map(Number).sort((a, b) => a - b);
+      const andel = (nr) => pm[nr].p / pm[nr].m;
+      const svake = nrs.filter((nr) => andel(nr) < 0.6).sort((a, b) => andel(a) - andel(b));
+      const rad = (nr) => {
+        const v = pm[nr];
+        const a = andel(nr);
+        const modul = KJ.malModul(nr);
+        const kl = a >= 0.8 ? 'gronn' : a >= 0.6 ? 'gul' : 'rod';
+        return (
+          '<div class="malres-rad lys-' + kl + '" data-nr="' + nr + '" style="--tc:' + (modul ? modul.farge : 'var(--ink-3)') + '">' +
+          '<span class="goal-nr">' + nr + '</span>' +
+          '<div class="malres-t"><p>' + esc(KJ.malInfo(nr).tekst) + '</p><div class="bar"><i style="width:' + Math.round(100 * a) + '%"></i></div></div>' +
+          '<span class="malres-p">' + Math.round(100 * a) + ' %<small>' + fmtP(v.p) + '/' + v.m + ' p</small></span>' +
+          (a < 0.6 ? '<a class="btn btn-ghost btn-small" href="#/ov?mal=' + nr + '">Øv</a>' : '<span></span>') +
+          '</div>'
+        );
+      };
+      main.querySelector('[data-malres]').innerHTML = nrs.map(rad).join('');
+      main.querySelector('[data-ovmer]').innerHTML = svake.length
+        ? '<h3>Øv mer på</h3><ul>' + svake.slice(0, 6).map((nr) => '<li><a href="#/ov?mal=' + nr + '"><b>Mål ' + nr + '</b> ' + esc(KJ.malInfo(nr).kort) + '<span>' + Math.round(100 * andel(nr)) + ' %</span></a></li>').join('') + '</ul>' + (svake.length > 6 ? '<p>+ ' + (svake.length - 6) + ' mål til (se listen under)</p>' : '')
+        : '<h3>Ingen mål under 60 %</h3><p>Bra! Ta en ny prøve på middels og høyt nivå, eller les «Kvelden før»-arket.</p>';
+      const lenke = main.querySelector('[data-a="ovsvake"]');
+      lenke.href = svake.length ? '#/ov?mal=' + svake.join(',') : '#/ov';
+      lenke.lastChild.textContent = svake.length ? 'Øv på de svake målene' : 'Smart øving';
+    }
+
     oppdaterTopp();
     main.querySelector('[data-a="ny"]').addEventListener('click', (e) => {
       e.preventDefault();

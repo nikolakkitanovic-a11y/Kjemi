@@ -13,6 +13,11 @@ KJ.modul({
   mal: [18],
   farge: '#6E46F0',
   bolge: 424,
+  huskeliste: [
+    'Metallioner i en sjø av delokaliserte elektroner. Ikke retningsbestemt, derfor formbart.',
+    'Høyere smeltepunkt med flere valenselektroner, høyere ladning og mindre ioner.',
+    'Cs 28 < K 63 < Na 98 < Li 181 °C · Na 98 < Mg 650 < Al 660 °C',
+  ],
   teori: [
     {
       h: 'Metallbinding',

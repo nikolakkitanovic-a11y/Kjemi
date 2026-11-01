@@ -13,6 +13,14 @@ KJ.modul({
   mal: [1],
   farge: '#E5484D',
   bolge: 656,
+  huskeliste: [
+    '**Isotop:** samme antall protoner, ulikt antall nøytroner.',
+    '**Ion:** atom eller atomgruppe med ladning, fordi elektroner er avgitt eller tatt opp.',
+    '**Orbital:** område der elektronet sannsynligvis er. Maks to elektroner med motsatt spinn.',
+    '**Ioniseringsenergi:** energien som trengs for å fjerne det ytterste elektronet fra et atom i gassfase. Øker bortover, minker nedover.',
+    '**Elektronegativitet:** evnen til å trekke på elektronene i en binding. Fluor er høyest (4,0).',
+    '**Formelenhet:** minste enhet i en ioneforbindelse. Viser forholdet mellom ionene (NaCl, {{CaCl2}}).',
+  ],
   teori: [
     {
       h: 'Seks begreper du må kunne forklare',

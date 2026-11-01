@@ -7,7 +7,10 @@
 - **Merkelapp på hver oppgave** («Mål 4») som viser hvilket læringsmål den øver på. I moduler med flere mål kan du filtrere på mål.
 - **Hint før fasit**, og løsningsforslag steg for steg.
 - **Flashcards** for begrepene og de sammensatte ionene.
-- **Prøvesimulering** med tidtaker og poeng.
+- **Smart øving** (`#/ov`): én oppgave om gangen, oftest fra de røde målene og fra oppgaver du har svart feil på. `#/ov?mal=3,7` øver bare på mål 3 og 7.
+- **Øvingsplan** på forsiden frem til prøven, bygd på selvvurderingen: røde mål først, så de som ikke er vurdert, så de gule. Siste dag er satt av til repetisjon og prøvesimulering.
+- **Prøvesimulering** med tidtaker og poeng. Med 20 oppgaver får hvert av de 20 målene minst én oppgave. Resultatsiden viser poeng per læringsmål og hvilke mål du bør øve mer på.
+- **«Kvelden før»** (`#/kvelden-for`): regler, unntak og vanlige feil for alle målene på ett ark, laget for utskrift. Reglene står i `huskeliste` i hver modulfil.
 - **Feilbank:** en oppgave forsvinner først når du har svart riktig 2 ganger på rad.
 - **Verktøy:** periodesystem (elektronegativitet og elektronfordeling), formelark og balanseringssjekk.
 - Lyst og mørkt tema, og siden fungerer på mobil og PC.

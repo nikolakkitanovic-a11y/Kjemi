@@ -13,6 +13,11 @@ KJ.modul({
   mal: [7],
   farge: '#A7B414',
   bolge: 560,
+  huskeliste: [
+    'Tell valenselektronene, og husk ladningen ({{NH4+}}: 8, {{OH-}}: 8).',
+    'Det minst elektronegative atomet (ikke H) står i midten. Lag bindinger, fordel resten som ledige par, og bruk dobbelt- eller trippelbinding hvis det mangler elektroner til oktett.',
+    'Form: 2 områder lineær · 3 trigonal plan · 4+0 tetraedrisk · 3+1 trigonal pyramide · 2+2 vinklet.',
+  ],
   teori: [
     {
       h: 'Kovalent binding og Lewisstrukturer',

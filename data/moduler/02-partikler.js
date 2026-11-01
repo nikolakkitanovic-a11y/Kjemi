@@ -13,6 +13,11 @@ KJ.modul({
   mal: [2],
   farge: '#EA5A3D',
   bolge: 640,
+  huskeliste: [
+    'Protoner = atomnummer $Z$. Nøytroner = $A - Z$. Elektroner = $Z$ − ladning.',
+    '{{^{56}_{26}Fe^3+}}: 26 protoner, 30 nøytroner, 23 elektroner.',
+    'Sammensatte ioner: legg sammen protonene i alle atomene og juster for ladningen.',
+  ],
   teori: [
     {
       h: 'Atomets byggesteiner',

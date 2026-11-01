@@ -13,6 +13,11 @@ KJ.modul({
   mal: [5],
   farge: '#EE9A0B',
   bolge: 592,
+  huskeliste: [
+    'Tell elektronene ($[\\mathrm{Ne}]$ = 10, $[\\mathrm{Ar}]$ = 18, $[\\mathrm{Kr}]$ = 36). Protoner = elektroner + ladning.',
+    'Nøytralt atom: perioden er høyeste $n$, gruppen gis av valenselektronene (p-blokken: + 10).',
+    '$[\\mathrm{Ne}]$ passer for {{O^2-}}, {{F-}}, {{Na+}}, {{Mg^2+}} og {{Al^3+}} – ladningen avgjør.',
+  ],
   teori: [
     {
       h: 'Slik finner du grunnstoffet eller ionet',

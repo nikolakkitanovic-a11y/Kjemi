@@ -116,6 +116,11 @@ KJ.ionModul = function (M) {
     punkter: ['Sammensatt ion: atomer bundet kovalent med samlet ladning', 'Ladning = forskjell mellom protoner og elektroner', 'NH₄⁺: 11 protoner, 10 elektroner', 'OH⁻: 9 protoner, 10 elektroner', 'Ladningen tilhører hele gruppen'],
   });
   M.oppgaver = M.oppgaver.concat(nye).sort((a, b) => a.niva - b.niva);
+  if (!M.huskeliste)
+    M.huskeliste = [
+      'Bare **ammonium** {{NH4+}} er positivt. **Fosfat** er 3−, **karbonat** og **sulfat** er 2−. Resten er 1−.',
+      'Ionet er én enhet. Parentes når det trengs mer enn ett: {{Ca(OH)2}}, {{(NH4)2SO4}}.',
+    ];
   M.flashcards = ioner
     .map((i) => ({ f: '{{' + i.formel + '}}', b: i.navn + ' (ladning ' + lt(i.ladning) + ')' }))
     .concat([{ f: 'Eneste positive ion på tavla', b: 'Ammonium, {{NH4+}}' }]);

@@ -13,6 +13,13 @@ KJ.modul({
   mal: [3],
   farge: '#EF6C2A',
   bolge: 624,
+  huskeliste: [
+    'Rekkefølge: 1s 2s 2p 3s 3p **4s 3d** 4p. Maks: s 2, p 6, d 10.',
+    '**Pauli:** maks to elektroner per orbital, med motsatt spinn (↑↓).',
+    '**Hund:** ett elektron i hver orbital (samme spinn) før noen får to.',
+    'Edelgasskjerne: Na = $[\\mathrm{Ne}]\\,3s^1$, Fe = $[\\mathrm{Ar}]\\,4s^2\\,3d^6$.',
+    '**Unntak:** Cr = $[\\mathrm{Ar}]\\,4s^1\\,3d^5$, Cu = $[\\mathrm{Ar}]\\,4s^1\\,3d^{10}$.',
+  ],
   teori: [
     {
       h: 'Skallmodellen',

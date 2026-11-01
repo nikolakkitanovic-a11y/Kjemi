@@ -2,6 +2,8 @@
  * App: navigasjon (hash-ruter), meny og fargetema.
  * Ruter:
  *   #/                          oversikt
+ *   #/ov[?mal=3,7]              smart øving fra de svakeste målene
+ *   #/kvelden-for               oppsummering av alle mål til utskrift
  *   #/modul/<id>[/oppgaver]     teori eller oppgaver for en modul (ett eller flere læringsmål)
  *   #/kort[/<id>]               flashcards
  *   #/prove                     prøvemodus
@@ -13,6 +15,7 @@
 
   const NAV = [
     { id: 'hjem', href: '#/', navn: 'Oversikt', ikon: 'home' },
+    { id: 'ov', href: '#/ov', navn: 'Smart øving', kort: 'Øv', ikon: 'zap' },
     { id: 'kort', href: '#/kort', navn: 'Flashcards', kort: 'Kort', ikon: 'layers' },
     { id: 'prove', href: '#/prove', navn: 'Prøve', ikon: 'clipboard' },
     { id: 'feilbank', href: '#/feilbank', navn: 'Feilbank', ikon: 'target' },
@@ -23,6 +26,8 @@
     [/^\/?$/, 'hjem', (m, p) => KJ.views.home(m, p)],
     [/^\/modul\/([\w-]+)(?:\/(teori|oppgaver))?\/?$/, 'hjem', (m, p, id, fane) => KJ.views.topic(m, p, id, fane || 'teori')],
     [/^\/tema\/.*$/, 'hjem', () => location.replace('#/')],
+    [/^\/ov\/?$/, 'ov', (m, p) => KJ.views.smart(m, p)],
+    [/^\/kvelden-for\/?$/, 'hjem', (m, p) => KJ.views.evening(m, p)],
     [/^\/kort(?:\/([\w-]+))?\/?$/, 'kort', (m, p, id) => KJ.views.cards(m, p, id || 'alle')],
     [/^\/prove\/?$/, 'prove', (m, p) => KJ.views.exam(m, p)],
     [/^\/feilbank\/?$/, 'feilbank', (m, p) => KJ.views.errors(m, p)],

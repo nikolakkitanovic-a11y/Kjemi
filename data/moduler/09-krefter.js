@@ -13,6 +13,13 @@ KJ.modul({
   mal: [9, 10],
   farge: '#3E9F3F',
   bolge: 528,
+  huskeliste: [
+    '**London:** mellom alle molekyler. Sterkere med flere elektroner og større kontaktflate.',
+    '**Dipol-dipol:** mellom dipolmolekyler.',
+    '**Hydrogenbinding:** H bundet til N, O eller F mot et ledig elektronpar på N, O eller F i et annet molekyl.',
+    '**Ion-dipol:** mellom et ion og et dipolmolekyl, for eksempel salt i vann.',
+    'Når et molekylært stoff koker, brytes de svake bindingene – ikke de kovalente.',
+  ],
   teori: [
     {
       h: 'Hva er svake bindinger?',

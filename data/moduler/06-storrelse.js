@@ -13,6 +13,12 @@ KJ.modul({
   mal: [6],
   farge: '#D9AB00',
   bolge: 576,
+  huskeliste: [
+    'Radius **øker nedover** (flere skall) og **minker bortover** (større kjerneladning, omtrent lik skjerming).',
+    'Kation < atom < anion.',
+    'Isoelektroniske ioner: flest protoner gir minst ion. {{Al^3+}} < {{Mg^2+}} < {{Na+}} < {{F-}} < {{O^2-}}.',
+    'Begrunn med elektronskall, kjerneladning og skjerming.',
+  ],
   teori: [
     {
       h: 'Tre ting avgjør størrelsen',

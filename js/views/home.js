@@ -36,6 +36,50 @@
     );
   }
 
+  const MAANED = (d) => d.toLocaleDateString('nb-NO', { weekday: 'long', day: 'numeric', month: 'long' });
+
+  /** Øvingsplan frem til prøven, bygd på selvvurderingen. */
+  function planHtml() {
+    const P = KJ.ovingsplan();
+    if (P.status === 'over') return '';
+    let innhold;
+    if (P.status === 'idag') {
+      innhold =
+        '<div class="plan-dag plan-idag"><h3>Prøven er i dag</h3><p>Les gjennom «Kvelden før»-arket én gang til, og ta det med ro. Du har øvd.</p>' +
+        '<div class="btn-row"><a class="btn btn-primary btn-small" href="#/kvelden-for">' + KJ.icon('book', 16) + 'Kvelden før</a></div></div>';
+    } else {
+      innhold = P.okter
+        .map((o) => {
+          const mal = o.mal.length
+            ? '<ul class="plan-mal">' + o.mal.map((m) => '<li class="' + (m.verdi ? 'lys-' + m.verdi : 'lys-ingen') + '"><a href="#/ov?mal=' + m.nr + '"><i></i><b>' + m.nr + '</b> ' + esc(KJ.malInfo(m.nr).kort) + '</a></li>').join('') + '</ul>'
+            : '<p class="muted">Ingen røde eller gule mål igjen til denne dagen.</p>';
+          const ekstra = o.siste
+            ? '<p class="plan-ekstra">' + KJ.icon('clipboard', 16) + 'Ta en prøvesimulering med alle målene, og øv på målene som havner under 60 %.</p>' +
+              '<p class="plan-ekstra">' + KJ.icon('book', 16) + 'Les «Kvelden før»-arket.' + (o.gronne && o.gronne.length ? ' Grønne mål (' + o.gronne.length + ') repeterer du der.' : '') + '</p>'
+            : '';
+          const knapper =
+            '<div class="btn-row">' +
+            (o.mal.length ? '<a class="btn btn-primary btn-small" href="#/ov?mal=' + o.mal.map((m) => m.nr).join(',') + '">' + KJ.icon('zap', 16) + 'Øv på disse</a>' : '') +
+            (o.siste ? '<a class="btn btn-ghost btn-small" href="#/prove">Prøvesimulering</a><a class="btn btn-ghost btn-small" href="#/kvelden-for">Kvelden før</a>' : '') +
+            '</div>';
+          return (
+            '<div class="plan-dag' + (o.idag ? ' plan-idag' : '') + '"><p class="plan-dato">' + (o.idag ? 'I dag · ' : '') + esc(MAANED(o.dato)) + '</p>' +
+            '<h3>' + (o.siste ? 'Repetisjon og prøvesimulering' : o.mal.length + ' mål å øve på') + ' <span class="muted">ca. ' + o.min + ' min</span></h3>' +
+            mal + ekstra + knapper + '</div>'
+          );
+        })
+        .join('');
+    }
+    const tips = P.ikkeVurdert
+      ? '<p class="plan-tips">' + KJ.icon('info', 16) + P.ikkeVurdert + ' mål er ikke vurdert ennå. Vurder deg selv på listen under, så blir planen mer treffsikker.</p>'
+      : '';
+    return (
+      '<section class="section" id="plan" style="padding-bottom:0"><div class="container">' +
+      '<div class="section-head"><div><h2>Øvingsplan frem til prøven</h2><p>Røde mål først, så de som ikke er vurdert, så de gule. Planen endrer seg når du oppdaterer vurderingen.</p></div></div>' +
+      tips + '<div class="plan">' + innhold + '</div></div></section>'
+    );
+  }
+
   KJ.views.home = function (main) {
     KJ.settTittel('');
     const S = KJ.store;
@@ -85,8 +129,10 @@
       '<a class="stat" href="#/feilbank"><div class="stat-v">' + feil + '</div><div class="stat-l">oppgaver i feilbanken</div></a>' +
       '<a class="stat" href="#/prove"><div class="stat-v">' + (siste ? siste.prosent + ' <small>%</small>' : '–') + '</div><div class="stat-l">' + (siste ? 'siste prøvesimulering' : 'ingen prøver ennå') + '</div></a>' +
       '</div>' +
+      '<div class="hero-cta"><a class="btn btn-primary btn-lg" href="#/ov">' + KJ.icon('zap', 18) + 'Smart øving</a><a class="btn btn-ghost btn-lg" href="#/prove">' + KJ.icon('clipboard', 18) + 'Prøvesimulering</a><a class="btn btn-quiet btn-lg" href="#/kvelden-for">' + KJ.icon('book', 18) + 'Kvelden før</a></div>' +
       fortsett +
       '</div></section>' +
+      planHtml() +
 
       '<section class="section" id="maal"><div class="container">' +
       '<div class="section-head"><div><h2>Læringsmålene</h2><p>Trykk på rød, gul eller grønn for å vurdere deg selv. Vurderingen oppdateres også når du svarer på oppgaver.</p></div>' +
@@ -117,7 +163,9 @@
       '<section class="section" style="padding-top:0"><div class="container">' +
       '<div class="section-head"><div><h2>Øv på tvers</h2></div></div>' +
       '<div class="quick">' +
-      ql('#/prove', 'clipboard', 'Prøvesimulering', 'Blandet prøve med tidtaker og poeng, som en tentamen.') +
+      ql('#/ov', 'zap', 'Smart øving', 'Oppgaver fra de svakeste målene dine, ett om gangen.') +
+      ql('#/prove', 'clipboard', 'Prøvesimulering', 'Alle målene, med tidtaker og resultat per mål.') +
+      ql('#/kvelden-for', 'book', 'Kvelden før', 'Regler, unntak og vanlige feil for alle målene på ett ark.') +
       ql('#/feilbank', 'target', 'Feilbank', feil ? feil + ' oppgaver venter. Hver må klares ' + KJ.RAD_KRAV + ' ganger på rad.' : 'Oppgaver du svarer feil på havner her.') +
       ql('#/kort', 'layers', 'Flashcards', unikeKort + ' kort med begreper og sammensatte ioner (' + kan + ' kan du).') +
       ql('#/verktoy/periodesystem', 'grid', 'Periodesystem', 'Elektronegativitet, elektronfordeling og konfigurasjoner.') +
@@ -147,6 +195,12 @@
       li.replaceWith(tmp.firstElementChild);
       const nyKnapp = main.querySelector('[data-nr="' + nr + '"] [data-lys="' + b.dataset.lys + '"]');
       if (nyKnapp) nyKnapp.focus();
+      const plan = main.querySelector('#plan');
+      if (plan) {
+        const tmp2 = document.createElement('div');
+        tmp2.innerHTML = planHtml();
+        if (tmp2.firstElementChild) plan.replaceWith(tmp2.firstElementChild);
+      }
     });
 
     main.querySelector('[data-a="eksport"]').addEventListener('click', () => {

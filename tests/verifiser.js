@@ -51,6 +51,7 @@ let antKort = 0;
 for (const t of KJ.temaer) {
   sjekk([1, 2, 3].every((n) => t.oppgaver.some((q) => q.niva === n)) || t.oppgaver.length < 10, t.id + ': oppgaver på alle tre nivåer');
   sjekk(t.feller.length >= 2, t.id + ': boks med vanlige feil');
+  sjekk(Array.isArray(t.huskeliste) && t.huskeliste.length >= 2, t.id + ": huskeliste til «Kvelden før»");
   sjekk(t.mal.length >= 1 && t.mal.every((nr) => KJ.malInfo(nr)), t.id + ': gyldige læringsmål');
   antKort += t.flashcards.length;
   for (const q of t.oppgaver) {
@@ -295,7 +296,7 @@ const samle = (v) => {
   else if (Array.isArray(v)) v.forEach(samle);
   else if (v && typeof v === 'object') Object.values(v).forEach(samle);
 };
-KJ.moduler.forEach((m) => samle([m.teori, m.eksempler, m.feller, m.oppgaver, m.flashcards, m.begreper]));
+KJ.moduler.forEach((m) => samle([m.teori, m.eksempler, m.feller, m.oppgaver, m.flashcards, m.begreper, m.huskeliste]));
 samle(KJ.formelark);
 tekster.forEach((t) => {
   for (const mm of t.matchAll(/\{\{([^}]*->[^}]*)\}\}/g)) {

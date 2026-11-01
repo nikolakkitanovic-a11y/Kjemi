@@ -13,6 +13,10 @@ KJ.modul({
   mal: [8],
   farge: '#6FAA22',
   bolge: 544,
+  huskeliste: [
+    'ΔEN under ca. 0,5: upolar · 0,5–1,7: polar · over 1,7: ionisk (tommelfingerregel).',
+    '**Dipol** = polare bindinger + usymmetrisk form. {{CO2}} og {{CCl4}} er upolare, {{H2O}} og {{NH3}} er dipoler.',
+  ],
   teori: [
     {
       h: 'Hvorfor danner atomer bindinger?',

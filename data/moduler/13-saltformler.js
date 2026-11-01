@@ -13,6 +13,11 @@ KJ.modul({
   mal: [15],
   farge: '#2486E6',
   bolge: 466,
+  huskeliste: [
+    'Summen av ladningene skal være null. Bruk minste hele tall.',
+    'Parentes når det er mer enn ett sammensatt ion: {{Ca(OH)2}}, {{(NH4)2SO4}}.',
+    '{{Al^3+}} + {{O^2-}} → {{Al2O3}} · {{Ca^2+}} + {{PO4^3-}} → {{Ca3(PO4)2}}',
+  ],
   teori: [
     {
       h: 'Fra navn til formel: ladningsbalanse',

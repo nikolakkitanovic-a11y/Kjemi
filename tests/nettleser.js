@@ -74,7 +74,7 @@ const logg = (ok, msg) => {
   /* ---------- Alle visninger ---------- */
   console.log('Visninger');
   const temaer = await page.evaluate(() => KJ.temaer.map((t) => t.id));
-  const ruter = ['#/', '#/kort', '#/prove', '#/feilbank', '#/verktoy/periodesystem', '#/verktoy/formelark', '#/verktoy/balansering'];
+  const ruter = ['#/', '#/ov', '#/ov?mal=7', '#/kvelden-for', '#/kvelden-for?vis=svake', '#/kort', '#/prove', '#/feilbank', '#/verktoy/periodesystem', '#/verktoy/formelark', '#/verktoy/balansering'];
   temaer.forEach((t) => ruter.push('#/modul/' + t, '#/modul/' + t + '/oppgaver', '#/kort/' + t));
   for (const r of ruter) {
     await ga(r);
@@ -380,8 +380,24 @@ const logg = (ok, msg) => {
   logg(/\d+:\d\d/.test(await page.locator('[data-timer]').innerText()), 'tidtaker går');
   const proveIder = await page.evaluate(() => KJ.store.aktivProve().ids);
   logg(proveIder.length === 10, '10 oppgaver valgt');
-  const proveTema = new Set(proveIder.map((id) => oppgaver.find((q) => q.id === id).tema));
-  logg(proveTema.size >= 5, 'oppgaver fra minst 5 temaer (' + proveTema.size + ')');
+  const proveMal = new Set();
+  proveIder.forEach((id) => oppgaver.find((q) => q.id === id).mal.forEach((nr) => proveMal.add(nr)));
+  logg(proveMal.size >= 10, '10 oppgaver dekker minst 10 mål (' + proveMal.size + ')');
+  const dekning = await page.evaluate(() => {
+    let minst = 99;
+    for (let i = 0; i < 40; i++) {
+      const ids = KJ.velgProveOppgaver({ mal: KJ.MAL.map((m) => m.nr), antall: 20, niva: 'blandet', forklaring: true });
+      const d = new Set();
+      ids.forEach((id) => KJ.oppgave(id).mal.forEach((nr) => d.add(nr)));
+      minst = Math.min(minst, d.size);
+    }
+    const h = KJ.velgProveOppgaver({ mal: KJ.MAL.map((m) => m.nr), antall: 20, niva: 'h', forklaring: true });
+    const ett = KJ.velgProveOppgaver({ mal: [16], antall: 10, niva: 'blandet', forklaring: true });
+    return { minst, hoy: h.every((id) => KJ.oppgave(id).niva === 3), ett: ett.length === 10 && ett.every((id) => KJ.oppgave(id).mal.includes(16)) };
+  });
+  logg(dekning.minst === 20, 'prøve med 20 oppgaver dekker alle 20 målene (40 trekninger, minst ' + dekning.minst + ')');
+  logg(dekning.hoy, 'nivåvalget «Bare høy» gir bare oppgaver på høyt nivå');
+  logg(dekning.ett, 'prøve på ett mål gir bare oppgaver fra det målet');
   for (let i = 0; i < 5; i++) {
     const q = oppgaver.find((x) => x.id === proveIder[i]);
     await fyllRiktig(q);
@@ -407,6 +423,94 @@ const logg = (ok, msg) => {
   logg((await page.locator('.review .qcard .q-sol').count()) === 1, 'gjennomgang viser løsning');
   await skjerm('07-resultat');
   logg((await page.evaluate(() => KJ.store.prover().length)) === 1, 'resultat lagret i historikken');
+  const malRes = await page.evaluate(() => ({
+    rader: document.querySelectorAll('.malres-rad').length,
+    ovmer: document.querySelector('[data-ovmer]').innerText,
+    lagret: KJ.store.prover()[0].mal,
+    lenke: document.querySelector('[data-a="ovsvake"]').getAttribute('href'),
+  }));
+  logg(malRes.rader >= 10 && Object.keys(malRes.lagret).length === malRes.rader, 'resultat per læringsmål vises og lagres (' + malRes.rader + ' mål)');
+  logg(/Øv mer på|Ingen mål under/.test(malRes.ovmer) && /^#\/ov/.test(malRes.lenke), 'resultatsiden viser hvilke mål du bør øve mer på (' + malRes.lenke + ')');
+
+  /* ---------- Smart øving, øvingsplan og «Kvelden før» ---------- */
+  console.log('\nSmart øving, øvingsplan og «Kvelden før»');
+  const vekt = await page.evaluate(() => {
+    KJ.MAL.forEach((m) => KJ.store.settSelv(m.nr, m.nr === 7 ? 'rod' : 'gronn'));
+    const n = {};
+    for (let i = 0; i < 600; i++) {
+      const v = KJ.smartVelg({});
+      n[v.nr] = (n[v.nr] || 0) + 1;
+    }
+    const bare = [];
+    for (let i = 0; i < 60; i++) bare.push(KJ.smartVelg({ mal: [3, 12] }).q.mal);
+    return { sju: n[7] || 0, snitt: (600 - (n[7] || 0)) / 19, bare: bare.every((m) => m.includes(3) || m.includes(12)) };
+  });
+  logg(vekt.sju > 4 * vekt.snitt, 'smart øving velger det røde målet oftest (mål 7: ' + vekt.sju + ' av 600, snitt for de grønne ' + vekt.snitt.toFixed(1) + ')');
+  logg(vekt.bare, 'smart øving med ?mal=3,12 velger bare fra de målene');
+  await ga('#/ov');
+  await page.waitForSelector('.qcard');
+  const smartQ = await page.evaluate(() => document.querySelector('.qcard').dataset.id);
+  logg(/Mål \d+ er/.test(await page.locator('[data-grunn]').innerText()), 'smart øving forklarer hvorfor oppgaven er valgt');
+  await fyllRiktig(oppgaver.find((q) => q.id === smartQ));
+  await page.locator('.qcard [data-a="sjekk"]').click();
+  if ((await page.locator('.qcard .checklist input').count()) > 0) {
+    const bokser = page.locator('.qcard .checklist input');
+    for (let i = 0; i < (await bokser.count()); i++) await bokser.nth(i).check();
+    await page.locator('.qcard [data-a="vurder"]').click();
+  }
+  logg((await page.locator('.qcard .q-fb.fb-ok').count()) === 1, 'oppgaven i smart øving rettes som riktig (' + smartQ + ')');
+  logg(/1 av 1 riktig/.test(await page.locator('[data-okt]').innerText()), 'økten teller riktige svar');
+  await page.locator('[data-a="neste"]').click();
+  await page.waitForTimeout(80);
+  logg((await page.evaluate(() => document.querySelector('.qcard').dataset.id)) !== smartQ, '«Neste oppgave» gir en ny oppgave');
+  await skjerm('08-smart-oving');
+  await ga('#/ov?mal=19');
+  await page.waitForSelector('.qcard');
+  logg(await page.evaluate(() => KJ.oppgave(document.querySelector('.qcard').dataset.id).mal.includes(19)), '#/ov?mal=19 viser en oppgave fra mål 19');
+
+  const plan = await page.evaluate(() => {
+    const sjekk = (d) => {
+      const P = KJ.ovingsplan(d);
+      if (P.status !== 'plan') return P.status;
+      const alle = P.okter.reduce((a, o) => a.concat(o.mal.map((m) => m.nr)), []);
+      return { dager: P.dager, okter: P.okter.length, unike: new Set(alle).size, antall: alle.length, siste: P.okter[P.okter.length - 1].siste };
+    };
+    KJ.MAL.forEach((m) => KJ.store.settSelv(m.nr, m.nr <= 6 ? 'rod' : m.nr <= 12 ? 'gul' : m.nr <= 16 ? null : 'gronn'));
+    const forste = KJ.ovingsplan(new Date(2026, 9, 30)).okter[0].mal.map((m) => m.nr);
+    return { fire: sjekk(new Date(2026, 9, 30)), to: sjekk(new Date(2026, 10, 1, 20)), en: sjekk(new Date(2026, 10, 2, 7)), idag: sjekk(new Date(2026, 10, 3, 9)), over: sjekk(new Date(2026, 10, 4)), forste };
+  });
+  logg(plan.fire.dager === 4 && plan.fire.okter === 4 && plan.fire.unike === 16 && plan.fire.antall === 16 && plan.fire.siste, 'øvingsplan fra 30. oktober: 4 dager, alle 16 røde, gule og ikke vurderte mål én gang');
+  logg(plan.forste.every((nr) => nr <= 6), 'de røde målene kommer først i planen (' + plan.forste.join(', ') + ')');
+  logg(plan.to.okter === 2 && plan.en.okter === 1 && plan.en.unike === 16, 'planen tilpasser seg 2 dager og 1 dag igjen');
+  logg(plan.idag === 'idag' && plan.over === 'over', 'prøvedagen og dagene etter håndteres');
+  await ga('#/');
+  await page.waitForSelector('.goal-list');
+  const status = await page.evaluate(() => KJ.ovingsplan().status);
+  logg((await page.locator('#plan').count()) === (status === 'over' ? 0 : 1), 'forsiden viser øvingsplanen (' + status + ')');
+  if (status === 'plan') {
+    const forHar = await page.locator('#plan .plan-mal li').count();
+    await page.locator('.goal-row[data-nr="13"] [data-lys="rod"]').click();
+    const etter = await page.evaluate(() => [...document.querySelectorAll('#plan .plan-mal li')].map((l) => l.textContent));
+    logg(etter.length === forHar + 0 && etter.some((t) => /^13/.test(t.trim())), 'planen oppdateres når du endrer selvvurderingen');
+    await skjerm('09-plan');
+  }
+  await ga('#/kvelden-for');
+  await page.waitForSelector('.ark');
+  const ark = await page.evaluate(() => ({
+    blokker: document.querySelectorAll('.ark-blokk').length,
+    husk: document.querySelectorAll('.ark-husk li').length,
+    feil: document.querySelectorAll('.ark-feil li').length,
+    ioner: document.querySelectorAll('.ark-ioner tr').length,
+    mal: document.querySelectorAll('.ark-mal li').length,
+    katex: document.querySelectorAll('.ark .katex-error').length,
+  }));
+  logg(ark.blokker === 18 && ark.mal === 20, '«Kvelden før» har alle 17 modulene og alle 20 målene');
+  logg(ark.husk >= 50 && ark.feil >= 40 && ark.ioner === 9 && !ark.katex, '«Kvelden før» har regler (' + ark.husk + '), vanlige feil (' + ark.feil + ') og de 9 ionene');
+  await page.locator('.seg [data-vis="svake"]').click();
+  await page.waitForTimeout(80);
+  const svakeBlokker = await page.locator('.ark-blokk').count();
+  logg(svakeBlokker < 18 && svakeBlokker > 1, '«Bare røde og gule» skjuler grønne moduler (' + (svakeBlokker - 1) + ' moduler)');
+  await skjerm('10-kvelden-for');
 
   /* ---------- Flashcards ---------- */
   console.log('\nFlashcards');
@@ -465,7 +569,7 @@ const logg = (ok, msg) => {
   mp.on('console', (m) => m.type() === 'error' && konsollfeil.push('mobil: ' + m.text()));
   await mp.goto(URL);
   await mp.waitForSelector('.tcard');
-  const mobilRuter = ['#/', '#/kort', '#/prove', '#/feilbank', '#/verktoy/periodesystem', '#/verktoy/balansering', '#/verktoy/formelark'];
+  const mobilRuter = ['#/', '#/ov', '#/ov?mal=3,4', '#/kvelden-for', '#/kort', '#/prove', '#/feilbank', '#/verktoy/periodesystem', '#/verktoy/balansering', '#/verktoy/formelark'];
   temaer.forEach((t) => mobilRuter.push('#/modul/' + t));
   oppgaver.forEach((q) => mobilRuter.push('#/modul/' + q.tema + '/oppgaver?niva=0&q=' + q.id));
   let mobilFeil = 0;

@@ -13,6 +13,12 @@ KJ.modul({
   mal: [12, 13],
   farge: '#12A0A0',
   bolge: 496,
+  huskeliste: [
+    '**Salt:** kation + anion med -id. Ingen tallprefikser.',
+    '**Romertall** = ladningen til metaller som kan ha flere ladninger (ikke Zn og Ag).',
+    '**Molekylforbindelse:** greske prefikser, ikke «mono» først, det mest elektronegative sist med -id.',
+    'Fe jern · Cu kobber · Ag sølv · Au gull · Pb bly · Sn tinn · Hg kvikksølv · K kalium · Na natrium',
+  ],
   teori: [
     {
       h: 'Grunnstoffnavn',

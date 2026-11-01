@@ -13,6 +13,11 @@ KJ.modul({
   mal: [16],
   farge: '#3B6CF0',
   bolge: 452,
+  huskeliste: [
+    'Endre bare **koeffisientene**. Indeksen er en del av stoffet ({{H2O}} ≠ {{H2O2}}).',
+    'Start med metall eller C, behold sammensatte ioner som enhet, ta H og O til slutt.',
+    'Koeffisienten ganges med alle atomene i formelen, også i parentesen.',
+  ],
   teori: [
     {
       h: 'Hva viser en reaksjonslikning?',

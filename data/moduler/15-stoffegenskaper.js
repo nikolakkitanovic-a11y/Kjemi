@@ -13,6 +13,11 @@ KJ.modul({
   mal: [17, 19],
   farge: '#5458F2',
   bolge: 438,
+  huskeliste: [
+    '**Ionisk:** høyt smeltepunkt, leder bare smeltet eller løst. **Molekylært:** lavt smeltepunkt, leder ikke. **Metall:** leder også fast. **Atomgitter:** svært høyt smeltepunkt.',
+    'Strøm krever ladde partikler som kan bevege seg.',
+    'Stoffdetektiv: ledningsevne i fast form (metall?), løs i vann og mål ledningsevne (salt eller molekylært?), smeltepunkt, løselighet i vann og heksan.',
+  ],
   teori: [
     {
       h: 'Fire stofftyper',

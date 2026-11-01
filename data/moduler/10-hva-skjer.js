@@ -13,6 +13,11 @@ KJ.modul({
   mal: [11],
   farge: '#1C9E6E',
   bolge: 512,
+  huskeliste: [
+    'OH, {{NH2}} eller en ladet gruppe → mer polar, flere bindinger til vann, mer løselig.',
+    'Lengre karbonkjede → større upolar del, mindre løselig i vann, sterkere London-krefter.',
+    'Symmetri kan oppheve dipolene ({{CH4}} → {{CCl4}} er fortsatt upolart).',
+  ],
   teori: [
     {
       h: 'Løselighet: likt løser likt',

@@ -13,6 +13,11 @@ KJ.modul({
   mal: [20],
   farge: '#8B3CF0',
   bolge: 410,
+  huskeliste: [
+    'Svar: påstand → begrunnelse med fagbegreper → partikkelnivå → eksempel → vurdering.',
+    'Vurder modellen: hva forklarer den, og hva forklarer den ikke?',
+    'Unngå «alltid» og «aldri» uten å nevne unntak (HF, NaH, metaller med høyt smeltepunkt).',
+  ],
   teori: [
     {
       h: 'Slik svarer du på høy måloppnåelse',
